@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+from std_srvs.srv import Empty, EmptyResponse, Trigger
+from std_msgs.msg import Int8
+from villa_task import tts
+import rospy
+
+def wrist_trigger():
+    rospy.wait_for_service('wrist_trigger')
+    print("wrist trigger")
+    trigger = rospy.ServiceProxy('wrist_trigger', Trigger)
+    trigger()
+
+def inspect_cb(req):
+    rospy.loginfo("Waiting for inspection...")
+    
+    # speech.say("Hello. What can I do for you today?", wait=True)
+    wrist_trigger()
+    # rospy.loginfo("Felt wrist tap.")
+    return EmptyResponse()
+
+def inspection_task_server():
+    rospy.init_node('inspection_task_node')
+    speech = tts.TextToSpeech()
+    speech.say("Hello. What can I do for you today?", wait=True)
+    wrist_trigger()
+    # s = rospy.Service('inspection_task', Empty, inspect_cb)
+    rospy.spin()
+
+if __name__ == '__main__':
+    inspection_task_server()    

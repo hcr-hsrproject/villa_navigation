@@ -1,0 +1,25 @@
+<launch>
+   <node name="feature_grid_node" pkg="grid_hsr" type="feature_grid" respawn="false" output="screen"/>
+
+   <node name="mdp_node" pkg="navi_mdp" type="mdpplanner" respawn="false" output="screen"/>
+
+   <node name="classifier_hsr_node" pkg="classifier_hsr" type="hsr_classifier_test" respawn="false" output="screen"/>
+
+  <!--  <node name="human_box_node" pkg="grid_hsr" type="human_box_node" respawn="false" output="screen"/> -->
+
+	<!-- <node name="dyn_mdp_node" pkg="navi_mdp" type="dynamic_planner" respawn="false" output="screen"/>  -->
+  <!--  <node pkg="grid_map_demos" type="navigation_map" name="grid_map_navigation_map" output="screen" />
+  
+  <node pkg="grid_map_visualization" type="grid_map_visualization" name="grid_map_visualization" output="screen">
+    <rosparam command="load" file="$(find navi_mdp)/config/navigation_map.yaml" />
+   </node> -->
+
+<!--  <node pkg="local_map" type="local_map" name="local_map_navigation_map" output="screen">
+ </node> -->
+
+ 
+<arg name="gui" default="flase" />
+ <param name="use_gui" value="$(arg gui)"/>
+  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find navi_mdp)/launch/hsr_rviz.rviz" /> -->
+
+</launch>
