@@ -491,7 +491,7 @@ bool Edgeleg_manager::check_chair(float x_pos,float y_pos)
   {  
     for(int i(0);i<cur_yolo_chair.size();i++)
     {
-      if(Comparetwopoistions(cur_yolo_chair[i],tempVec,0.15))
+      if(Comparetwopoistions(cur_yolo_chair[i],tempVec,0.22))
          return true;
     }
   }
