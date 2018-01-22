@@ -60,6 +60,7 @@ public:
   void callbackDrop(const people_msgs::PositionMeasurement::ConstPtr& message);
 
 
+  void wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg);
   void filter_result_callback(const people_msgs::PositionMeasurement::ConstPtr& msg);
   void joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg);
   void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& message);
@@ -121,6 +122,7 @@ private:
   ros::Subscriber Scaled_static_map_sub;
   ros::Subscriber filter_result_sub;
   ros::Subscriber sound_cmd_sub;
+  ros::Subscriber wrist_trigger_sub;
   
   ros::ServiceServer m_service;
 

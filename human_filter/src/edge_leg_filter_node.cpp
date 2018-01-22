@@ -72,14 +72,16 @@ Edgeleg_manager::Edgeleg_manager(ros::NodeHandle nh)
   static_belief_map_pub=nh_.advertise<nav_msgs::OccupancyGrid>("/camera_region_map", 10, true);
   setNavTarget_pub=nh_.advertise<move_base_msgs::MoveBaseActionGoal>("/move_base/move/goal",50,true);
 
-  sound_cmd_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &Edgeleg_manager::human_yolo_callback,this);
+  chair_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/chair_boxes", 10, &Edgeleg_manager::chair_yolo_callback,this);
   people_yolo_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &Edgeleg_manager::human_yolo_callback,this);
   edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &Edgeleg_manager::edge_leg_callback,this);
   filter_act_sub=nh_.subscribe<std_msgs::Int8>("/filter_act_cmd", 10, &Edgeleg_manager::filter_act_callback,this);
   globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&Edgeleg_manager::global_pose_callback,this);
   keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &Edgeleg_manager::keyboard_callback,this);
   Scaled_static_map_sub=nh_.subscribe<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, &Edgeleg_manager::scaled_static_map_callback,this);
-filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&Edgeleg_manager::filter_result_callback,this);
+  filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&Edgeleg_manager::filter_result_callback,this);
+  wrist_trigger_sub=nh_.subscribe<std_msgs::Int8>("/cmd_trackhuman", 10,&Edgeleg_manager::wrist_trigger_callback,this);
+
     
   // One_People_pos_pub=nh_.advertise<people_msgs::PositionMeasurement>("/people_tracker_measurements", 0 );
  
@@ -134,7 +136,6 @@ void Edgeleg_manager::filter_result_callback(const people_msgs::PositionMeasurem
 
 void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
 {
- 
    // if(edge_leg_iter>){ 
   int num_leg_detected = msg->poses.size(); 
   std::vector<double> tempVec(2,0.0);
@@ -156,10 +157,12 @@ void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr
           tempVec[0]=tV.vector.x+global_pose[0];
           tempVec[1]=tV.vector.y+global_pose[1];
 
+          if(check_chair(tempVec[0],tempVec[1]))
+              continue;
           if(check_staticObs(tempVec[0],tempVec[1]))
             continue;
 
-           if(!check_cameraregion(tempVec[0],tempVec[1]))
+          if(!check_cameraregion(tempVec[0],tempVec[1]))
             continue;
 
             // std::cout<<"here 1"<<std::endl;
@@ -410,6 +413,26 @@ void Edgeleg_manager::scaled_static_map_callback(const nav_msgs::OccupancyGrid::
 
 }
 
+
+void Edgeleg_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg)
+{
+
+  ROS_INFO("Received Keyboard");
+  int ReceivedNum= (int) msg->data;
+  if(ReceivedNum==1)    //if keyboard input is "t"
+  {
+    if(cur_yolo_people.size()>0)
+     {
+          leg_target.resize(2,0.0);
+          leg_target[0]=cur_yolo_people[0][0];
+          leg_target[1]=cur_yolo_people[0][1];
+          OnceTarget=true;
+          ROS_INFO("set Target");
+          std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
+     }
+  }
+}
+
 void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
 {
 
@@ -456,7 +479,29 @@ void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
 
 //   }
 // }
+bool Edgeleg_manager::check_chair(float x_pos,float y_pos)
+{
+    //return true if input positions(x_pos,ypos) are close to the chair positions
+   vector<double> tempVec(2,0.0);
+   tempVec[0]=x_pos;
+   tempVec[1]=y_pos;
+   
+  //return true if it is occupied with obstacles
+  if (cur_yolo_chair.size()>0)
+  {  
+    for(int i(0);i<cur_yolo_chair.size();i++)
+    {
+      if(Comparetwopoistions(cur_yolo_chair[i],tempVec,0.15))
+         return true;
+    }
+  }
+  else{
+  
+  return false;
+  }
 
+  return false;
+}
 
 bool Edgeleg_manager::check_staticObs(float x_pos,float y_pos)
 {
@@ -763,7 +808,40 @@ void Edgeleg_manager::global_pose_callback(const geometry_msgs::PoseStamped::Con
    double yaw_tf =   tf::getYaw(baselinktransform.getRotation()); 
 
     global_pose[2]=yaw_tf;
+}
 
+void Edgeleg_manager::chair_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)
+{
+    std::cout<<"chair recieved"<<std::endl;
+    num_of_detected_chair=msg->markers.size();
+
+    if(num_of_detected_chair>0)
+       cur_yolo_chair.resize(num_of_detected_chair);
+    else
+    {
+      return;
+    }
+
+    for(int i(0);i<num_of_detected_chair;i++)
+    {
+      geometry_msgs::Vector3Stamped gV, tV;
+
+      gV.vector.x = msg->markers[i].pose.position.x;
+      gV.vector.y = msg->markers[i].pose.position.y;
+      gV.vector.z = msg->markers[i].pose.position.z;
+
+      // std::cout<<"x :"<<_x<<"_y:"<<_y<<"_z:"<<_z<<std::endl;
+      tf::StampedTransform maptransform;
+      listener.waitForTransform("head_rgbd_sensor_rgb_frame", "map", ros::Time(0), ros::Duration(1.0));
+              
+      gV.header.stamp = ros::Time();
+      gV.header.frame_id = "/head_rgbd_sensor_rgb_frame";
+      listener.transformVector(std::string("/map"), gV, tV);
+              
+      cur_yolo_chair[i].resize(2,0.0);
+      cur_yolo_chair[i][0]=tV.vector.x+global_pose[0];
+      cur_yolo_chair[i][1]=tV.vector.y+global_pose[1];
+   }
 }
 
 void Edgeleg_manager::human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)

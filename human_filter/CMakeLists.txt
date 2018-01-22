@@ -83,9 +83,7 @@ add_library(human_filter
 ## Declare a cpp executable
 add_executable(kalman_tracker src/people_tracking_node.cpp)
 add_executable(edge_midfilter src/edge_leg_filter_node.cpp)
-
 add_executable(follow_service_test src/service_test.cpp ${SOURCES})
-
 
 ## Add cmake target dependencies of the executable/library
 add_dependencies(kalman_tracker people_msgs_gencpp human_filter)

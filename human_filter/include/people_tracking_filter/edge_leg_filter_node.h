@@ -57,6 +57,7 @@ public:
   void callbackDrop(const people_msgs::PositionMeasurement::ConstPtr& message);
 
 
+  void chair_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& message);
   void filter_result_callback(const people_msgs::PositionMeasurement::ConstPtr& msg);
   void joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg);
   void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& message);
@@ -64,6 +65,7 @@ public:
   void human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& message);
   void filter_act_callback(const std_msgs::Int8::ConstPtr& msg);
   void keyboard_callback(const keyboard::Key::ConstPtr& msg);
+  void wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg);
   void scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg);
   bool check_staticObs(float x_pos,float y_pos);
   int globalcoord_To_SScaled_map_index(float x_pos,float y_pos);
@@ -71,6 +73,7 @@ public:
 
   int CoordinateTransform_Global2_staticMap(float global_x, float global_y);
 
+  bool check_chair(float x_pos,float y_pos);
   bool check_cameraregion(float x_pos,float y_pos);
   int FindNearesetLegIdx();
   void publish_leg_boxes();
@@ -107,7 +110,8 @@ private:
   ros::Subscriber keyboard_sub;
   ros::Subscriber Scaled_static_map_sub;
   ros::Subscriber filter_result_sub;
-  ros::Subscriber sound_cmd_sub;
+  ros::Subscriber chair_sub;
+  ros::Subscriber wrist_trigger_sub;
   
 
   ros::Publisher Leg_boxes_pub;
@@ -134,11 +138,13 @@ private:
   std::vector<double> global_pose;
   std::vector< std::vector< double > > Cur_leg_human;
   std::vector< std::vector< double > > cur_yolo_people;
+  std::vector< std::vector< double > > cur_yolo_chair;
   std::vector<double> leg_target;
   std::vector<double> filtered_leg_target;
   std::vector<double> Head_Pos; 
 
   int num_of_detected_human;
+  int num_of_detected_chair;
   nav_msgs::OccupancyGrid Scaled_map;
   nav_msgs::OccupancyGrid static_belief_map;
   int edge_leg_iter;

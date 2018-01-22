@@ -51,7 +51,6 @@ Edgeleg_manager_srv::Edgeleg_manager_srv(ros::NodeHandle nh)
   //GazePoint target
   Gaze_point_pub= nh_.advertise<geometry_msgs::Point>("/gazed_point_fixing_node/target_point", 50, true);
 
-
   //subscribe for yolo detection
   people_yolo_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &Edgeleg_manager_srv::human_yolo_callback,this);
   //subscribe for laser detection
@@ -66,11 +65,13 @@ Edgeleg_manager_srv::Edgeleg_manager_srv(ros::NodeHandle nh)
   Scaled_static_map_sub=nh_.subscribe<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, &Edgeleg_manager_srv::scaled_static_map_callback,this);
   //filtering result from kalman filter
   filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&Edgeleg_manager_srv::filter_result_callback,this);
+  //wrist_trigger_subscriber
+  wrist_trigger_sub=nh_.subscribe<std_msgs::Int8>("/cmd_trackhuman", 10,&Edgeleg_manager_srv::wrist_trigger_callback,this);
     
   // Create service for activation following
   m_service = nh_.advertiseService("/following_human",  &Edgeleg_manager_srv::followingLoop,this);
  
- last_global_pose.resize(3,0.0);
+  last_global_pose.resize(3,0.0);
   global_pose.resize(3,0.0);
   leg_target.resize(2,0.0);
   Head_Pos.resize(2,0.0);
@@ -396,7 +397,24 @@ bool Edgeleg_manager_srv::getlinevalue(int line_type,double input_x, double inpu
 
 }
 
+void Edgeleg_manager_srv::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg)
+{
 
+  ROS_INFO("Received trigger ");
+  int ReceivedNum= (int) msg->data;
+  if(ReceivedNum==1)    //if keyboard input is "t"
+  {
+    if(cur_yolo_people.size()>0)
+     {
+          leg_target.resize(2,0.0);
+          leg_target[0]=cur_yolo_people[0][0];
+          leg_target[1]=cur_yolo_people[0][1];
+          OnceTarget=true;
+          ROS_INFO("set Target");
+          std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
+     }
+  }
+}
 
 
 void Edgeleg_manager_srv::scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
@@ -1032,7 +1050,6 @@ bool Edgeleg_manager_srv::followingLoop(human_filter::set_target_to_follow::Requ
 }
 
 
-
 // filter loop
 void Edgeleg_manager_srv::spin()
 {
@@ -1091,7 +1108,7 @@ int main(int argc, char **argv)
   // }
 
   // wait for filter to finish
-  // ros::spin();
+   //ros::spin();
   // Clean up
 
   return 0;

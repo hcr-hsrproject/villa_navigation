@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+
+    <param name="kalman_tracker/fixed_frame" type="string" value="map"/>
+    <param name="kalman_tracker/freq" value="10.0"/>
+    <param name="kalman_tracker/start_distance_min" value="0.25"/>
+    <param name="kalman_tracker/reliability_threshold" value="0.65"/>
+    <param name="kalman_tracker/follow_one_person" type="bool" value="true"/>
+
+<!-- Particle without velocity model covariances -->
+<!--param name="people_tracker/sys_sigma_pos_x" value="0.2"/>
+    <param name="people_tracker/sys_sigma_pos_y" value="0.2"/>
+    <param name="people_tracker/sys_sigma_pos_z" value="0.0001"/>
+    <param name="people_tracker/sys_sigma_vel_x" value="0.00000001"/>
+    <param name="people_tracker/sys_sigma_vel_y" value="0.00000001"/>
+    <param name="people_tracker/sys_sigma_vel_z" value="0.00000001"/-->
+
+<!-- Kalman with velocity model covariances -->
+    <param name="kalman_tracker/sys_sigma_pos_x" value="1.5"/>
+    <param name="kalman_tracker/sys_sigma_pos_y" value="1.5"/>
+    <param name="kalman_tracker/sys_sigma_pos_z" value="1.0"/>
+    <param name="kalman_tracker/sys_sigma_vel_x" value="2.3"/>
+    <param name="kalman_tracker/sys_sigma_vel_y" value="2.3"/>
+    <param name="kalman_tracker/sys_sigma_vel_z" value="2.3"/>
+<!-- <param name="kalman_tracker/sys_sigma_pos_x" value="0.8"/>
+    <param name="kalman_tracker/sys_sigma_pos_y" value="0.8"/>
+    <param name="kalman_tracker/sys_sigma_pos_z" value="0.3"/>
+    <param name="kalman_tracker/sys_sigma_vel_x" value="0.5"/>
+    <param name="kalman_tracker/sys_sigma_vel_y" value="0.5"/>
+    <param name="kalman_tracker/sys_sigma_vel_z" value="0.5"/> -->
+
+    <!--<node pkg="human_filter" type="kalman_tracker" name="people_tracking_filter_node" output="screen"/>-->
+    <node pkg="human_filter" type="kalman_tracker" name="people_tracking_filter_node" />
+
+    <node pkg="villa_3d_object_extract" type="human_tmc_cluster_based_yolo_3D_extractor" name="villa_3d_humanbox_extract" output="screen"/>
+
+    <node pkg="human_filter" type="follow_service_test" name="following_action_node" output="screen"/>
+   <!-- <node pkg="human_filter" type="edge_midfilter" name="mid_filter_name" /> -->
+    <!--<node pkg="navi_mdp" type="mdpplanner" name="mdp_node" output="screen"/>-->
+    <node pkg="navi_mdp" type="mdpplanner" name="mdp_node" />
+    <!--<node pkg="navi_mdp" type="wrist_mk" name="wrist_trigger_server" output="screen"/>-->
+    <!--<node pkg="navi_mdp" type="wrist_mk_client" name="wrist_trigger_client" output="screen"/>-->
+    <node pkg="navi_mdp" type="wrist_mk" name="wrist_trigger_server" />
+    <node pkg="navi_mdp" type="wrist_mk_client" name="wrist_trigger_client" />
+    <node pkg="villa_task" type="following_srv_client.py" name="follow_service_client" output="screen"/>
+
+    <arg name="laser_scan" default="hsrb/base_scan" />
+    <node pkg="edge_leg_detector" type="detector" name="edge_leg_detector" output="screen">
+    <param name="laser_scan" value="$(arg laser_scan)" type="string"/>
+    </node>
+
+
+</launch>
+
