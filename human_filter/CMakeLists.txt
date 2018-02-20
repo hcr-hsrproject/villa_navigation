@@ -11,6 +11,7 @@ link_directories(${BFL_LIBRARY_DIRS})
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  roslib
   std_msgs
   std_srvs
   geometry_msgs
@@ -20,6 +21,9 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   nav_msgs
   actionlib_msgs
+  keyboard
+  actionlib
+  message_generation
 )
 
 
@@ -50,12 +54,14 @@ generate_messages(
 catkin_package(
 INCLUDE_DIRS include
 CATKIN_DEPENDS
+    roscpp
     sensor_msgs
     std_msgs
     geometry_msgs
     people_msgs
     nav_msgs
     actionlib_msgs
+    actionlib
 LIBRARIES human_filter
 )
 
@@ -86,9 +92,9 @@ add_executable(edge_midfilter src/edge_leg_filter_node.cpp)
 add_executable(follow_service_test src/service_test.cpp ${SOURCES})
 
 ## Add cmake target dependencies of the executable/library
-add_dependencies(kalman_tracker people_msgs_gencpp human_filter)
-add_dependencies(edge_midfilter people_msgs_gencpp human_filter)
-add_dependencies(follow_service_test people_msgs_gencpp human_filter)
+add_dependencies(kalman_tracker people_msgs_gencpp human_filter ${cakin_EXPORTED_TARGETS})
+add_dependencies(edge_midfilter people_msgs_gencpp human_filter ${cakin_EXPORTED_TARGETS})
+add_dependencies(follow_service_test people_msgs_gencpp human_filter ${cakin_EXPORTED_TARGETS})
 
 
 
