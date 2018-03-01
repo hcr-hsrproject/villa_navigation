@@ -51,7 +51,7 @@ static const double       sequencer_delay            = 0.5; //TODO: this is prob
 static const unsigned int sequencer_internal_buffer  = 100;
 static const unsigned int sequencer_subscribe_buffer = 10;
 static const unsigned int num_particles_tracker      = 1000;
-static const double       tracker_init_dist          = 4.0;
+static const double       tracker_init_dist          = 4.0; //to seperate other people
 
 bool IsNotInitilized = true;
 
@@ -131,26 +131,24 @@ void PeopleTrackingNode::callbackRcv(const people_msgs::PositionMeasurement::Con
     for (unsigned int j = 0; j < 3; j++)
       cov(i + 1, j + 1) = message->covariance[3 * i + j];
 
+//mkmkmkmk
+    //if(IsNotInitilized)
+    //{
 
-    if(IsNotInitilized)
-    {
+      //cout << "starting new tracker" << endl;
+      //stringstream tracker_name;
+      //StatePosVel prior_sigma(tf::Vector3(sqrt(cov(1, 1)), sqrt(cov(
+                                            //2, 2)), sqrt(cov(3, 3))), tf::Vector3(0.0001, 00.0001, 0.0001));
+      //tracker_name << "person 0";
+      //Tracker* new_tracker = new TrackerKalman(tracker_name.str(),sys_sigma_);
+      //new_tracker->initialize(meas, prior_sigma,message->header.stamp.toSec()) ;
+      //trackers_.push_back(new_tracker);
+      //ROS_INFO("Initialized new tracker %s", tracker_name.str().c_str());
 
-      cout << "starting new tracker" << endl;
-      stringstream tracker_name;
-      StatePosVel prior_sigma(tf::Vector3(sqrt(cov(1, 1)), sqrt(cov(
-                                            2, 2)), sqrt(cov(3, 3))), tf::Vector3(0.01, 0.01, 0.01));
-                                            // 2, 2)), sqrt(cov(3, 3))), tf::Vector3(0.0000001, 0.0000001, 0.0000001));
-      tracker_name << "person 0";
-      Tracker* new_tracker = new TrackerKalman(tracker_name.str(),sys_sigma_);
-      //Tracker* new_tracker = new TrackerParticle(tracker_name.str(), num_particles_tracker, sys_sigma_);
-      new_tracker->initialize(meas, prior_sigma,message->header.stamp.toSec()) ;
-      trackers_.push_back(new_tracker);
-      ROS_INFO("Initialized new tracker %s", tracker_name.str().c_str());
+      //IsNotInitilized=false;
 
-      IsNotInitilized=false;
-
-    }
-
+    //}
+//mkmk
 
   // ----- LOCKED ------
   boost::mutex::scoped_lock lock(filter_mutex_);
@@ -175,8 +173,8 @@ void PeopleTrackingNode::callbackRcv(const people_msgs::PositionMeasurement::Con
     }
 
   // check if reliable message with no name should be a new tracker
-  // if (message->object_id == "" && message->reliability > reliability_threshold_) //mkmk
-  if (message->reliability > reliability_threshold_)
+  //if (message->reliability > reliability_threshold_) //mkmkmk
+   if (message->object_id == "" && message->reliability > reliability_threshold_) //original
   {
     double closest_tracker_dist = start_distance_min_;
     StatePosVel est;

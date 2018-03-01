@@ -188,7 +188,6 @@ void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr
          
       }
 
-
       // std::cout<<"here 3"<<std::endl;
       if(Cur_leg_human.size()>0)
     {
@@ -198,7 +197,7 @@ void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr
         temp_leg_target[0]=Cur_leg_human[NearestLegIdx][0];
         temp_leg_target[1]=Cur_leg_human[NearestLegIdx][1];
 
-        if(Comparetwopoistions(temp_leg_target,leg_target,1.0))
+        if(Comparetwopoistions(temp_leg_target,leg_target,1.2))
         {
             // std::cout<<"update target - person is in a range"<<std::endl;
             leg_target[0]=temp_leg_target[0];

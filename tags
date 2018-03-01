@@ -899,6 +899,8 @@ sigma_sq_	human_filter/include/people_tracking_filter/gaussian_vector.h	/^  muta
 size_	human_filter/include/people_tracking_filter/uniform_vector.h	/^  tf::Vector3 mu_, size_;$/;"	m	class:BFL::UniformVector
 sound_cmd_sub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Subscriber sound_cmd_sub;$/;"	m	class:Edgeleg_manager_action
 sound_cmd_sub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Subscriber sound_cmd_sub;$/;"	m	class:Edgeleg_manager_srv
+speech_cb	navi_mdp/scripts/speech_publish	/^def speech_cb(msg):$/;"	f
+speech_server	navi_mdp/scripts/speech_publish	/^def speech_server():$/;"	f
 spin	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::spin()$/;"	f	class:Edgeleg_manager
 spin	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::spin()$/;"	f	class:Edgeleg_manager_action
 spin	human_filter/src/people_tracking_node.cpp	/^void PeopleTrackingNode::spin()$/;"	f	class:estimation::PeopleTrackingNode
@@ -939,7 +941,7 @@ track_cmd	villa_navi_service/include/navi_service_node.h	/^	std_msgs::Int8 track
 tracker_counter_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  unsigned int tracker_counter_;$/;"	m	class:estimation::PeopleTrackingNode
 tracker_init_dist	human_filter/src/edge_leg_filter_node.cpp	/^static const double       tracker_init_dist          = 4.0;$/;"	v	file:
 tracker_init_dist	human_filter/src/followme_action.cpp	/^static const double       tracker_init_dist          = 4.0;$/;"	v	file:
-tracker_init_dist	human_filter/src/people_tracking_node.cpp	/^static const double       tracker_init_dist          = 4.0;$/;"	v	file:
+tracker_init_dist	human_filter/src/people_tracking_node.cpp	/^static const double       tracker_init_dist          = 4.0; \/\/to seperate other people$/;"	v	file:
 tracker_init_dist	human_filter/src/service_test.cpp	/^static const double       tracker_init_dist          = 4.0;$/;"	v	file:
 tracker_initialized_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  bool tracker_initialized_;$/;"	m	class:estimation::TrackerKalman
 tracker_initialized_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  bool tracker_initialized_;$/;"	m	class:estimation::TrackerParticle
