@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="human_filter" type="srs_leg_detector" name="srs_leg_detector_front" args="scan:=hsrb/base_scan $(find human_filter)/config/trained_leg_detector.yaml front" output="screen"/>
+</launch>
+
