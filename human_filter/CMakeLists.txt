@@ -31,8 +31,8 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   pcl_ros
   pcl_conversions
+  dynamic_reconfigure
 )
-
 
 
 ## System dependencies are found with CMake's conventions
@@ -40,6 +40,11 @@ find_package(Boost REQUIRED COMPONENTS thread)
 find_package(PCL 1.7 REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(orocos_kdl REQUIRED)
+
+generate_dynamic_reconfigure_options(
+  cfg/LegDetection.cfg
+)
+
 
 add_service_files(
    FILES
@@ -112,7 +117,7 @@ add_executable(follow_service_test src/service_test.cpp)
 
 
 add_executable(srs_leg_detector ${LEGSOURCES})
-target_link_libraries(srs_leg_detector human_filter ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${BFL_LIBRARIES} ${orocos_kdl_LIBRARIES})
+target_link_libraries(srs_leg_detector human_filter ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${BFL_LIBRARIES} ${Boost_LIBRARIES} ${orocos_kdl_LIBRARIES})
 add_dependencies(srs_leg_detector ${catkin_EXPORTED_TARGETS})
 
 
