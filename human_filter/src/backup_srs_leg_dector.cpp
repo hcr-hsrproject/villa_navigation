@@ -472,7 +472,6 @@ void measure_distance (double dist) {
         detected_legs.clear(); //to be ready for the new detections
         float map_value;
 		ScanProcessor processor(*scan, mask_);
-
 		processor.splitConnected(connected_thresh_);
 		processor.removeLessThan(5);
 
@@ -514,8 +513,8 @@ void measure_distance (double dist) {
 			for (int k = 0; k < feat_count_; k++)
 				tmp_mat.data[k] = (float)(f[k]);
 
-			//float temp_probability=  0.5 - forest->predict(tmp_mat, cv::noArray(), cv::ml::RTrees::PREDICT_SUM) /forest->getRoots().size();
-			float temp_probability= forest->predict(tmp_mat, cv::noArray(), cv::ml::RTrees::PREDICT_SUM) /forest->getRoots().size();
+            float temp_probability=  0.5 - forest->predict(tmp_mat, cv::noArray(), cv::ml::RTrees::PREDICT_SUM) /forest->getRoots().size();
+			//float temp_probability= forest->predict(tmp_mat, cv::noArray(), cv::ml::RTrees::PREDICT_SUM) /forest->getRoots().size();
 			// if (forest->predict( tmp_mat ) > 0)
 			if (temp_probability > 0)
 			{

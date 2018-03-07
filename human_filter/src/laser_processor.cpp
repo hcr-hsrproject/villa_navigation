@@ -133,7 +133,7 @@ void Background::addScan(sensor_msgs::LaserScan& scan, float treshhold) // tresh
       SampleSet::iterator m = backgr_data.find(s);
       if (m != backgr_data.end())  // there is such a scan 
       {
-        if ( s->range > 29.8 || s->range < 0.1 || abs((*m)->range - s->range) > treshhold  )  // if the difference between the new sample and the old one is bigger then will it ignore the new one
+        if ( s->range > 25.8 || s->range < 0.1 || abs((*m)->range - s->range) > treshhold  )  // if the difference between the new sample and the old one is bigger then will it ignore the new one
         {
    
     //        printf ("laser_scan::Background::addScan: too much movement %f - ignoring the new scan \n",(*m)->range - s->range); 
@@ -150,7 +150,7 @@ void Background::addScan(sensor_msgs::LaserScan& scan, float treshhold) // tresh
            delete s; 
         }
       }
-      else if (s->range < 29.8 && s->range > 0.1) // if there is no such sample in the background found and the range makes sence just insert the new sample
+      else if (s->range < 25.8 && s->range > 0.1) // if there is no such sample in the background found and the range makes sence just insert the new sample
       {
         backgr_data.insert(s);
       }  
@@ -209,7 +209,7 @@ bool Background::isSamplebelongstoBackgrond(Sample* s, float thresh)
   {
     SampleSet::iterator b = backgr_data.find(s); 
     if ( b != backgr_data.end())
-      if ( (s-> range > 29.8) || ( ((*b)->range + abs((*b)->variation) + thresh > s->range) &&  ((*b)->range - abs((*b)->variation) - thresh < s->range) ) ) // in other words s-range between what we have in the background +- allowances
+      if ( (s-> range > 25.8) || ( ((*b)->range + abs((*b)->variation) + thresh > s->range) &&  ((*b)->range - abs((*b)->variation) - thresh < s->range) ) ) // in other words s-range between what we have in the background +- allowances
         return true;
   }
 
@@ -222,7 +222,7 @@ bool ScanMask::hasSample(Sample* s, float thresh)
   {
     SampleSet::iterator m = mask_.find(s);
     if ( m != mask_.end())
-      if ( s-> range > 29.8 || (((*m)->range - thresh) < s->range) )
+      if ( s-> range > 25.8 || (((*m)->range - thresh) < s->range) )
         return true;
   }
   return false;

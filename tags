@@ -4,6 +4,18 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ANTRO_a0	edge_leg_detector/src/detector.cpp	32;"	d	file:
+ANTRO_a0	edge_leg_detector/src/edge_leg_detector/detector.cpp	31;"	d	file:
+ANTRO_a1	edge_leg_detector/src/detector.cpp	33;"	d	file:
+ANTRO_a1	edge_leg_detector/src/edge_leg_detector/detector.cpp	32;"	d	file:
+ANTRO_b0	edge_leg_detector/src/detector.cpp	34;"	d	file:
+ANTRO_b0	edge_leg_detector/src/edge_leg_detector/detector.cpp	33;"	d	file:
+ANTRO_b1	edge_leg_detector/src/detector.cpp	35;"	d	file:
+ANTRO_b1	edge_leg_detector/src/edge_leg_detector/detector.cpp	34;"	d	file:
+ANTRO_c0	edge_leg_detector/src/detector.cpp	36;"	d	file:
+ANTRO_c0	edge_leg_detector/src/edge_leg_detector/detector.cpp	35;"	d	file:
+ANTRO_c1	edge_leg_detector/src/detector.cpp	37;"	d	file:
+ANTRO_c1	edge_leg_detector/src/edge_leg_detector/detector.cpp	36;"	d	file:
 ActionCC	navi_mdp/include/MDPmanager.h	/^	vector< vector<int> > ActionCC;$/;"	m	class:MDPManager
 Action_dim	navi_mdp/include/MDPmanager.h	/^ 	int               Action_dim;$/;"	m	class:MDPManager
 BFL	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	/^namespace BFL$/;"	n
@@ -19,6 +31,10 @@ BFL	human_filter/include/people_tracking_filter/uniform_vector.h	/^namespace BFL
 BFL	human_filter/src/gaussian_pos_vel.cpp	/^namespace BFL$/;"	n	file:
 BFL	human_filter/src/gaussian_vector.cpp	/^namespace BFL$/;"	n	file:
 BFL	human_filter/src/uniform_vector.cpp	/^namespace BFL$/;"	n	file:
+Background	human_filter/include/laser_processor.h	/^   Background() : filled(false), angle_min(0), angle_max(0), size(0) { }$/;"	f	class:laser_processor::Background
+Background	human_filter/include/laser_processor.h	/^class Background$/;"	c	namespace:laser_processor
+Background	srs_leg_detector/src/laser_processor.h	/^   Background() : filled(false), angle_min(0), angle_max(0), size(0) { }$/;"	f	class:laser_processor::Background
+Background	srs_leg_detector/src/laser_processor.h	/^class Background$/;"	c	namespace:laser_processor
 Basepos_Callback	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::Basepos_Callback(const geometry_msgs::PointStamped::ConstPtr& msg)$/;"	f	class:MDPManager
 BasisFuns	navi_mdp/src/srBSpline.cpp	/^void srBSpline::BasisFuns( OUT double* N, double u )$/;"	f	class:srBSpline
 BasisFuns	navi_mdp/src/srBSpline.cpp	/^void srBSpline::BasisFuns( OUT double* N, int span, double u )$/;"	f	class:srBSpline
@@ -27,6 +43,8 @@ BasisFunsDers	navi_mdp/src/srBSpline.cpp	/^bool srBSpline::BasisFunsDers( OUT do
 BoolMove	navi_mdp/src/base_actionlib.cpp	/^bool BoolMove=false;$/;"	v
 BoolUpadated	navi_mdp/src/base_conti_actionlib.cpp	/^bool BoolUpadated=false;$/;"	v
 C	navi_mdp/include/srBSpline.h	/^	inline double C( double u ) { return CurvePoint( u ); }$/;"	f	class:srBSpline
+CALCLEGFEATURES_HH	human_filter/include/calc_leg_features.h	36;"	d
+CALCLEGFEATURES_HH	srs_leg_detector/src/calc_leg_features.h	36;"	d
 Camera_angle	villa_navi_service/include/navi_service_node.h	/^	double Camera_angle;$/;"	m	class:villa_navi_srv
 CellNum2Coord	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::CellNum2Coord(const int Cell_idx, vector<int>& cell_xy)$/;"	f	class:MDPManager
 Cell_Info	navi_mdp/include/MDPmanager.h	/^	std::vector<int>    Cell_Info;$/;"	m	class:MapParam
@@ -38,6 +56,10 @@ Clone	human_filter/src/gaussian_pos_vel.cpp	/^GaussianPosVel* GaussianPosVel::Cl
 Clone	human_filter/src/gaussian_vector.cpp	/^GaussianVector::Clone() const$/;"	f	class:BFL::GaussianVector
 Clone	human_filter/src/uniform_vector.cpp	/^UniformVector* UniformVector::Clone() const$/;"	f	class:BFL::UniformVector
 CmdIntCallback	navi_mdp/src/dynamic_planner.cpp	/^void CmdIntCallback(const std_msgs::Int8::ConstPtr& msg)$/;"	f
+CompareSample	human_filter/include/laser_processor.h	/^     CompareSample() {}$/;"	f	struct:laser_processor::CompareSample
+CompareSample	human_filter/include/laser_processor.h	/^  struct CompareSample$/;"	s	namespace:laser_processor
+CompareSample	srs_leg_detector/src/laser_processor.h	/^     CompareSample() {}$/;"	f	struct:laser_processor::CompareSample
+CompareSample	srs_leg_detector/src/laser_processor.h	/^  struct CompareSample$/;"	s	namespace:laser_processor
 Comparetwopoistions	human_filter/src/edge_leg_filter_node.cpp	/^bool Edgeleg_manager::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)$/;"	f	class:Edgeleg_manager
 Comparetwopoistions	human_filter/src/followme_action.cpp	/^bool Edgeleg_manager_action::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)$/;"	f	class:Edgeleg_manager_action
 Comparetwopoistions	human_filter/src/service_test.cpp	/^bool Edgeleg_manager_srv::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)$/;"	f	class:Edgeleg_manager_srv
@@ -84,6 +106,8 @@ DYN_OFFSET_X	navi_mdp/include/MDPmanager.h	47;"	d
 DYN_OFFSET_Y	navi_mdp/include/MDPmanager.h	48;"	d
 DetectorParticle	human_filter/include/people_tracking_filter/detector_particle.h	/^class DetectorParticle$/;"	c	namespace:estimation
 DetectorParticle	human_filter/src/detector_particle.cpp	/^DetectorParticle::DetectorParticle(unsigned int num_particles):$/;"	f	class:estimation::DetectorParticle
+Dist2D	edge_leg_detector/src/detector.cpp	/^double Dist2D( double x0, double y0, double x1, double y1 ){$/;"	f
+Dist2D	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^double Dist2D( double x0, double y0, double x1, double y1 ){$/;"	f
 Distance3D	navi_mdp/src/srBSpline.cpp	/^double srBSpline::Distance3D( double* Q1, double* Q2 )$/;"	f	class:srBSpline
 Dy_OBS_CELL	navi_mdp/include/MDPmanager.h	34;"	d
 Dyn_MDPPath	navi_mdp/include/MDPmanager.h	/^ 	vector<int>  Dyn_MDPPath;$/;"	m	class:MDPManager
@@ -102,6 +126,16 @@ ExpectedValueGet	human_filter/src/measmodel_vector.cpp	/^MeasPdfVector::Expected
 ExpectedValueGet	human_filter/src/sysmodel_pos_vel.cpp	/^SysPdfPosVel::ExpectedValueGet() const$/;"	f	class:SysPdfPosVel
 ExpectedValueGet	human_filter/src/sysmodel_vector.cpp	/^SysPdfVector::ExpectedValueGet() const$/;"	f	class:SysPdfVector
 ExpectedValueGet	human_filter/src/uniform_vector.cpp	/^UniformVector::ExpectedValueGet() const$/;"	f	class:BFL::UniformVector
+Extract	human_filter/src/laser_processor.cpp	/^Sample* Sample::Extract(int ind, const sensor_msgs::LaserScan& scan)$/;"	f	class:Sample
+Extract	srs_leg_detector/src/laser_processor.cpp	/^Sample* Sample::Extract(int ind, const sensor_msgs::LaserScan& scan)$/;"	f	class:Sample
+FILTER_SIZE	edge_leg_detector/src/detector.cpp	25;"	d	file:
+FILTER_SIZE	edge_leg_detector/src/edge_leg_detector/detector.cpp	24;"	d	file:
+FLANK_D	edge_leg_detector/src/detector.cpp	29;"	d	file:
+FLANK_D	edge_leg_detector/src/edge_leg_detector/detector.cpp	28;"	d	file:
+FLANK_THRESHOLD	edge_leg_detector/src/detector.cpp	26;"	d	file:
+FLANK_THRESHOLD	edge_leg_detector/src/edge_leg_detector/detector.cpp	25;"	d	file:
+FLANK_U	edge_leg_detector/src/detector.cpp	28;"	d	file:
+FLANK_U	edge_leg_detector/src/edge_leg_detector/detector.cpp	27;"	d	file:
 FOVW	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	39;"	d
 FOVW	human_filter/include/people_tracking_filter/followme_action.h	44;"	d
 FOVW	human_filter/include/people_tracking_filter/service_test.h	39;"	d
@@ -113,6 +147,8 @@ FindMultiplicity	navi_mdp/src/srBSpline.cpp	/^int srBSpline::FindMultiplicity(do
 FindNearesetLegIdx	human_filter/src/edge_leg_filter_node.cpp	/^int Edgeleg_manager::FindNearesetLegIdx()$/;"	f	class:Edgeleg_manager
 FindNearesetLegIdx	human_filter/src/followme_action.cpp	/^int Edgeleg_manager_action::FindNearesetLegIdx()$/;"	f	class:Edgeleg_manager_action
 FindNearesetLegIdx	human_filter/src/service_test.cpp	/^int Edgeleg_manager_srv::FindNearesetLegIdx()$/;"	f	class:Edgeleg_manager_srv
+FindPattern	edge_leg_detector/src/detector.cpp	/^void FindPattern( string str, string pattern, list <int> *element_found ){$/;"	f
+FindPattern	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^void FindPattern( string str, string pattern, list <int> *element_found ){$/;"	f
 GAUSSIAN_POS_VEL_H	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	39;"	d
 GAUSSIAN_VECTOR_H	human_filter/include/people_tracking_filter/gaussian_vector.h	38;"	d
 GaussianPosVel	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	/^class GaussianPosVel: public Pdf<StatePosVel>$/;"	c	namespace:BFL
@@ -143,6 +179,8 @@ Head_Pos	human_filter/include/people_tracking_filter/service_test.h	/^  std::vec
 Head_Pos	villa_navi_service/include/navi_service_node.h	/^	std::vector<double> Head_Pos;				\/\/x,y,theta$/;"	m	class:villa_navi_srv
 HeadingVector	navi_mdp/include/MDPmanager.h	/^	std::vector<double> HeadingVector;$/;"	m	class:MDPManager
 Headscan_pub	villa_navi_service/include/navi_service_node.h	/^	ros::Publisher Headscan_pub;$/;"	m	class:villa_navi_srv
+HumanPose	edge_leg_detector/src/detector.cpp	/^void HumanPose( vector <double> *r_x, vector <double> *r_y, list <int> Pattern_list, int TYPE,  vector <int> flank_id0,  vector <int> flank_id1, vector <double> laser_x, vector <double> laser_y ){$/;"	f
+HumanPose	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^void HumanPose( vector <double> *r_x, vector <double> *r_y, list <int> Pattern_list, int TYPE,  vector <int> flank_id0,  vector <int> flank_id1, vector <double> laser_x, vector <double> laser_y ){$/;"	f
 Human_CELL	navi_mdp/include/MDPmanager.h	35;"	d
 Human_Goal_Coord	navi_mdp/include/MDPmanager.h	/^	std::vector<int> Human_Goal_Coord;$/;"	m	class:MDPManager
 Human_MarkerCallback	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::Human_MarkerCallback(const visualization_msgs::Marker::ConstPtr& msg)$/;"	f	class:MDPManager
@@ -168,10 +206,44 @@ LASER_Dist_person	human_filter/include/people_tracking_filter/edge_leg_filter_no
 LASER_Dist_person	human_filter/include/people_tracking_filter/followme_action.h	47;"	d
 LASER_Dist_person	human_filter/include/people_tracking_filter/service_test.h	42;"	d
 LASER_Point_Step	villa_navi_service/include/navi_service_node.h	50;"	d
+LASER_SCAN_LASERPROCESSOR_HH	human_filter/include/laser_processor.h	43;"	d
+LASER_SCAN_LASERPROCESSOR_HH	srs_leg_detector/src/laser_processor.h	43;"	d
+LOADING_BACKGROUND	human_filter/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_BACKGROUND	srs_leg_detector/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_NEG	human_filter/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_NEG	srs_leg_detector/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_NONE	human_filter/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_NONE	srs_leg_detector/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_POS	human_filter/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_POS	srs_leg_detector/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_TEST	human_filter/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LOADING_TEST	srs_leg_detector/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	e	enum:LoadType	file:
+LaserCallback	edge_leg_detector/src/detector.cpp	/^void LaserCallback (const sensor_msgs::LaserScan::ConstPtr& msg){$/;"	f
+LaserCallback	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^void LaserCallback (const sensor_msgs::LaserScan::ConstPtr& msg){$/;"	f
+LaserFilter_Mean	edge_leg_detector/src/detector.cpp	/^void LaserFilter_Mean( vector <double> *vector_r, unsigned size ){$/;"	f
+LaserFilter_Mean	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^void LaserFilter_Mean( vector <double> *vector_r, unsigned size ){$/;"	f
 Last_detected_human	villa_navi_service/include/navi_service_node.h	/^	std::vector< std::vector< double > > Last_detected_human;$/;"	m	class:villa_navi_srv
+LegDetector	human_filter/src/backup_srs_leg_dector.cpp	/^	LegDetector(ros::NodeHandle nh) :$/;"	f	class:LegDetector
+LegDetector	human_filter/src/backup_srs_leg_dector.cpp	/^class LegDetector$/;"	c	file:
+LegDetector	human_filter/src/backup_srs_leg_detector.cpp	/^	LegDetector(ros::NodeHandle nh) :$/;"	f	class:LegDetector
+LegDetector	human_filter/src/backup_srs_leg_detector.cpp	/^class LegDetector$/;"	c	file:
+LegDetector	human_filter/src/srs_leg_detector.cpp	/^	LegDetector(ros::NodeHandle nh):$/;"	f	class:LegDetector
+LegDetector	human_filter/src/srs_leg_detector.cpp	/^class LegDetector$/;"	c	file:
+LegDetector	srs_leg_detector/src/srs_leg_detector.cpp	/^	LegDetector(ros::NodeHandle nh) :$/;"	f	class:LegDetector
+LegDetector	srs_leg_detector/src/srs_leg_detector.cpp	/^class LegDetector$/;"	c	file:
 Leg_boxes_pub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Publisher Leg_boxes_pub;$/;"	m	class:Edgeleg_manager
 Leg_boxes_pub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Publisher Leg_boxes_pub;$/;"	m	class:Edgeleg_manager_action
 Leg_boxes_pub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Publisher Leg_boxes_pub;$/;"	m	class:Edgeleg_manager_srv
+Legs	human_filter/src/backup_srs_leg_dector.cpp	/^	Legs(Stamped<Point> loc, string type)$/;"	f	class:Legs
+Legs	human_filter/src/backup_srs_leg_dector.cpp	/^class Legs$/;"	c	file:
+Legs	human_filter/src/backup_srs_leg_detector.cpp	/^	Legs(Stamped<Point> loc, string type)$/;"	f	class:Legs
+Legs	human_filter/src/backup_srs_leg_detector.cpp	/^class Legs$/;"	c	file:
+Legs	human_filter/src/srs_leg_detector.cpp	/^	Legs(Stamped<Point> loc, string type)$/;"	f	class:Legs
+Legs	human_filter/src/srs_leg_detector.cpp	/^class Legs$/;"	c	file:
+Legs	srs_leg_detector/src/srs_leg_detector.cpp	/^	Legs(Stamped<Point> loc, string type)$/;"	f	class:Legs
+Legs	srs_leg_detector/src/srs_leg_detector.cpp	/^class Legs$/;"	c	file:
+LoadType	human_filter/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	g	file:
+LoadType	srs_leg_detector/src/train_leg_detector.cpp	/^enum LoadType {LOADING_NONE, LOADING_POS, LOADING_NEG, LOADING_TEST, LOADING_BACKGROUND};$/;"	g	file:
 Local_X_start	navi_mdp/include/MDPmanager.h	/^ 	int Local_X_start;$/;"	m	class:MDPManager
 Local_Y_start	navi_mdp/include/MDPmanager.h	/^ 	int Local_Y_start;$/;"	m	class:MDPManager
 Local_mapCallback	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::Local_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:MDPManager
@@ -208,6 +280,14 @@ MapSize	navi_mdp/include/MDPmanager.h	/^	int                 MapSize;$/;"	m	clas
 Map_orig_Vector	navi_mdp/include/MDPmanager.h	/^ 	std::vector<double> Map_orig_Vector;$/;"	m	class:MDPManager
 Mapcoord2DynamicCoord	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::Mapcoord2DynamicCoord(const vector<int>& _Mapcoord, vector<double>& dynamicCoord)$/;"	f	class:MDPManager
 Mapcoord2GlobalCoord	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::Mapcoord2GlobalCoord(const vector<int>& _Mapcoord, vector<double>& GlobalCoord)$/;"	f	class:MDPManager
+MatchedFeature	human_filter/src/backup_srs_leg_dector.cpp	/^	MatchedFeature(Legs* candidate, SavedFeature* closest, float distance)$/;"	f	class:MatchedFeature
+MatchedFeature	human_filter/src/backup_srs_leg_dector.cpp	/^class MatchedFeature$/;"	c	file:
+MatchedFeature	human_filter/src/backup_srs_leg_detector.cpp	/^	MatchedFeature(Legs* candidate, SavedFeature* closest, float distance)$/;"	f	class:MatchedFeature
+MatchedFeature	human_filter/src/backup_srs_leg_detector.cpp	/^class MatchedFeature$/;"	c	file:
+MatchedFeature	human_filter/src/srs_leg_detector.cpp	/^	MatchedFeature(SampleSet* candidate, SavedFeature* closest, float distance, double probability)$/;"	f	class:MatchedFeature
+MatchedFeature	human_filter/src/srs_leg_detector.cpp	/^class MatchedFeature$/;"	c	file:
+MatchedFeature	srs_leg_detector/src/srs_leg_detector.cpp	/^	MatchedFeature(Legs* candidate, SavedFeature* closest, float distance)$/;"	f	class:MatchedFeature
+MatchedFeature	srs_leg_detector/src/srs_leg_detector.cpp	/^class MatchedFeature$/;"	c	file:
 Maxiteration	navi_mdp/include/MDPmanager.h	53;"	d
 MdpSols	navi_mdp/include/MDPmanager.h	/^ 	vector<int> 	  MdpSols;		\/\/ Solution of MDP$/;"	m	class:MDPManager
 MeasModelPos	human_filter/include/people_tracking_filter/measmodel_pos.h	/^  MeasModelPos(const tf::Vector3& sigma)$/;"	f	class:BFL::MeasModelPos
@@ -243,11 +323,23 @@ One_People_pos_pub	human_filter/include/people_tracking_filter/edge_leg_filter_n
 One_People_pos_pub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Publisher One_People_pos_pub;$/;"	m	class:Edgeleg_manager_action
 One_People_pos_pub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Publisher One_People_pos_pub;$/;"	m	class:Edgeleg_manager_srv
 P	navi_mdp/include/srBSpline.h	/^	inline double P( int IndexCP ) { return GetControlPoint( IndexCP ); }$/;"	f	class:srBSpline
+PACKAGE	human_filter/cfg/LegDetection.cfg	/^PACKAGE = 'human_filter'$/;"	v
+PI	edge_leg_detector/src/detector.cpp	24;"	d	file:
+PI	edge_leg_detector/src/edge_leg_detector/detector.cpp	23;"	d	file:
+PRINT_LIST	human_filter/src/srs_leg_detector.cpp	/^    inline void PRINT_LIST	(list<SavedPersonFeature*>& coll, const char* optcstr="")$/;"	f	class:LegDetector
 P_H	villa_navi_service/include/navi_service_node.h	38;"	d
 P_S_given_H	villa_navi_service/include/navi_service_node.h	39;"	d
 P_S_given_Hc	villa_navi_service/include/navi_service_node.h	40;"	d
 P_Sc_given_H	villa_navi_service/include/navi_service_node.h	42;"	d
 P_Sc_given_Hc	villa_navi_service/include/navi_service_node.h	43;"	d
+Pair	human_filter/src/backup_srs_leg_dector.cpp	/^	Pair(Point pos1,Point pos2,float dist)$/;"	f	class:Pair
+Pair	human_filter/src/backup_srs_leg_dector.cpp	/^class Pair$/;"	c	file:
+Pair	human_filter/src/backup_srs_leg_detector.cpp	/^	Pair(Point pos1,Point pos2,float dist)$/;"	f	class:Pair
+Pair	human_filter/src/backup_srs_leg_detector.cpp	/^class Pair$/;"	c	file:
+Pair	human_filter/src/srs_leg_detector.cpp	/^	Pair(Point pos1,Point pos2,float dist)$/;"	f	class:Pair
+Pair	human_filter/src/srs_leg_detector.cpp	/^class Pair$/;"	c	file:
+Pair	srs_leg_detector/src/srs_leg_detector.cpp	/^	Pair(Point pos1,Point pos2,float dist)$/;"	f	class:Pair
+Pair	srs_leg_detector/src/srs_leg_detector.cpp	/^class Pair$/;"	c	file:
 Path_Pub	navi_mdp/include/MDPmanager.h	/^	ros::Publisher   Path_Pub;$/;"	m	class:MDPManager
 PeopleTrackingNode	human_filter/include/people_tracking_filter/people_tracking_node.h	/^class PeopleTrackingNode$/;"	c	namespace:estimation
 PeopleTrackingNode	human_filter/src/people_tracking_node.cpp	/^PeopleTrackingNode::PeopleTrackingNode(ros::NodeHandle nh)$/;"	f	class:estimation::PeopleTrackingNode
@@ -330,6 +422,10 @@ STATE_POS_VEL_H	human_filter/include/people_tracking_filter/state_pos_vel.h	39;"
 SYSMODEL_POS_VEL_H	human_filter/include/people_tracking_filter/sysmodel_pos_vel.h	38;"	d
 SYSMODEL_VECTOR_H	human_filter/include/people_tracking_filter/sysmodel_vector.h	38;"	d
 Same_POS_diff	villa_navi_service/include/navi_service_node.h	45;"	d
+Sample	human_filter/include/laser_processor.h	/^     Sample() {};$/;"	f	class:laser_processor::Sample
+Sample	human_filter/include/laser_processor.h	/^  class Sample$/;"	c	namespace:laser_processor
+Sample	srs_leg_detector/src/laser_processor.h	/^     Sample() {};$/;"	f	class:laser_processor::Sample
+Sample	srs_leg_detector/src/laser_processor.h	/^  class Sample$/;"	c	namespace:laser_processor
 SampleFrom	human_filter/src/gaussian_pos_vel.cpp	/^GaussianPosVel::SampleFrom(Sample<StatePosVel>& one_sample, int method, void * args) const$/;"	f	class:BFL::GaussianPosVel
 SampleFrom	human_filter/src/gaussian_pos_vel.cpp	/^GaussianPosVel::SampleFrom(vector<Sample<StatePosVel> >& list_samples, const int num_samples, int method, void * args) const$/;"	f	class:BFL::GaussianPosVel
 SampleFrom	human_filter/src/gaussian_vector.cpp	/^GaussianVector::SampleFrom(Sample<Vector3>& one_sample, int method, void * args) const$/;"	f	class:BFL::GaussianVector
@@ -342,6 +438,20 @@ SampleFrom	human_filter/src/uniform_vector.cpp	/^UniformVector::SampleFrom(Sampl
 SampleFrom	human_filter/src/uniform_vector.cpp	/^UniformVector::SampleFrom(vector<Sample<Vector3> >& list_samples, const int num_samples, int method, void * args) const$/;"	f	class:BFL::UniformVector
 SampleGet	human_filter/src/mcpdf_pos_vel.cpp	/^MCPdfPosVel::SampleGet(unsigned int particle) const$/;"	f	class:MCPdfPosVel
 SampleGet	human_filter/src/mcpdf_vector.cpp	/^MCPdfVector::SampleGet(unsigned int particle) const$/;"	f	class:MCPdfVector
+SampleSet	human_filter/include/laser_processor.h	/^    SampleSet() {}$/;"	f	class:laser_processor::SampleSet
+SampleSet	human_filter/include/laser_processor.h	/^  class SampleSet : public std::set<Sample*, CompareSample>$/;"	c	namespace:laser_processor
+SampleSet	srs_leg_detector/src/laser_processor.h	/^    SampleSet() {}$/;"	f	class:laser_processor::SampleSet
+SampleSet	srs_leg_detector/src/laser_processor.h	/^  class SampleSet : public std::set<Sample*, CompareSample>$/;"	c	namespace:laser_processor
+SavedFeature	human_filter/src/backup_srs_leg_dector.cpp	/^	SavedFeature(Stamped<Point> loc, TransformListener& tfl)$/;"	f	class:SavedFeature
+SavedFeature	human_filter/src/backup_srs_leg_dector.cpp	/^class SavedFeature$/;"	c	file:
+SavedFeature	human_filter/src/backup_srs_leg_detector.cpp	/^	SavedFeature(Stamped<Point> loc, TransformListener& tfl)$/;"	f	class:SavedFeature
+SavedFeature	human_filter/src/backup_srs_leg_detector.cpp	/^class SavedFeature$/;"	c	file:
+SavedFeature	human_filter/src/srs_leg_detector.cpp	/^	SavedFeature(Stamped<Point> loc, TransformListener& tfl)$/;"	f	class:SavedFeature
+SavedFeature	human_filter/src/srs_leg_detector.cpp	/^class SavedFeature$/;"	c	file:
+SavedFeature	srs_leg_detector/src/srs_leg_detector.cpp	/^	SavedFeature(Stamped<Point> loc, TransformListener& tfl)$/;"	f	class:SavedFeature
+SavedFeature	srs_leg_detector/src/srs_leg_detector.cpp	/^class SavedFeature$/;"	c	file:
+SavedPersonFeature	human_filter/src/srs_leg_detector.cpp	/^	SavedPersonFeature(Stamped<Point> loc, std::string& id, std::string& name)$/;"	f	class:SavedPersonFeature
+SavedPersonFeature	human_filter/src/srs_leg_detector.cpp	/^class SavedPersonFeature$/;"	c	file:
 Scaled_dynamic_map	navi_mdp/include/MDPmanager.h	/^	nav_msgs::OccupancyGrid Scaled_dynamic_map;$/;"	m	class:MDPManager
 Scaled_dynamic_map_path	navi_mdp/include/MDPmanager.h	/^	nav_msgs::OccupancyGrid Scaled_dynamic_map_path;$/;"	m	class:MDPManager
 Scaled_dynamic_map_path_pub	navi_mdp/include/MDPmanager.h	/^	ros::Publisher   Scaled_dynamic_map_path_pub;$/;"	m	class:MDPManager
@@ -356,6 +466,18 @@ Scaled_static_map_pub	navi_mdp/include/MDPmanager.h	/^	ros::Publisher   Scaled_s
 Scaled_static_map_sub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Subscriber Scaled_static_map_sub;$/;"	m	class:Edgeleg_manager
 Scaled_static_map_sub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Subscriber Scaled_static_map_sub;$/;"	m	class:Edgeleg_manager_action
 Scaled_static_map_sub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Subscriber Scaled_static_map_sub;$/;"	m	class:Edgeleg_manager_srv
+ScanMask	human_filter/include/laser_processor.h	/^    ScanMask() : filled(false), angle_min(0), angle_max(0), size(0) { }$/;"	f	class:laser_processor::ScanMask
+ScanMask	human_filter/include/laser_processor.h	/^  class ScanMask$/;"	c	namespace:laser_processor
+ScanMask	srs_leg_detector/src/laser_processor.h	/^    ScanMask() : filled(false), angle_min(0), angle_max(0), size(0) { }$/;"	f	class:laser_processor::ScanMask
+ScanMask	srs_leg_detector/src/laser_processor.h	/^  class ScanMask$/;"	c	namespace:laser_processor
+ScanProcessor	human_filter/include/laser_processor.h	/^  class ScanProcessor$/;"	c	namespace:laser_processor
+ScanProcessor	human_filter/src/laser_processor.cpp	/^ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, Background& background_ , float mask_threshold , float background_treshhold ) \/\/ constructor with background$/;"	f	class:ScanProcessor
+ScanProcessor	human_filter/src/laser_processor.cpp	/^ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, float mask_threshold) \/\/ constructor without background$/;"	f	class:ScanProcessor
+ScanProcessor	srs_leg_detector/src/laser_processor.cpp	/^ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, Background& background_ , float mask_threshold , float background_treshhold ) \/\/ constructor with background$/;"	f	class:ScanProcessor
+ScanProcessor	srs_leg_detector/src/laser_processor.cpp	/^ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, float mask_threshold) \/\/ constructor without background$/;"	f	class:ScanProcessor
+ScanProcessor	srs_leg_detector/src/laser_processor.h	/^  class ScanProcessor$/;"	c	namespace:laser_processor
+SensorMsg	edge_leg_detector/src/detector.cpp	/^sensor_msgs::LaserScan SensorMsg;$/;"	v
+SensorMsg	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^sensor_msgs::LaserScan SensorMsg;$/;"	v
 Set	navi_mdp/src/srBSpline.cpp	/^void srBSpline::Set( int Degree, int NumCPs, double Ti, double Tf , bool KnotRepeat \/*= true*\/ )$/;"	f	class:srBSpline
 Set	navi_mdp/src/srBSpline.cpp	/^void srBSpline::Set( int Degree, int NumCPs, double* CPs, double Ti, double Tf , bool KnotRepeat \/*= true*\/ )$/;"	f	class:srBSpline
 Set	navi_mdp/src/srBSpline.cpp	/^void srBSpline::Set( int Degree, int NumCPs, double* CPs, int NumKnots, double* Knots )$/;"	f	class:srBSpline
@@ -390,6 +512,12 @@ SysPdfPosVel	human_filter/include/people_tracking_filter/sysmodel_pos_vel.h	/^cl
 SysPdfPosVel	human_filter/src/sysmodel_pos_vel.cpp	/^SysPdfPosVel::SysPdfPosVel(const StatePosVel& sigma)$/;"	f	class:SysPdfPosVel
 SysPdfVector	human_filter/include/people_tracking_filter/sysmodel_vector.h	/^class SysPdfVector$/;"	c	namespace:BFL
 SysPdfVector	human_filter/src/sysmodel_vector.cpp	/^SysPdfVector::SysPdfVector(const Vector3& sigma)$/;"	f	class:SysPdfVector
+TYPE_FS	edge_leg_detector/src/detector.cpp	41;"	d	file:
+TYPE_FS	edge_leg_detector/src/edge_leg_detector/detector.cpp	40;"	d	file:
+TYPE_LA	edge_leg_detector/src/detector.cpp	40;"	d	file:
+TYPE_LA	edge_leg_detector/src/edge_leg_detector/detector.cpp	39;"	d	file:
+TYPE_SL	edge_leg_detector/src/detector.cpp	42;"	d	file:
+TYPE_SL	edge_leg_detector/src/edge_leg_detector/detector.cpp	41;"	d	file:
 Target_Dist_person	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	41;"	d
 Target_Dist_person	human_filter/include/people_tracking_filter/followme_action.h	46;"	d
 Target_Dist_person	human_filter/include/people_tracking_filter/service_test.h	41;"	d
@@ -400,6 +528,10 @@ TrackerKalman	human_filter/include/people_tracking_filter/tracker_kalman.h	/^cla
 TrackerKalman	human_filter/src/tracker_kalman.cpp	/^TrackerKalman::TrackerKalman(const string& name, const StatePosVel& sysnoise):$/;"	f	class:estimation::TrackerKalman
 TrackerParticle	human_filter/include/people_tracking_filter/tracker_particle.h	/^class TrackerParticle: public Tracker$/;"	c	namespace:estimation
 TrackerParticle	human_filter/src/tracker_particle.cpp	/^TrackerParticle::TrackerParticle(const string& name, unsigned int num_particles, const StatePosVel& sysnoise):$/;"	f	class:estimation::TrackerParticle
+TrainLegDetector	human_filter/src/train_leg_detector.cpp	/^  TrainLegDetector() : mask_count_(0), connected_thresh_(0.06), feat_count_(0)$/;"	f	class:TrainLegDetector
+TrainLegDetector	human_filter/src/train_leg_detector.cpp	/^class TrainLegDetector$/;"	c	file:
+TrainLegDetector	srs_leg_detector/src/train_leg_detector.cpp	/^  TrainLegDetector() : mask_count_(0), connected_thresh_(0.06), feat_count_(0)$/;"	f	class:TrainLegDetector
+TrainLegDetector	srs_leg_detector/src/train_leg_detector.cpp	/^class TrainLegDetector$/;"	c	file:
 U	navi_mdp/include/MDPmanager.h	/^ 	vector<double>	  U;			\/\/ Long term Utility$/;"	m	class:MDPManager
 U	navi_mdp/include/srBSpline.h	/^	inline double U( int IndexKnot ) { return GetKnot( IndexKnot ); }$/;"	f	class:srBSpline
 UInt16	navi_mdp/include/types.h	/^typedef unsigned short int	UInt16;		\/\/< 2 bytes integer 0 ~ 65535$/;"	t
@@ -409,6 +541,10 @@ UniformVector	human_filter/include/people_tracking_filter/uniform_vector.h	/^cla
 UniformVector	human_filter/src/uniform_vector.cpp	/^UniformVector::UniformVector(const Vector3& mu, const Vector3& size)$/;"	f	class:BFL::UniformVector
 UnitGoalVec_pub	navi_mdp/include/MDPmanager.h	/^	ros::Publisher   UnitGoalVec_pub;$/;"	m	class:MDPManager
 Up	navi_mdp/include/MDPmanager.h	/^ 	vector<double>	  Up;			\/\/ Uprime, used in updates$/;"	m	class:MDPManager
+ValidateDistance	edge_leg_detector/src/detector.cpp	/^void ValidateDistance(){$/;"	f
+ValidateDistance	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^void ValidateDistance(){$/;"	f
+ValidatePattern	edge_leg_detector/src/detector.cpp	/^void ValidatePattern( list <int> *Pattern_list, int TYPE,  vector <int> flank_id0,  vector <int> flank_id1, vector <double> laser_x, vector <double> laser_y){$/;"	f
+ValidatePattern	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^void ValidatePattern( list <int> *Pattern_list, int TYPE,  vector <int> flank_id0,  vector <int> flank_id1, vector <double> laser_x, vector <double> laser_y){$/;"	f
 Wrist_Manager	navi_mdp/scripts/wrist_mk	/^class Wrist_Manager(object):$/;"	c
 X_mapSize	navi_mdp/include/MDPmanager.h	/^ 	int               X_mapSize;$/;"	m	class:MDPManager
 Y_mapSize	navi_mdp/include/MDPmanager.h	/^ 	int               Y_mapSize;$/;"	m	class:MDPManager
@@ -432,10 +568,28 @@ __TRACKER__	human_filter/include/people_tracking_filter/tracker.h	38;"	d
 ___SRLIB_BSPLINE___	navi_mdp/include/srBSpline.h	5;"	d
 __init__	navi_mdp/scripts/wrist_mk	/^    def __init__(self, wait=0.0):$/;"	m	class:Wrist_Manager
 action_name_	human_filter/include/people_tracking_filter/followme_action.h	/^  std::string action_name_;$/;"	m	class:Edgeleg_manager_action
+addScan	human_filter/src/laser_processor.cpp	/^void Background::addScan(sensor_msgs::LaserScan& scan, float treshhold) \/\/ treshhold to know whether to merge them or to start from scrach$/;"	f	class:Background
+addScan	human_filter/src/laser_processor.cpp	/^void ScanMask::addScan(sensor_msgs::LaserScan& scan)$/;"	f	class:ScanMask
+addScan	srs_leg_detector/src/laser_processor.cpp	/^void Background::addScan(sensor_msgs::LaserScan& scan, float treshhold) \/\/ treshhold to know whether to merge them or to start from scrach$/;"	f	class:Background
+addScan	srs_leg_detector/src/laser_processor.cpp	/^void ScanMask::addScan(sensor_msgs::LaserScan& scan)$/;"	f	class:ScanMask
 angle_criticalvalue	villa_navi_service/include/navi_service_node.h	/^	std::vector<double> angle_criticalvalue;$/;"	m	class:villa_navi_srv
+angle_max	human_filter/include/laser_processor.h	/^    float    angle_max;$/;"	m	class:laser_processor::ScanMask
+angle_max	human_filter/include/laser_processor.h	/^   float    angle_max;$/;"	m	class:laser_processor::Background
+angle_max	srs_leg_detector/src/laser_processor.h	/^    float    angle_max;$/;"	m	class:laser_processor::ScanMask
+angle_max	srs_leg_detector/src/laser_processor.h	/^   float    angle_max;$/;"	m	class:laser_processor::Background
+angle_min	human_filter/include/laser_processor.h	/^    float    angle_min;$/;"	m	class:laser_processor::ScanMask
+angle_min	human_filter/include/laser_processor.h	/^   float    angle_min;$/;"	m	class:laser_processor::Background
+angle_min	srs_leg_detector/src/laser_processor.h	/^    float    angle_min;$/;"	m	class:laser_processor::ScanMask
+angle_min	srs_leg_detector/src/laser_processor.h	/^   float    angle_min;$/;"	m	class:laser_processor::Background
 angle_people_set	villa_navi_service/include/navi_service_node.h	/^	std::vector<double> angle_people_set;$/;"	m	class:villa_navi_srv
+appendToCloud	human_filter/src/laser_processor.cpp	/^void SampleSet::appendToCloud(sensor_msgs::PointCloud& cloud, int r, int g, int b)$/;"	f	class:SampleSet
+appendToCloud	srs_leg_detector/src/laser_processor.cpp	/^void SampleSet::appendToCloud(sensor_msgs::PointCloud& cloud, int r, int g, int b)$/;"	f	class:SampleSet
 array_publisher	navi_mdp/scripts/human_marker.py	/^array_publisher = rospy.Publisher(topic_array, MarkerArray,queue_size=10)$/;"	v
 as_	human_filter/include/people_tracking_filter/followme_action.h	/^  actionlib::SimpleActionServer<human_filter::FollowMe> as_; \/\/ NodeHandle instance must be created before this line. Otherwise strange error occurs.$/;"	m	class:Edgeleg_manager_action
+backgr_data	human_filter/include/laser_processor.h	/^SampleSet backgr_data;$/;"	m	class:laser_processor::Background
+backgr_data	srs_leg_detector/src/laser_processor.h	/^SampleSet backgr_data;$/;"	m	class:laser_processor::Background
+background_	human_filter/src/train_leg_detector.cpp	/^  Background background_;$/;"	m	class:TrainLegDetector	file:
+background_	srs_leg_detector/src/train_leg_detector.cpp	/^  Background background_;$/;"	m	class:TrainLegDetector	file:
 base_pose_callback	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::base_pose_callback(const nav_msgs::Odometry::ConstPtr& msg)$/;"	f	class:MDPManager
 belief_pub	villa_navi_service/include/navi_service_node.h	/^	ros::Publisher belief_pub;$/;"	m	class:villa_navi_srv
 belief_size	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  int belief_size;$/;"	m	class:Edgeleg_manager
@@ -444,13 +598,22 @@ belief_size	human_filter/include/people_tracking_filter/service_test.h	/^  int b
 belief_size	villa_navi_service/include/navi_service_node.h	/^	int belief_size;$/;"	m	class:villa_navi_srv
 boolDynamic	navi_mdp/include/MDPmanager.h	/^	bool                boolDynamic;$/;"	m	class:MapParam
 booltrackHuman	navi_mdp/include/MDPmanager.h	/^	bool       booltrackHuman;$/;"	m	class:MDPManager
+br_	human_filter/src/srs_leg_detector.cpp	/^	tf::TransformBroadcaster br_;$/;"	m	class:LegDetector	file:
+calcLegFeatures	human_filter/src/calc_leg_features.cpp	/^vector<float> calcLegFeatures(SampleSet* cluster, const sensor_msgs::LaserScan& scan)$/;"	f
+calcLegFeatures	srs_leg_detector/src/calc_leg_features.cpp	/^vector<float> calcLegFeatures(SampleSet* cluster, const sensor_msgs::LaserScan& scan)$/;"	f
 calculateQuality	human_filter/src/tracker_kalman.cpp	/^double TrackerKalman::calculateQuality()$/;"	f	class:estimation::TrackerKalman
 callbackDrop	human_filter/src/people_tracking_node.cpp	/^void PeopleTrackingNode::callbackDrop(const people_msgs::PositionMeasurement::ConstPtr& message)$/;"	f	class:estimation::PeopleTrackingNode
 callbackRcv	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 callbackRcv	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 callbackRcv	human_filter/src/people_tracking_node.cpp	/^void PeopleTrackingNode::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& message)$/;"	f	class:estimation::PeopleTrackingNode
 callbackRcv	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_srv
+candidate_	human_filter/src/backup_srs_leg_dector.cpp	/^	Legs* candidate_;$/;"	m	class:MatchedFeature	file:
+candidate_	human_filter/src/backup_srs_leg_detector.cpp	/^	Legs* candidate_;$/;"	m	class:MatchedFeature	file:
+candidate_	human_filter/src/srs_leg_detector.cpp	/^	SampleSet* candidate_;$/;"	m	class:MatchedFeature	file:
+candidate_	srs_leg_detector/src/srs_leg_detector.cpp	/^	Legs* candidate_;$/;"	m	class:MatchedFeature	file:
 cell_xy	navi_mdp/include/MDPmanager.h	/^ 	vector<int>		  cell_xy;$/;"	m	class:MDPManager
+center	human_filter/src/laser_processor.cpp	/^tf::Point SampleSet::center()$/;"	f	class:SampleSet
+center	srs_leg_detector/src/laser_processor.cpp	/^tf::Point SampleSet::center()$/;"	f	class:SampleSet
 center_offset	navi_mdp/src/global_planner.cpp	/^double center_offset=0.3;$/;"	v
 chair_sub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Subscriber chair_sub;$/;"	m	class:Edgeleg_manager
 chair_yolo_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::chair_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
@@ -465,9 +628,37 @@ check_chair	human_filter/src/edge_leg_filter_node.cpp	/^bool Edgeleg_manager::ch
 check_staticObs	human_filter/src/edge_leg_filter_node.cpp	/^bool Edgeleg_manager::check_staticObs(float x_pos,float y_pos)$/;"	f	class:Edgeleg_manager
 check_staticObs	human_filter/src/followme_action.cpp	/^bool Edgeleg_manager_action::check_staticObs(float x_pos,float y_pos)$/;"	f	class:Edgeleg_manager_action
 check_staticObs	human_filter/src/service_test.cpp	/^bool Edgeleg_manager_srv::check_staticObs(float x_pos,float y_pos)$/;"	f	class:Edgeleg_manager_srv
+clear	human_filter/include/laser_processor.h	/^    inline void clear() { mask_.clear(); filled = false; }$/;"	f	class:laser_processor::ScanMask
+clear	human_filter/include/laser_processor.h	/^   inline void clear() { backgr_data.clear(); filled = false; }$/;"	f	class:laser_processor::Background
+clear	human_filter/src/laser_processor.cpp	/^void SampleSet::clear()$/;"	f	class:SampleSet
+clear	srs_leg_detector/src/laser_processor.cpp	/^void SampleSet::clear()$/;"	f	class:SampleSet
+clear	srs_leg_detector/src/laser_processor.h	/^    inline void clear() { mask_.clear(); filled = false; }$/;"	f	class:laser_processor::ScanMask
+clear	srs_leg_detector/src/laser_processor.h	/^   inline void clear() { backgr_data.clear(); filled = false; }$/;"	f	class:laser_processor::Background
+client_map	human_filter/src/backup_srs_leg_dector.cpp	/^ ros::ServiceClient client_map;  \/\/ clent for the getMap service$/;"	m	class:LegDetector	file:
+client_map	human_filter/src/backup_srs_leg_detector.cpp	/^ ros::ServiceClient client_map;  \/\/ clent for the getMap service$/;"	m	class:LegDetector	file:
+client_map	human_filter/src/srs_leg_detector.cpp	/^ ros::ServiceClient client_map;  \/\/ clent for the getMap service$/;"	m	class:LegDetector	file:
+client_map	srs_leg_detector/src/srs_leg_detector.cpp	/^ ros::ServiceClient client_map;  \/\/ clent for the getMap service$/;"	m	class:LegDetector	file:
+closest_	human_filter/src/backup_srs_leg_dector.cpp	/^	SavedFeature* closest_;$/;"	m	class:MatchedFeature	file:
+closest_	human_filter/src/backup_srs_leg_detector.cpp	/^	SavedFeature* closest_;$/;"	m	class:MatchedFeature	file:
+closest_	human_filter/src/srs_leg_detector.cpp	/^	SavedFeature* closest_;$/;"	m	class:MatchedFeature	file:
+closest_	srs_leg_detector/src/srs_leg_detector.cpp	/^	SavedFeature* closest_;$/;"	m	class:MatchedFeature	file:
 cloud	villa_navi_service/include/navi_service_node.h	/^	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud;$/;"	m	class:villa_navi_srv
+clusters_	human_filter/include/laser_processor.h	/^    std::list<SampleSet*> clusters_;$/;"	m	class:laser_processor::ScanProcessor
+clusters_	srs_leg_detector/src/laser_processor.h	/^    std::list<SampleSet*> clusters_;$/;"	m	class:laser_processor::ScanProcessor
 connectCubicSpline	navi_mdp/src/srBSpline.cpp	/^void srBSpline::connectCubicSpline( srBSpline* prev_spline,srBSpline* post_spline )$/;"	f	class:srBSpline
+connected_thresh_	human_filter/src/backup_srs_leg_dector.cpp	/^	float connected_thresh_;$/;"	m	class:LegDetector	file:
+connected_thresh_	human_filter/src/backup_srs_leg_detector.cpp	/^	float connected_thresh_;$/;"	m	class:LegDetector	file:
+connected_thresh_	human_filter/src/srs_leg_detector.cpp	/^	float connected_thresh_;$/;"	m	class:LegDetector	file:
+connected_thresh_	human_filter/src/train_leg_detector.cpp	/^  float connected_thresh_;$/;"	m	class:TrainLegDetector	file:
+connected_thresh_	srs_leg_detector/src/srs_leg_detector.cpp	/^	float connected_thresh_;$/;"	m	class:LegDetector	file:
+connected_thresh_	srs_leg_detector/src/train_leg_detector.cpp	/^  float connected_thresh_;$/;"	m	class:TrainLegDetector	file:
 count	navi_mdp/scripts/human_marker.py	/^count = 0$/;"	v
+counter	human_filter/src/backup_srs_leg_dector.cpp	/^ int counter;$/;"	m	class:LegDetector	file:
+counter	human_filter/src/backup_srs_leg_detector.cpp	/^ int counter;$/;"	m	class:LegDetector	file:
+counter	human_filter/src/srs_leg_detector.cpp	/^ int counter;$/;"	m	class:LegDetector	file:
+counter	srs_leg_detector/src/srs_leg_detector.cpp	/^ int counter;$/;"	m	class:LegDetector	file:
+cov_meas_legs_m	human_filter/src/srs_leg_detector.cpp	/^static double cov_meas_legs_m          = 0.025;$/;"	v	file:
+cov_meas_people_m	human_filter/src/srs_leg_detector.cpp	/^static double cov_meas_people_m        = 0.025;$/;"	v	file:
 cur_coord	navi_mdp/include/MDPmanager.h	/^	std::vector<int> cur_coord;$/;"	m	class:MDPManager
 cur_yolo_chair	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  std::vector< std::vector< double > > cur_yolo_chair;$/;"	m	class:Edgeleg_manager
 cur_yolo_people	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  std::vector< std::vector< double > > cur_yolo_people;$/;"	m	class:Edgeleg_manager
@@ -478,13 +669,46 @@ damping_velocity	human_filter/src/tracker_kalman.cpp	/^const static double dampi
 ddN	navi_mdp/include/srBSpline.h	/^	inline double ddN( int IndexCP, double u ) { return OneBasisFunDers( IndexCP, u, 2 ); }$/;"	f	class:srBSpline
 deltaMin	navi_mdp/include/MDPmanager.h	52;"	d
 desired_heading	navi_mdp/src/base_conti_actionlib.cpp	/^double desired_heading=0.0;$/;"	v
+det_dist__for_pause	human_filter/src/backup_srs_leg_dector.cpp	/^static const double det_dist__for_pause      = 0.5; \/\/ the distance to the person when the robot decides to pause$/;"	v	file:
+det_dist__for_pause	human_filter/src/backup_srs_leg_detector.cpp	/^static const double det_dist__for_pause      = 0.5; \/\/ the distance to the person when the robot decides to pause$/;"	v	file:
+det_dist__for_pause	human_filter/src/srs_leg_detector.cpp	/^static const double det_dist__for_pause      = 0.5; \/\/ the distance to the person when the robot decides to pause$/;"	v	file:
+det_dist__for_pause	srs_leg_detector/src/srs_leg_detector.cpp	/^static const double det_dist__for_pause      = 0.5; \/\/ the distance to the person when the robot decides to pause$/;"	v	file:
+det_dist__for_resume	human_filter/src/backup_srs_leg_dector.cpp	/^static const double det_dist__for_resume      = 2.5; \/\/ the distance to the person when the robot decides to resume$/;"	v	file:
+det_dist__for_resume	human_filter/src/backup_srs_leg_detector.cpp	/^static const double det_dist__for_resume      = 2.5; \/\/ the distance to the person when the robot decides to resume$/;"	v	file:
+det_dist__for_resume	human_filter/src/srs_leg_detector.cpp	/^static const double det_dist__for_resume      = 2.5; \/\/ the distance to the person when the robot decides to resume$/;"	v	file:
+det_dist__for_resume	srs_leg_detector/src/srs_leg_detector.cpp	/^static const double det_dist__for_resume      = 2.5; \/\/ the distance to the person when the robot decides to resume$/;"	v	file:
+detectLegsCallback	human_filter/src/backup_srs_leg_dector.cpp	/^        bool detectLegsCallback(human_filter::DetectLegs::Request &req, human_filter::DetectLegs::Response &res)$/;"	f	class:LegDetector
+detectLegsCallback	human_filter/src/backup_srs_leg_detector.cpp	/^        bool detectLegsCallback(human_filter::DetectLegs::Request &req, human_filter::DetectLegs::Response &res)$/;"	f	class:LegDetector
+detectLegsCallback	srs_leg_detector/src/srs_leg_detector.cpp	/^        bool detectLegsCallback(srs_leg_detector::DetectLegs::Request &req, srs_leg_detector::DetectLegs::Response &res)$/;"	f	class:LegDetector
 detect_iters	villa_navi_service/include/navi_service_node.h	/^	int detect_iters;$/;"	m	class:villa_navi_srv
+detected_legs	human_filter/src/backup_srs_leg_dector.cpp	/^        vector<geometry_msgs::Point32> detected_legs;$/;"	m	class:LegDetector	file:
+detected_legs	human_filter/src/backup_srs_leg_detector.cpp	/^        vector<geometry_msgs::Point32> detected_legs;$/;"	m	class:LegDetector	file:
+detected_legs	human_filter/src/srs_leg_detector.cpp	/^    vector<geometry_msgs::Point32> detected_legs;$/;"	m	class:LegDetector	file:
+detected_legs	srs_leg_detector/src/srs_leg_detector.cpp	/^        vector<geometry_msgs::Point32> detected_legs;$/;"	m	class:LegDetector	file:
+detector_	human_filter/src/srs_leg_detector.cpp	/^static string detector_="hsrb\/base_scan";$/;"	v	file:
 detector_initialized_	human_filter/include/people_tracking_filter/detector_particle.h	/^  bool detector_initialized_;$/;"	m	class:estimation::DetectorParticle
+dist_sep_m	human_filter/src/backup_srs_leg_dector.cpp	/^	float dist_sep_m;$/;"	m	class:Pair	file:
+dist_sep_m	human_filter/src/backup_srs_leg_detector.cpp	/^	float dist_sep_m;$/;"	m	class:Pair	file:
+dist_sep_m	human_filter/src/srs_leg_detector.cpp	/^	float dist_sep_m;$/;"	m	class:Pair	file:
+dist_sep_m	srs_leg_detector/src/srs_leg_detector.cpp	/^	float dist_sep_m;$/;"	m	class:Pair	file:
+dist_to_person_	human_filter/src/backup_srs_leg_dector.cpp	/^	float dist_to_person_;$/;"	m	class:SavedFeature	file:
+dist_to_person_	human_filter/src/backup_srs_leg_detector.cpp	/^	float dist_to_person_;$/;"	m	class:SavedFeature	file:
+dist_to_person_	human_filter/src/srs_leg_detector.cpp	/^	float dist_to_person_;$/;"	m	class:SavedFeature	file:
+dist_to_person_	srs_leg_detector/src/srs_leg_detector.cpp	/^	float dist_to_person_;$/;"	m	class:SavedFeature	file:
+distance	human_filter/src/srs_leg_detector.cpp	/^    double distance( list<SavedFeature*>::iterator it1,  list<SavedFeature*>::iterator it2)$/;"	f	class:LegDetector
+distance_	human_filter/src/backup_srs_leg_dector.cpp	/^	float distance_;$/;"	m	class:MatchedFeature	file:
+distance_	human_filter/src/backup_srs_leg_detector.cpp	/^	float distance_;$/;"	m	class:MatchedFeature	file:
+distance_	human_filter/src/srs_leg_detector.cpp	/^	float distance_;$/;"	m	class:MatchedFeature	file:
+distance_	srs_leg_detector/src/srs_leg_detector.cpp	/^	float distance_;$/;"	m	class:MatchedFeature	file:
+distance_msg	srs_leg_detector/src/srs_leg_detector.cpp	/^ srs_msgs::HS_distance  distance_msg;$/;"	m	class:LegDetector	file:
 dt_	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	/^  mutable double dt_;$/;"	m	class:BFL::GaussianPosVel
 dt_	human_filter/include/people_tracking_filter/sysmodel_pos_vel.h	/^  double dt_;$/;"	m	class:BFL::SysPdfPosVel
 dt_	human_filter/include/people_tracking_filter/sysmodel_vector.h	/^  double dt_;$/;"	m	class:BFL::SysPdfVector
 dyn_path_num	navi_mdp/include/MDPmanager.h	/^ 	int     dyn_path_num;$/;"	m	class:MDPManager
 dynamic_belief_map	villa_navi_service/include/navi_service_node.h	/^	nav_msgs::OccupancyGrid dynamic_belief_map;$/;"	m	class:villa_navi_srv
+dynamic_map	human_filter/src/backup_srs_leg_dector.cpp	/^ nav_msgs::OccupancyGrid dynamic_map;$/;"	m	class:LegDetector	file:
+dynamic_map	human_filter/src/backup_srs_leg_detector.cpp	/^ nav_msgs::OccupancyGrid dynamic_map;$/;"	m	class:LegDetector	file:
+dynamic_map	human_filter/src/srs_leg_detector.cpp	/^ nav_msgs::OccupancyGrid dynamic_map;$/;"	m	class:LegDetector	file:
 dynamic_mapCallback	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::dynamic_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:MDPManager
 edge_leg_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 edge_leg_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
@@ -506,10 +730,29 @@ estimation	human_filter/src/people_tracking_node.cpp	/^namespace estimation$/;"	
 estimation	human_filter/src/tracker_kalman.cpp	/^namespace estimation$/;"	n	file:
 estimation	human_filter/src/tracker_particle.cpp	/^namespace estimation$/;"	n	file:
 execute_follow_action	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::execute_follow_action(const human_filter::FollowMeGoalConstPtr &goal)$/;"	f	class:Edgeleg_manager_action
+feat_count_	human_filter/src/backup_srs_leg_dector.cpp	/^	int feat_count_;$/;"	m	class:LegDetector	file:
+feat_count_	human_filter/src/backup_srs_leg_detector.cpp	/^	int feat_count_;$/;"	m	class:LegDetector	file:
+feat_count_	human_filter/src/srs_leg_detector.cpp	/^	int feat_count_;$/;"	m	class:LegDetector	file:
+feat_count_	human_filter/src/train_leg_detector.cpp	/^  int feat_count_;$/;"	m	class:TrainLegDetector	file:
+feat_count_	srs_leg_detector/src/srs_leg_detector.cpp	/^	int feat_count_;$/;"	m	class:LegDetector	file:
+feat_count_	srs_leg_detector/src/train_leg_detector.cpp	/^  int feat_count_;$/;"	m	class:TrainLegDetector	file:
+feature_id_	human_filter/src/backup_srs_leg_dector.cpp	/^	int feature_id_;$/;"	m	class:LegDetector	file:
+feature_id_	human_filter/src/backup_srs_leg_detector.cpp	/^	int feature_id_;$/;"	m	class:LegDetector	file:
+feature_id_	human_filter/src/srs_leg_detector.cpp	/^	int feature_id_;$/;"	m	class:LegDetector	file:
+feature_id_	srs_leg_detector/src/srs_leg_detector.cpp	/^	int feature_id_;$/;"	m	class:LegDetector	file:
 feedback_	human_filter/include/people_tracking_filter/followme_action.h	/^  human_filter::FollowMe feedback_;$/;"	m	class:Edgeleg_manager_action
+filled	human_filter/include/laser_processor.h	/^    bool     filled;  \/\/ indicates if there is any data inside$/;"	m	class:laser_processor::ScanMask
+filled	human_filter/include/laser_processor.h	/^   bool filled; $/;"	m	class:laser_processor::Background
+filled	srs_leg_detector/src/laser_processor.h	/^    bool     filled;  \/\/ indicates if there is any data inside$/;"	m	class:laser_processor::ScanMask
+filled	srs_leg_detector/src/laser_processor.h	/^   bool filled; $/;"	m	class:laser_processor::Background
 filter_	human_filter/include/people_tracking_filter/detector_particle.h	/^  BFL::BootstrapFilter<tf::Vector3, tf::Vector3>* filter_;$/;"	m	class:estimation::DetectorParticle
 filter_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  BFL::ExtendedKalmanFilter*                              filter_;$/;"	m	class:estimation::TrackerKalman
 filter_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  BFL::BootstrapFilter<BFL::StatePosVel, tf::Vector3>*      filter_;$/;"	m	class:estimation::TrackerParticle
+filter_	human_filter/src/backup_srs_leg_dector.cpp	/^	TrackerKalman filter_;$/;"	m	class:SavedFeature	file:
+filter_	human_filter/src/backup_srs_leg_detector.cpp	/^	TrackerKalman filter_;$/;"	m	class:SavedFeature	file:
+filter_	human_filter/src/srs_leg_detector.cpp	/^	TrackerKalman filter_;$/;"	m	class:SavedFeature	file:
+filter_	human_filter/src/srs_leg_detector.cpp	/^	TrackerKalman filter_;$/;"	m	class:SavedPersonFeature	file:
+filter_	srs_leg_detector/src/srs_leg_detector.cpp	/^	  TrackerKalman filter_;$/;"	m	class:SavedFeature	file:
 filter_act_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::filter_act_callback(const std_msgs::Int8::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 filter_act_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::filter_act_callback(const std_msgs::Int8::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 filter_act_callback	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::filter_act_callback(const std_msgs::Int8::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_srv
@@ -539,6 +782,10 @@ filtered_leg_target	human_filter/include/people_tracking_filter/edge_leg_filter_
 filtered_leg_target	human_filter/include/people_tracking_filter/followme_action.h	/^  std::vector<double> filtered_leg_target;$/;"	m	class:Edgeleg_manager_action
 filtered_leg_target	human_filter/include/people_tracking_filter/service_test.h	/^  std::vector<double> filtered_leg_target;$/;"	m	class:Edgeleg_manager_srv
 findSpan	navi_mdp/src/srBSpline.cpp	/^bool srBSpline::findSpan( int& ret, double u )$/;"	f	class:srBSpline
+fixed_frame	human_filter/src/backup_srs_leg_dector.cpp	/^static const string fixed_frame              = "\/map";$/;"	v	file:
+fixed_frame	human_filter/src/backup_srs_leg_detector.cpp	/^static const string fixed_frame              = "\/map";$/;"	v	file:
+fixed_frame	human_filter/src/srs_leg_detector.cpp	/^static const string fixed_frame              = "\/map";$/;"	v	file:
+fixed_frame	srs_leg_detector/src/srs_leg_detector.cpp	/^static const string fixed_frame              = "\/map";$/;"	v	file:
 fixed_frame_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  std::string fixed_frame_;$/;"	m	class:Edgeleg_manager
 fixed_frame_	human_filter/include/people_tracking_filter/followme_action.h	/^  std::string fixed_frame_;$/;"	m	class:Edgeleg_manager_action
 fixed_frame_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  std::string fixed_frame_;$/;"	m	class:estimation::PeopleTrackingNode
@@ -550,19 +797,38 @@ follow_one_person_	human_filter/include/people_tracking_filter/people_tracking_n
 follow_one_person_	human_filter/include/people_tracking_filter/service_test.h	/^  bool follow_one_person_;$/;"	m	class:Edgeleg_manager_srv
 followingLoop	human_filter/src/followme_action.cpp	/^bool Edgeleg_manager_action::followingLoop(human_filter::set_target_to_follow::Request &req, human_filter::set_target_to_follow::Response &res)$/;"	f	class:Edgeleg_manager_action
 followingLoop	human_filter/src/service_test.cpp	/^bool Edgeleg_manager_srv::followingLoop(human_filter::set_target_to_follow::Request &req, human_filter::set_target_to_follow::Response &res)$/;"	f	class:Edgeleg_manager_srv
+forest	human_filter/src/backup_srs_leg_dector.cpp	/^	cv::Ptr<cv::ml::RTrees> forest;$/;"	m	class:LegDetector	file:
+forest	human_filter/src/backup_srs_leg_detector.cpp	/^	cv::Ptr<cv::ml::RTrees> forest;$/;"	m	class:LegDetector	file:
+forest	human_filter/src/srs_leg_detector.cpp	/^	cv::Ptr<cv::ml::RTrees> forest;$/;"	m	class:LegDetector	file:
+forest	human_filter/src/train_leg_detector.cpp	/^  CvRTrees forest;$/;"	m	class:TrainLegDetector	file:
+forest	srs_leg_detector/src/srs_leg_detector.cpp	/^	CvRTrees forest;$/;"	m	class:LegDetector	file:
+forest	srs_leg_detector/src/train_leg_detector.cpp	/^  CvRTrees forest;$/;"	m	class:TrainLegDetector	file:
 freq_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager
 freq_	human_filter/include/people_tracking_filter/followme_action.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager_action
 freq_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:estimation::PeopleTrackingNode
 freq_	human_filter/include/people_tracking_filter/service_test.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager_srv
+g_argc	human_filter/src/backup_srs_leg_dector.cpp	/^int g_argc;$/;"	v
+g_argc	human_filter/src/backup_srs_leg_detector.cpp	/^int g_argc;$/;"	v
+g_argc	human_filter/src/srs_leg_detector.cpp	/^int g_argc;$/;"	v
+g_argc	srs_leg_detector/src/srs_leg_detector.cpp	/^int g_argc;$/;"	v
+g_argv	human_filter/src/backup_srs_leg_dector.cpp	/^char** g_argv;$/;"	v
+g_argv	human_filter/src/backup_srs_leg_detector.cpp	/^char** g_argv;$/;"	v
+g_argv	human_filter/src/srs_leg_detector.cpp	/^char** g_argv;$/;"	v
+g_argv	srs_leg_detector/src/srs_leg_detector.cpp	/^char** g_argv;$/;"	v
+g_counter	edge_leg_detector/src/detector.cpp	/^int g_counter = 0;$/;"	v
+g_counter	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^int g_counter = 0;$/;"	v
 gamma	navi_mdp/include/MDPmanager.h	/^ 	double gamma;$/;"	m	class:MDPManager
 gauss_pos_	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	/^  GaussianVector gauss_pos_, gauss_vel_;$/;"	m	class:BFL::GaussianPosVel
 gauss_vel_	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	/^  GaussianVector gauss_pos_, gauss_vel_;$/;"	m	class:BFL::GaussianPosVel
+gen	human_filter/cfg/LegDetection.cfg	/^gen = ParameterGenerator()$/;"	v
 generatePath	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::generatePath()$/;"	f	class:MDPManager
 generate_dynamicPath	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::generate_dynamicPath()$/;"	f	class:MDPManager
 getCPs	navi_mdp/src/srBSpline.cpp	/^double srBSpline::getCPs(int index)$/;"	f	class:srBSpline
 getCameraregion	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::getCameraregion()$/;"	f	class:Edgeleg_manager
 getCameraregion	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::getCameraregion()$/;"	f	class:Edgeleg_manager_action
 getCameraregion	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::getCameraregion()$/;"	f	class:Edgeleg_manager_srv
+getClusters	human_filter/include/laser_processor.h	/^    std::list<SampleSet*>& getClusters() { return clusters_; }$/;"	f	class:laser_processor::ScanProcessor
+getClusters	srs_leg_detector/src/laser_processor.h	/^    std::list<SampleSet*>& getClusters() { return clusters_; }$/;"	f	class:laser_processor::ScanProcessor
 getCurveDerPoint	navi_mdp/src/srBSpline.cpp	/^bool srBSpline::getCurveDerPoint( double& ret, double u, int d )$/;"	f	class:srBSpline
 getCurvePoint	navi_mdp/src/srBSpline.cpp	/^bool srBSpline::getCurvePoint( double& ret, double u )$/;"	f	class:srBSpline
 getDistance_from_Vec	human_filter/src/edge_leg_filter_node.cpp	/^double Edgeleg_manager::getDistance_from_Vec(std::vector<double> origin, double _x, double _y)$/;"	f	class:Edgeleg_manager
@@ -581,8 +847,13 @@ getHistogramPos	human_filter/src/mcpdf_pos_vel.cpp	/^MatrixWrapper::Matrix MCPdf
 getHistogramPos	human_filter/src/tracker_particle.cpp	/^Matrix TrackerParticle::getHistogramPos(const tf::Vector3& min, const tf::Vector3& max, const tf::Vector3& step) const$/;"	f	class:estimation::TrackerParticle
 getHistogramVel	human_filter/src/mcpdf_pos_vel.cpp	/^MatrixWrapper::Matrix MCPdfPosVel::getHistogramVel(const Vector3& m, const Vector3& M, const Vector3& step) const$/;"	f	class:MCPdfPosVel
 getHistogramVel	human_filter/src/tracker_particle.cpp	/^Matrix TrackerParticle::getHistogramVel(const tf::Vector3& min, const tf::Vector3& max, const tf::Vector3& step) const$/;"	f	class:estimation::TrackerParticle
+getLifetime	human_filter/src/backup_srs_leg_dector.cpp	/^	double getLifetime()$/;"	f	class:SavedFeature
+getLifetime	human_filter/src/backup_srs_leg_detector.cpp	/^	double getLifetime()$/;"	f	class:SavedFeature
+getLifetime	human_filter/src/srs_leg_detector.cpp	/^	double getLifetime()$/;"	f	class:SavedFeature
+getLifetime	human_filter/src/srs_leg_detector.cpp	/^	double getLifetime()$/;"	f	class:SavedPersonFeature
 getLifetime	human_filter/src/tracker_kalman.cpp	/^double TrackerKalman::getLifetime() const$/;"	f	class:estimation::TrackerKalman
 getLifetime	human_filter/src/tracker_particle.cpp	/^double TrackerParticle::getLifetime() const$/;"	f	class:estimation::TrackerParticle
+getLifetime	srs_leg_detector/src/srs_leg_detector.cpp	/^	double getLifetime()$/;"	f	class:SavedFeature
 getMaxValueAction	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::getMaxValueAction(int x_pos, int y_pos,map<int,double>& maxmap)$/;"	f	class:MDPManager
 getName	human_filter/include/people_tracking_filter/tracker.h	/^  const std::string& getName() const$/;"	f	class:estimation::Tracker
 getNumCPs	navi_mdp/src/srBSpline.cpp	/^int srBSpline::getNumCPs()$/;"	f	class:srBSpline
@@ -594,6 +865,8 @@ getPolicychar	navi_mdp/src/MDPmanager.cpp	/^char MDPManager::getPolicychar(int p
 getQuality	human_filter/include/people_tracking_filter/detector_particle.h	/^  double getQuality() const$/;"	f	class:estimation::DetectorParticle
 getQuality	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  virtual double getQuality() const$/;"	f	class:estimation::TrackerKalman
 getQuality	human_filter/include/people_tracking_filter/tracker_particle.h	/^  virtual double getQuality() const$/;"	f	class:estimation::TrackerParticle
+getReliability	human_filter/src/srs_leg_detector.cpp	/^	double getReliability()$/;"	f	class:SavedFeature
+getReliability	human_filter/src/srs_leg_detector.cpp	/^	double getReliability()$/;"	f	class:SavedPersonFeature
 getSurfacePoint	navi_mdp/src/srBSpline.cpp	/^bool srBSpline::getSurfacePoint( double& ret, double u, double v )$/;"	f	class:srBSpline
 getT0	navi_mdp/src/srBSpline.cpp	/^double srBSpline::getT0( void )$/;"	f	class:srBSpline
 getTf	navi_mdp/src/srBSpline.cpp	/^double srBSpline::getTf( void )$/;"	f	class:srBSpline
@@ -623,11 +896,16 @@ globalpose_sub	human_filter/include/people_tracking_filter/edge_leg_filter_node.
 globalpose_sub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Subscriber globalpose_sub;$/;"	m	class:Edgeleg_manager_action
 globalpose_sub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Subscriber globalpose_sub;$/;"	m	class:Edgeleg_manager_srv
 goTarget	villa_navi_service/src/navi_service_node.cpp	/^bool villa_navi_srv::goTarget(villa_navi_service::GoTargetPos::Request &req, villa_navi_service::GoTargetPos::Response &res)$/;"	f	class:villa_navi_srv
+hasSample	human_filter/src/laser_processor.cpp	/^bool ScanMask::hasSample(Sample* s, float thresh)$/;"	f	class:ScanMask
+hasSample	srs_leg_detector/src/laser_processor.cpp	/^bool ScanMask::hasSample(Sample* s, float thresh)$/;"	f	class:ScanMask
 hsrb_odomCallback	navi_mdp/src/base_actionlib.cpp	/^void hsrb_odomCallback(const nav_msgs::Odometry ::ConstPtr& msg)$/;"	f
 hsrb_odomCallback	navi_mdp/src/base_conti_actionlib.cpp	/^void hsrb_odomCallback(const nav_msgs::Odometry::ConstPtr& msg)$/;"	f
 human_belief_map	villa_navi_service/include/navi_service_node.h	/^	nav_msgs::OccupancyGrid human_belief_map;$/;"	m	class:villa_navi_srv
 human_boxes_array	villa_navi_service/include/navi_service_node.h	/^	visualization_msgs::MarkerArray human_boxes_array;$/;"	m	class:villa_navi_srv
 human_callback_count	navi_mdp/include/MDPmanager.h	/^ 	int               human_callback_count;$/;"	m	class:MDPManager
+human_distance_pub_	human_filter/src/backup_srs_leg_dector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+human_distance_pub_	human_filter/src/backup_srs_leg_detector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+human_distance_pub_	srs_leg_detector/src/srs_leg_detector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
 human_global	navi_mdp/include/MDPmanager.h	/^ 	vector<float>	  human_global;$/;"	m	class:MDPManager
 human_laser_pub	villa_navi_service/include/navi_service_node.h	/^	ros::Publisher human_laser_pub;$/;"	m	class:villa_navi_srv
 human_laser_scan_pub	villa_navi_service/include/navi_service_node.h	/^	ros::Publisher human_laser_scan_pub;$/;"	m	class:villa_navi_srv
@@ -646,8 +924,27 @@ human_yolo_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_man
 human_yolo_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 human_yolo_callback	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_srv
 id	navi_mdp/scripts/human_marker.py	/^   id = 0$/;"	v
+id_	human_filter/src/backup_srs_leg_dector.cpp	/^	string id_;$/;"	m	class:SavedFeature	file:
+id_	human_filter/src/backup_srs_leg_detector.cpp	/^	string id_;$/;"	m	class:SavedFeature	file:
+id_	human_filter/src/srs_leg_detector.cpp	/^	string id_;$/;"	m	class:SavedFeature	file:
+id_	human_filter/src/srs_leg_detector.cpp	/^	string id_;$/;"	m	class:SavedPersonFeature	file:
+id_	srs_leg_detector/src/srs_leg_detector.cpp	/^	string id_;$/;"	m	class:SavedFeature	file:
+ind_x	human_filter/src/backup_srs_leg_dector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+ind_x	human_filter/src/backup_srs_leg_detector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+ind_x	human_filter/src/srs_leg_detector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+ind_x	srs_leg_detector/src/srs_leg_detector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+ind_y	human_filter/src/backup_srs_leg_dector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+ind_y	human_filter/src/backup_srs_leg_detector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+ind_y	human_filter/src/srs_leg_detector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+ind_y	srs_leg_detector/src/srs_leg_detector.cpp	/^ int ind_x, ind_y;$/;"	m	class:LegDetector	file:
+index	human_filter/include/laser_processor.h	/^    int   index;$/;"	m	class:laser_processor::Sample
+index	srs_leg_detector/src/laser_processor.h	/^    int   index;$/;"	m	class:laser_processor::Sample
 index	villa_navi_service/include/navi_service_node.h	/^	int index;$/;"	m	class:villa_navi_srv
 index_of_human_occ_cells_updated_recently	villa_navi_service/include/navi_service_node.h	/^	std::vector<int> index_of_human_occ_cells_updated_recently;$/;"	m	class:villa_navi_srv
+indtmp	human_filter/src/backup_srs_leg_dector.cpp	/^ int indtmp;$/;"	m	class:LegDetector	file:
+indtmp	human_filter/src/backup_srs_leg_detector.cpp	/^ int indtmp;$/;"	m	class:LegDetector	file:
+indtmp	human_filter/src/srs_leg_detector.cpp	/^ int indtmp;$/;"	m	class:LegDetector	file:
+indtmp	srs_leg_detector/src/srs_leg_detector.cpp	/^ int indtmp;$/;"	m	class:LegDetector	file:
 init_time_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  double init_time_, filter_time_, quality_;$/;"	m	class:estimation::TrackerKalman
 init_time_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  double init_time_, filter_time_, quality_;$/;"	m	class:estimation::TrackerParticle
 initialize	human_filter/src/detector_particle.cpp	/^void DetectorParticle::initialize(const tf::Vector3& mu, const tf::Vector3& size, const double time)$/;"	f	class:estimation::DetectorParticle
@@ -656,21 +953,56 @@ initialize	human_filter/src/tracker_particle.cpp	/^void TrackerParticle::initial
 inspect_cb	navi_mdp/scripts/wrist_mk_client	/^def inspect_cb(req):$/;"	f
 inspection_task_server	navi_mdp/scripts/wrist_mk_client	/^def inspection_task_server():$/;"	f
 int_msg	navi_mdp/scripts/human_marker.py	/^   int_msg=std_msgs.msg.Int8()$/;"	v
+intensity	human_filter/include/laser_processor.h	/^    float intensity;$/;"	m	class:laser_processor::Sample
+intensity	srs_leg_detector/src/laser_processor.h	/^    float intensity;$/;"	m	class:laser_processor::Sample
 isInitialized	human_filter/include/people_tracking_filter/detector_particle.h	/^  bool isInitialized() const$/;"	f	class:estimation::DetectorParticle
 isInitialized	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  virtual bool isInitialized() const$/;"	f	class:estimation::TrackerKalman
 isInitialized	human_filter/include/people_tracking_filter/tracker_particle.h	/^  virtual bool isInitialized() const$/;"	f	class:estimation::TrackerParticle
+isSamplebelongstoBackgrond	human_filter/src/laser_processor.cpp	/^bool Background::isSamplebelongstoBackgrond(Sample* s, float thresh)$/;"	f	class:Background
+isSamplebelongstoBackgrond	srs_leg_detector/src/laser_processor.cpp	/^bool Background::isSamplebelongstoBackgrond(Sample* s, float thresh)$/;"	f	class:Background
 joint_states_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 joint_states_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 joint_states_callback	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_srv
+kal_p	human_filter/src/srs_leg_detector.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
+kal_q	human_filter/src/srs_leg_detector.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
+kal_r	human_filter/src/srs_leg_detector.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
 keyboard_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 keyboard_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 keyboard_callback	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_srv
 keyboard_sub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Subscriber keyboard_sub;$/;"	m	class:Edgeleg_manager
 keyboard_sub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Subscriber keyboard_sub;$/;"	m	class:Edgeleg_manager_action
 keyboard_sub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Subscriber keyboard_sub;$/;"	m	class:Edgeleg_manager_srv
+laserCallback	human_filter/src/backup_srs_leg_dector.cpp	/^	void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)$/;"	f	class:LegDetector
+laserCallback	human_filter/src/backup_srs_leg_detector.cpp	/^	void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)$/;"	f	class:LegDetector
+laserCallback	human_filter/src/srs_leg_detector.cpp	/^	 void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)$/;"	f	class:LegDetector
+laserCallback	srs_leg_detector/src/srs_leg_detector.cpp	/^	void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)$/;"	f	class:LegDetector
+laser_notifier_	human_filter/src/backup_srs_leg_dector.cpp	/^	tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;$/;"	m	class:LegDetector	file:
+laser_notifier_	human_filter/src/backup_srs_leg_detector.cpp	/^	tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;$/;"	m	class:LegDetector	file:
+laser_notifier_	human_filter/src/srs_leg_detector.cpp	/^	tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;$/;"	m	class:LegDetector	file:
+laser_notifier_	srs_leg_detector/src/srs_leg_detector.cpp	/^	tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;$/;"	m	class:LegDetector	file:
+laser_processor	human_filter/include/laser_processor.h	/^namespace laser_processor$/;"	n
+laser_processor	srs_leg_detector/src/laser_processor.h	/^namespace laser_processor$/;"	n
+laser_sub_	human_filter/src/backup_srs_leg_dector.cpp	/^	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;$/;"	m	class:LegDetector	file:
+laser_sub_	human_filter/src/backup_srs_leg_detector.cpp	/^	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;$/;"	m	class:LegDetector	file:
+laser_sub_	human_filter/src/srs_leg_detector.cpp	/^	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;$/;"	m	class:LegDetector	file:
+laser_sub_	srs_leg_detector/src/srs_leg_detector.cpp	/^	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;$/;"	m	class:LegDetector	file:
 last_global_pose	human_filter/include/people_tracking_filter/service_test.h	/^  std::vector<double> last_global_pose;$/;"	m	class:Edgeleg_manager_srv
 last_global_pose_t	human_filter/include/people_tracking_filter/service_test.h	/^  double last_global_pose_t;$/;"	m	class:Edgeleg_manager_srv
 last_pose	human_filter/include/people_tracking_filter/followme_action.h	/^  geometry_msgs::PoseStamped last_pose;$/;"	m	class:Edgeleg_manager_action
+legCallback	human_filter/src/legListener.cpp	/^void legCallback(const sensor_msgs::PointCloud::ConstPtr& people_cloud)$/;"	f
+legCallback	srs_leg_detector/src/legListener.cpp	/^void legCallback(const sensor_msgs::PointCloud::ConstPtr& people_cloud)$/;"	f
+leg_cloud_pub_	human_filter/src/backup_srs_leg_dector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+leg_cloud_pub_	human_filter/src/backup_srs_leg_detector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+leg_cloud_pub_	srs_leg_detector/src/srs_leg_detector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+leg_detections_pub_	human_filter/src/backup_srs_leg_dector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+leg_detections_pub_	human_filter/src/backup_srs_leg_detector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+leg_detections_pub_	srs_leg_detector/src/srs_leg_detector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
+leg_measurements_pub_	human_filter/src/srs_leg_detector.cpp	/^	ros::Publisher leg_measurements_pub_;$/;"	m	class:LegDetector	file:
+leg_pair_separation_m	human_filter/src/backup_srs_leg_dector.cpp	/^static const double leg_pair_separation_m    = 0.5;$/;"	v	file:
+leg_pair_separation_m	human_filter/src/backup_srs_leg_detector.cpp	/^static const double leg_pair_separation_m    = 0.5;$/;"	v	file:
+leg_pair_separation_m	human_filter/src/srs_leg_detector.cpp	/^static const double leg_pair_separation_m    = 0.5;$/;"	v	file:
+leg_pair_separation_m	srs_leg_detector/src/srs_leg_detector.cpp	/^static const double leg_pair_separation_m    = 0.5;$/;"	v	file:
+leg_reliability_limit_	human_filter/src/srs_leg_detector.cpp	/^	double leg_reliability_limit_;$/;"	m	class:LegDetector	file:
 leg_target	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  std::vector<double> leg_target;$/;"	m	class:Edgeleg_manager
 leg_target	human_filter/include/people_tracking_filter/followme_action.h	/^  std::vector<double> leg_target;$/;"	m	class:Edgeleg_manager_action
 leg_target	human_filter/include/people_tracking_filter/service_test.h	/^  std::vector<double> leg_target;$/;"	m	class:Edgeleg_manager_srv
@@ -681,6 +1013,18 @@ listener	human_filter/include/people_tracking_filter/service_test.h	/^  tf::Tran
 listener	navi_mdp/include/MDPmanager.h	/^ 	tf::TransformListener 	  listener;$/;"	m	class:MDPManager
 listener	navi_mdp/scripts/wrist_mk	/^    def listener(self):$/;"	m	class:Wrist_Manager
 listener	villa_navi_service/include/navi_service_node.h	/^	tf::TransformListener 	  listener;$/;"	m	class:villa_navi_srv
+loadBackground	human_filter/src/train_leg_detector.cpp	/^void loadBackground(sensor_msgs::LaserScan* scan)$/;"	f	class:TrainLegDetector
+loadBackground	srs_leg_detector/src/train_leg_detector.cpp	/^void loadBackground(sensor_msgs::LaserScan* scan)$/;"	f	class:TrainLegDetector
+loadCb	human_filter/src/train_leg_detector.cpp	/^void loadCb(sensor_msgs::LaserScan* scan, vector< vector<float> >* data)$/;"	f	class:TrainLegDetector
+loadCb	srs_leg_detector/src/train_leg_detector.cpp	/^void loadCb(sensor_msgs::LaserScan* scan, vector< vector<float> >* data)$/;"	f	class:TrainLegDetector
+loadCbBackgroundremoved	human_filter/src/train_leg_detector.cpp	/^void loadCbBackgroundremoved(sensor_msgs::LaserScan* scan, vector< vector<float> >* data)$/;"	f	class:TrainLegDetector
+loadCbBackgroundremoved	srs_leg_detector/src/train_leg_detector.cpp	/^void loadCbBackgroundremoved(sensor_msgs::LaserScan* scan, vector< vector<float> >* data)$/;"	f	class:TrainLegDetector
+loadData	human_filter/src/train_leg_detector.cpp	/^  void loadData(LoadType load, char* file)$/;"	f	class:TrainLegDetector
+loadData	srs_leg_detector/src/train_leg_detector.cpp	/^  void loadData(LoadType load, char* file)$/;"	f	class:TrainLegDetector
+loc_	human_filter/src/backup_srs_leg_dector.cpp	/^	Stamped<Point> loc_;$/;"	m	class:Legs	file:
+loc_	human_filter/src/backup_srs_leg_detector.cpp	/^	Stamped<Point> loc_;$/;"	m	class:Legs	file:
+loc_	human_filter/src/srs_leg_detector.cpp	/^	Stamped<Point> loc_;$/;"	m	class:Legs	file:
+loc_	srs_leg_detector/src/srs_leg_detector.cpp	/^	Stamped<Point> loc_;$/;"	m	class:Legs	file:
 m_ControlPoints	navi_mdp/include/srBSpline.h	/^	double* m_ControlPoints;	\/\/ control points$/;"	m	class:srBSpline
 m_ControlPointsarray	navi_mdp/include/srBSpline.h	/^	double** m_ControlPointsarray;	\/\/ control points for V $/;"	m	class:srBSpline
 m_CubicSpline_x	navi_mdp/include/MDPmanager.h	/^ 	srBSpline*           m_CubicSpline_x;$/;"	m	class:MDPManager
@@ -719,22 +1063,63 @@ m_updateiter	villa_navi_service/include/navi_service_node.h	/^	int m_updateiter;
 m_viewupdateiter	villa_navi_service/include/navi_service_node.h	/^	int m_viewupdateiter;$/;"	m	class:villa_navi_srv
 m_yolo_idx_set	villa_navi_service/include/navi_service_node.h	/^	std::vector<int>    m_yolo_idx_set;$/;"	m	class:villa_navi_srv
 m_yolo_recieveiter	villa_navi_service/include/navi_service_node.h	/^	int m_yolo_recieveiter;$/;"	m	class:villa_navi_srv
+main	edge_leg_detector/src/detector.cpp	/^int main(int argc, char **argv){$/;"	f
+main	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^int main(int argc, char **argv){$/;"	f
+main	human_filter/src/backup_srs_leg_dector.cpp	/^int main(int argc, char **argv)$/;"	f
+main	human_filter/src/backup_srs_leg_detector.cpp	/^int main(int argc, char **argv)$/;"	f
 main	human_filter/src/edge_leg_filter_node.cpp	/^int main(int argc, char **argv)$/;"	f
 main	human_filter/src/followme_action.cpp	/^int main(int argc, char **argv)$/;"	f
+main	human_filter/src/legListener.cpp	/^int main(int argc, char **argv)$/;"	f
 main	human_filter/src/people_tracking_node.cpp	/^int main(int argc, char **argv)$/;"	f
 main	human_filter/src/service_test.cpp	/^int main(int argc, char **argv)$/;"	f
+main	human_filter/src/srs_leg_detector.cpp	/^int main(int argc, char **argv)$/;"	f
+main	human_filter/src/train_leg_detector.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/base_actionlib.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/base_conti_actionlib.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/dynamic_planner.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/global_planner.cpp	/^int main(int argc, char **argv)$/;"	f
+main	srs_leg_detector/src/legListener.cpp	/^int main(int argc, char **argv)$/;"	f
+main	srs_leg_detector/src/srs_leg_detector.cpp	/^int main(int argc, char **argv)$/;"	f
+main	srs_leg_detector/src/train_leg_detector.cpp	/^int main(int argc, char **argv)$/;"	f
 main	villa_navi_service/src/service_test.cpp	/^int main(int argc, char **argv)$/;"	f
 mapParam	navi_mdp/src/global_planner.cpp	/^MapParam   mapParam;$/;"	v
+map_data	human_filter/src/backup_srs_leg_dector.cpp	/^ short int map_data []; $/;"	m	class:LegDetector	file:
+map_data	human_filter/src/backup_srs_leg_detector.cpp	/^ short int map_data []; $/;"	m	class:LegDetector	file:
+map_data	human_filter/src/srs_leg_detector.cpp	/^ short int map_data []; $/;"	m	class:LegDetector	file:
+map_data	srs_leg_detector/src/srs_leg_detector.cpp	/^ short int map_data []; $/;"	m	class:LegDetector	file:
 map_index_of_human_cells_to_prob	villa_navi_service/include/navi_service_node.h	/^	std::map<int, float> map_index_of_human_cells_to_prob;$/;"	m	class:villa_navi_srv
 map_step	navi_mdp/include/MDPmanager.h	/^    double   		  	map_step;$/;"	m	class:MapParam
 marker	navi_mdp/scripts/human_marker.py	/^   marker = Marker()$/;"	v
 marker2	navi_mdp/scripts/human_marker.py	/^   marker2 = Marker()$/;"	v
 marker3	navi_mdp/scripts/human_marker.py	/^   marker3 = Marker()$/;"	v
 markerArray	navi_mdp/scripts/human_marker.py	/^markerArray = MarkerArray()$/;"	v
+markers_pub_	human_filter/src/srs_leg_detector.cpp	/^	ros::Publisher markers_pub_;$/;"	m	class:LegDetector	file:
+mask_	human_filter/include/laser_processor.h	/^    SampleSet mask_;$/;"	m	class:laser_processor::ScanMask
+mask_	human_filter/src/backup_srs_leg_dector.cpp	/^	ScanMask mask_;$/;"	m	class:LegDetector	file:
+mask_	human_filter/src/backup_srs_leg_detector.cpp	/^	ScanMask mask_;$/;"	m	class:LegDetector	file:
+mask_	human_filter/src/srs_leg_detector.cpp	/^	ScanMask mask_;$/;"	m	class:LegDetector	file:
+mask_	human_filter/src/train_leg_detector.cpp	/^  ScanMask mask_;$/;"	m	class:TrainLegDetector	file:
+mask_	srs_leg_detector/src/laser_processor.h	/^    SampleSet mask_;$/;"	m	class:laser_processor::ScanMask
+mask_	srs_leg_detector/src/srs_leg_detector.cpp	/^	ScanMask mask_;$/;"	m	class:LegDetector	file:
+mask_	srs_leg_detector/src/train_leg_detector.cpp	/^  ScanMask mask_;$/;"	m	class:TrainLegDetector	file:
+mask_count_	human_filter/src/backup_srs_leg_dector.cpp	/^	int mask_count_;$/;"	m	class:LegDetector	file:
+mask_count_	human_filter/src/backup_srs_leg_detector.cpp	/^	int mask_count_;$/;"	m	class:LegDetector	file:
+mask_count_	human_filter/src/srs_leg_detector.cpp	/^	int mask_count_;$/;"	m	class:LegDetector	file:
+mask_count_	human_filter/src/train_leg_detector.cpp	/^  int mask_count_; \/\/ number of added scans to the mask$/;"	m	class:TrainLegDetector	file:
+mask_count_	srs_leg_detector/src/srs_leg_detector.cpp	/^	int mask_count_;$/;"	m	class:LegDetector	file:
+mask_count_	srs_leg_detector/src/train_leg_detector.cpp	/^  int mask_count_; \/\/ number of added scans to the mask$/;"	m	class:TrainLegDetector	file:
+max_meas_jump_m	human_filter/src/backup_srs_leg_dector.cpp	/^static const double max_meas_jump_m          = 0.75; \/\/0.75; \/\/ 1.0$/;"	v	file:
+max_meas_jump_m	human_filter/src/backup_srs_leg_detector.cpp	/^static const double max_meas_jump_m          = 0.75; \/\/0.75; \/\/ 1.0$/;"	v	file:
+max_meas_jump_m	human_filter/src/srs_leg_detector.cpp	/^static const double max_meas_jump_m          = 0.75; \/\/0.75; \/\/ 1.0$/;"	v	file:
+max_meas_jump_m	srs_leg_detector/src/srs_leg_detector.cpp	/^static const double max_meas_jump_m          = 1; \/\/0.75; \/\/ 1.0$/;"	v	file:
+max_second_leg_age_s	human_filter/src/backup_srs_leg_dector.cpp	/^static const double max_second_leg_age_s     = 2.0;$/;"	v	file:
+max_second_leg_age_s	human_filter/src/backup_srs_leg_detector.cpp	/^static const double max_second_leg_age_s     = 2.0;$/;"	v	file:
+max_second_leg_age_s	human_filter/src/srs_leg_detector.cpp	/^static const double max_second_leg_age_s     = 2.0;$/;"	v	file:
+max_second_leg_age_s	srs_leg_detector/src/srs_leg_detector.cpp	/^static const double max_second_leg_age_s     = 2.0;$/;"	v	file:
+max_track_jump_m	human_filter/src/backup_srs_leg_dector.cpp	/^static const double max_track_jump_m         = 1; \/\/1.0;$/;"	v	file:
+max_track_jump_m	human_filter/src/backup_srs_leg_detector.cpp	/^static const double max_track_jump_m         = 1; \/\/1.0;$/;"	v	file:
+max_track_jump_m	human_filter/src/srs_leg_detector.cpp	/^static const double max_track_jump_m         = 1; \/\/1.0;$/;"	v	file:
+max_track_jump_m	srs_leg_detector/src/srs_leg_detector.cpp	/^static const double max_track_jump_m         = 1; \/\/1.0;$/;"	v	file:
 maxiter	navi_mdp/include/MDPmanager.h	/^ 	int maxiter;$/;"	m	class:MDPManager
 mdp_pathCallback	navi_mdp/src/base_conti_actionlib.cpp	/^void mdp_pathCallback(const nav_msgs::Path::ConstPtr& msg)$/;"	f
 meas_cloud_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  sensor_msgs::PointCloud  meas_cloud_;$/;"	m	class:Edgeleg_manager
@@ -747,19 +1132,49 @@ meas_model_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  B
 meas_noise_	human_filter/include/people_tracking_filter/measmodel_pos.h	/^  GaussianVector meas_noise_;$/;"	m	class:BFL::MeasPdfPos
 meas_noise_	human_filter/include/people_tracking_filter/measmodel_vector.h	/^  GaussianVector meas_noise_;$/;"	m	class:BFL::MeasPdfVector
 meas_pdf_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  BFL::LinearAnalyticConditionalGaussian*                 meas_pdf_;$/;"	m	class:estimation::TrackerKalman
+meas_time_	human_filter/src/backup_srs_leg_dector.cpp	/^	ros::Time meas_time_;$/;"	m	class:SavedFeature	file:
+meas_time_	human_filter/src/backup_srs_leg_detector.cpp	/^	ros::Time meas_time_;$/;"	m	class:SavedFeature	file:
+meas_time_	human_filter/src/srs_leg_detector.cpp	/^	ros::Time meas_time_;$/;"	m	class:SavedFeature	file:
+meas_time_	human_filter/src/srs_leg_detector.cpp	/^	ros::Time meas_time_;$/;"	m	class:SavedPersonFeature	file:
+meas_time_	srs_leg_detector/src/srs_leg_detector.cpp	/^	ros::Time meas_time_;$/;"	m	class:SavedFeature	file:
 meas_visualize_counter_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  unsigned int meas_visualize_counter_;$/;"	m	class:Edgeleg_manager
 meas_visualize_counter_	human_filter/include/people_tracking_filter/followme_action.h	/^  unsigned int meas_visualize_counter_;$/;"	m	class:Edgeleg_manager_action
 meas_visualize_counter_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  unsigned int meas_visualize_counter_;$/;"	m	class:estimation::PeopleTrackingNode
 meas_visualize_counter_	human_filter/include/people_tracking_filter/service_test.h	/^  unsigned int meas_visualize_counter_;$/;"	m	class:Edgeleg_manager_srv
+measure_distance	human_filter/src/backup_srs_leg_dector.cpp	/^void measure_distance (double dist) {  $/;"	f	class:LegDetector
+measure_distance	human_filter/src/backup_srs_leg_detector.cpp	/^void measure_distance (double dist) {  $/;"	f	class:LegDetector
+measure_distance	srs_leg_detector/src/srs_leg_detector.cpp	/^void measure_distance (double dist) {  $/;"	f	class:LegDetector
 message_sequencer_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  message_filters::TimeSequencer<people_msgs::PositionMeasurement>*  message_sequencer_;$/;"	m	class:estimation::PeopleTrackingNode
+min_points_per_group	human_filter/src/srs_leg_detector.cpp	/^	int min_points_per_group;$/;"	m	class:LegDetector	file:
 mu_	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	/^  StatePosVel mu_, sigma_;$/;"	m	class:BFL::GaussianPosVel
 mu_	human_filter/include/people_tracking_filter/gaussian_vector.h	/^  tf::Vector3 mu_, sigma_;$/;"	m	class:BFL::GaussianVector
 mu_	human_filter/include/people_tracking_filter/uniform_vector.h	/^  tf::Vector3 mu_, size_;$/;"	m	class:BFL::UniformVector
+mutex	edge_leg_detector/src/detector.cpp	/^boost::mutex mutex;$/;"	v
+mutex	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^boost::mutex mutex;$/;"	v
 name_	human_filter/include/people_tracking_filter/tracker.h	/^  std::string name_;$/;"	m	class:estimation::Tracker
+neg_data_	human_filter/src/train_leg_detector.cpp	/^  vector< vector<float> > neg_data_;$/;"	m	class:TrainLegDetector	file:
+neg_data_	srs_leg_detector/src/train_leg_detector.cpp	/^  vector< vector<float> > neg_data_;$/;"	m	class:TrainLegDetector	file:
+next_p_id_	human_filter/src/srs_leg_detector.cpp	/^	int next_p_id_;$/;"	m	class:LegDetector	file:
+nextid	human_filter/src/backup_srs_leg_dector.cpp	/^	static int nextid;$/;"	m	class:SavedFeature	file:
+nextid	human_filter/src/backup_srs_leg_dector.cpp	/^int SavedFeature::nextid = 0;$/;"	m	class:SavedFeature	file:
+nextid	human_filter/src/backup_srs_leg_detector.cpp	/^	static int nextid;$/;"	m	class:SavedFeature	file:
+nextid	human_filter/src/backup_srs_leg_detector.cpp	/^int SavedFeature::nextid = 0;$/;"	m	class:SavedFeature	file:
+nextid	human_filter/src/srs_leg_detector.cpp	/^	static int nextid;$/;"	m	class:SavedFeature	file:
+nextid	human_filter/src/srs_leg_detector.cpp	/^int SavedFeature::nextid = 0;$/;"	m	class:SavedFeature	file:
+nextid	srs_leg_detector/src/srs_leg_detector.cpp	/^	static int nextid;$/;"	m	class:SavedFeature	file:
+nextid	srs_leg_detector/src/srs_leg_detector.cpp	/^int SavedFeature::nextid = 0;$/;"	m	class:SavedFeature	file:
 nh_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::NodeHandle nh_;$/;"	m	class:Edgeleg_manager
 nh_	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::NodeHandle nh_;$/;"	m	class:Edgeleg_manager_action
 nh_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  ros::NodeHandle nh_;$/;"	m	class:estimation::PeopleTrackingNode
 nh_	human_filter/include/people_tracking_filter/service_test.h	/^  ros::NodeHandle nh_;$/;"	m	class:Edgeleg_manager_srv
+nh_	human_filter/src/backup_srs_leg_dector.cpp	/^	NodeHandle nh_;$/;"	m	class:LegDetector	file:
+nh_	human_filter/src/backup_srs_leg_detector.cpp	/^	NodeHandle nh_;$/;"	m	class:LegDetector	file:
+nh_	human_filter/src/srs_leg_detector.cpp	/^	NodeHandle nh_;$/;"	m	class:LegDetector	file:
+nh_	srs_leg_detector/src/srs_leg_detector.cpp	/^	NodeHandle nh_;$/;"	m	class:LegDetector	file:
+no_observation_timeout_s	human_filter/src/backup_srs_leg_dector.cpp	/^static const double no_observation_timeout_s = 0.5;$/;"	v	file:
+no_observation_timeout_s	human_filter/src/backup_srs_leg_detector.cpp	/^static const double no_observation_timeout_s = 0.5;$/;"	v	file:
+no_observation_timeout_s	human_filter/src/srs_leg_detector.cpp	/^static const double no_observation_timeout_s = 0.5;$/;"	v	file:
+no_observation_timeout_s	srs_leg_detector/src/srs_leg_detector.cpp	/^static const double no_observation_timeout_s = 0.7;$/;"	v	file:
 noise_	human_filter/include/people_tracking_filter/sysmodel_pos_vel.h	/^  GaussianPosVel noise_;$/;"	m	class:BFL::SysPdfPosVel
 noise_	human_filter/include/people_tracking_filter/sysmodel_vector.h	/^  GaussianVector noise_;$/;"	m	class:BFL::SysPdfVector
 numParticlesGet	human_filter/src/mcpdf_pos_vel.cpp	/^MCPdfPosVel::numParticlesGet() const$/;"	f	class:MCPdfPosVel
@@ -774,24 +1189,44 @@ num_particles_tracker	human_filter/src/edge_leg_filter_node.cpp	/^static const u
 num_particles_tracker	human_filter/src/followme_action.cpp	/^static const unsigned int num_particles_tracker      = 1000;$/;"	v	file:
 num_particles_tracker	human_filter/src/people_tracking_node.cpp	/^static const unsigned int num_particles_tracker      = 1000;$/;"	v	file:
 num_particles_tracker	human_filter/src/service_test.cpp	/^static const unsigned int num_particles_tracker      = 1000;$/;"	v	file:
+object_id	human_filter/src/backup_srs_leg_dector.cpp	/^	string object_id;$/;"	m	class:SavedFeature	file:
+object_id	human_filter/src/backup_srs_leg_detector.cpp	/^	string object_id;$/;"	m	class:SavedFeature	file:
+object_id	human_filter/src/srs_leg_detector.cpp	/^	string object_id;$/;"	m	class:SavedFeature	file:
+object_id	human_filter/src/srs_leg_detector.cpp	/^	string object_id;$/;"	m	class:SavedPersonFeature	file:
+object_id	srs_leg_detector/src/srs_leg_detector.cpp	/^	string object_id;$/;"	m	class:SavedFeature	file:
 obsmap_Pub	navi_mdp/include/MDPmanager.h	/^	ros::Publisher   obsmap_Pub;$/;"	m	class:MDPManager
 operator &	navi_mdp/include/srBSpline.h	/^	const srBSpline* operator&() const { return this; }$/;"	f	class:srBSpline
 operator &	navi_mdp/include/srBSpline.h	/^	srBSpline* operator&() { return this; }$/;"	f	class:srBSpline
+operator ()	human_filter/include/laser_processor.h	/^    inline bool operator() (const Sample* a, const Sample* b)$/;"	f	struct:laser_processor::CompareSample
+operator ()	srs_leg_detector/src/laser_processor.h	/^    inline bool operator() (const Sample* a, const Sample* b)$/;"	f	struct:laser_processor::CompareSample
 operator +	human_filter/include/people_tracking_filter/state_pos_vel.h	/^  StatePosVel operator + (const StatePosVel& s)$/;"	f	class:BFL::StatePosVel
 operator +=	human_filter/include/people_tracking_filter/state_pos_vel.h	/^  StatePosVel& operator += (const StatePosVel& s)$/;"	f	class:BFL::StatePosVel
+operator <	human_filter/src/backup_srs_leg_dector.cpp	/^	inline bool operator< (const MatchedFeature& b) const$/;"	f	class:MatchedFeature
+operator <	human_filter/src/backup_srs_leg_detector.cpp	/^	inline bool operator< (const MatchedFeature& b) const$/;"	f	class:MatchedFeature
+operator <	human_filter/src/srs_leg_detector.cpp	/^	inline bool operator< (const MatchedFeature& b) const$/;"	f	class:MatchedFeature
+operator <	srs_leg_detector/src/srs_leg_detector.cpp	/^	inline bool operator< (const MatchedFeature& b) const$/;"	f	class:MatchedFeature
 operator <<	human_filter/include/people_tracking_filter/state_pos_vel.h	/^  friend std::ostream& operator<< (std::ostream& os, const StatePosVel& s)$/;"	f	class:BFL::StatePosVel
 operator <<	human_filter/src/gaussian_pos_vel.cpp	/^std::ostream& operator<< (std::ostream& os, const GaussianPosVel& g)$/;"	f	namespace:BFL
 operator <<	human_filter/src/gaussian_vector.cpp	/^std::ostream& operator<< (std::ostream& os, const GaussianVector& g)$/;"	f	namespace:BFL
 operator <<	human_filter/src/uniform_vector.cpp	/^std::ostream& operator<< (std::ostream& os, const UniformVector& g)$/;"	f	namespace:BFL
 operator =	navi_mdp/src/srBSpline.cpp	/^const srBSpline& srBSpline::operator=( const srBSpline& T )$/;"	f	class:srBSpline
+other	human_filter/src/srs_leg_detector.cpp	/^	SavedFeature* other;$/;"	m	class:SavedFeature	file:
+p	human_filter/src/srs_leg_detector.cpp	/^	double reliability, p, probability;$/;"	m	class:SavedFeature	file:
+p	human_filter/src/srs_leg_detector.cpp	/^	double reliability, p, probability;$/;"	m	class:SavedPersonFeature	file:
 p	navi_mdp/include/srBSpline.h	/^	inline int p( void ) { return m_Degree; }$/;"	f	class:srBSpline
 pMapParam	navi_mdp/include/MDPmanager.h	/^ 	MapParam* 	pMapParam;  $/;"	m	class:MDPManager
+pairLegs	human_filter/src/srs_leg_detector.cpp	/^    void pairLegs()$/;"	f	class:LegDetector
 path	navi_mdp/include/MDPmanager.h	/^	nav_msgs::Path path;$/;"	m	class:MDPManager
 pathPublish	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::pathPublish(){$/;"	f	class:MDPManager
 pathSize	navi_mdp/src/base_actionlib.cpp	/^static int pathSize=2;$/;"	v	file:
 pathSize	navi_mdp/src/base_conti_actionlib.cpp	/^static int pathSize=2;$/;"	v	file:
 path_indx	navi_mdp/src/base_actionlib.cpp	/^static int path_indx=0;$/;"	v	file:
 path_indx	navi_mdp/src/base_conti_actionlib.cpp	/^static int path_indx=0;$/;"	v	file:
+pauseSent	human_filter/src/backup_srs_leg_dector.cpp	/^ bool pauseSent;$/;"	m	class:LegDetector	file:
+pauseSent	human_filter/src/backup_srs_leg_detector.cpp	/^ bool pauseSent;$/;"	m	class:LegDetector	file:
+pauseSent	human_filter/src/srs_leg_detector.cpp	/^ bool pauseSent;$/;"	m	class:LegDetector	file:
+pauseSent	srs_leg_detector/src/srs_leg_detector.cpp	/^ bool pauseSent;$/;"	m	class:LegDetector	file:
+peopleCallback	human_filter/src/srs_leg_detector.cpp	/^	void peopleCallback(const people_msgs::PositionMeasurementArray::ConstPtr& people_meas)$/;"	f	class:LegDetector
 people_filter_pub_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  ros::Publisher people_filter_pub_;$/;"	m	class:estimation::PeopleTrackingNode
 people_filter_vis_pub_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  ros::Publisher people_filter_vis_pub_;$/;"	m	class:estimation::PeopleTrackingNode
 people_meas_sub_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Subscriber people_meas_sub_;$/;"	m	class:Edgeleg_manager
@@ -801,17 +1236,50 @@ people_meas_sub_	human_filter/include/people_tracking_filter/service_test.h	/^  
 people_measurement_pub_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Publisher people_measurement_pub_;$/;"	m	class:Edgeleg_manager
 people_measurement_pub_	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Publisher people_measurement_pub_;$/;"	m	class:Edgeleg_manager_action
 people_measurement_pub_	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Publisher people_measurement_pub_;$/;"	m	class:Edgeleg_manager_srv
+people_measurements_pub_	human_filter/src/srs_leg_detector.cpp	/^    ros::Publisher people_measurements_pub_;$/;"	m	class:LegDetector	file:
+people_notifier_	human_filter/src/backup_srs_leg_dector.cpp	/^	tf::MessageFilter<people_msgs::PositionMeasurement> people_notifier_;$/;"	m	class:LegDetector	file:
+people_notifier_	human_filter/src/backup_srs_leg_detector.cpp	/^	tf::MessageFilter<people_msgs::PositionMeasurement> people_notifier_;$/;"	m	class:LegDetector	file:
+people_notifier_	srs_leg_detector/src/srs_leg_detector.cpp	/^	tf::MessageFilter<srs_msgs::PositionMeasurement> people_notifier_;$/;"	m	class:LegDetector	file:
+people_pub_	human_filter/src/srs_leg_detector.cpp	/^	ros::Publisher people_pub_;$/;"	m	class:LegDetector	file:
+people_sub_	human_filter/src/backup_srs_leg_dector.cpp	/^	message_filters::Subscriber<people_msgs::PositionMeasurement> people_sub_;$/;"	m	class:LegDetector	file:
+people_sub_	human_filter/src/backup_srs_leg_detector.cpp	/^	message_filters::Subscriber<people_msgs::PositionMeasurement> people_sub_;$/;"	m	class:LegDetector	file:
+people_sub_	human_filter/src/srs_leg_detector.cpp	/^	message_filters::Subscriber<people_msgs::PositionMeasurementArray> people_sub_;$/;"	m	class:LegDetector	file:
+people_sub_	srs_leg_detector/src/srs_leg_detector.cpp	/^	message_filters::Subscriber<srs_msgs::PositionMeasurement> people_sub_;$/;"	m	class:LegDetector	file:
 people_tracker_vis_pub_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  ros::Publisher people_tracker_vis_pub_;$/;"	m	class:estimation::PeopleTrackingNode
 people_yolo_sub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Subscriber people_yolo_sub;$/;"	m	class:Edgeleg_manager
 people_yolo_sub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Subscriber people_yolo_sub;$/;"	m	class:Edgeleg_manager_action
 people_yolo_sub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Subscriber people_yolo_sub;$/;"	m	class:Edgeleg_manager_srv
+person_name	human_filter/src/srs_leg_detector.cpp	/^	string person_name;$/;"	m	class:SavedPersonFeature	file:
+pos1_	human_filter/src/backup_srs_leg_dector.cpp	/^	Point pos1_;$/;"	m	class:Pair	file:
+pos1_	human_filter/src/backup_srs_leg_detector.cpp	/^	Point pos1_;$/;"	m	class:Pair	file:
+pos1_	human_filter/src/srs_leg_detector.cpp	/^	Point pos1_;$/;"	m	class:Pair	file:
+pos1_	srs_leg_detector/src/srs_leg_detector.cpp	/^	Point pos1_;$/;"	m	class:Pair	file:
+pos2_	human_filter/src/backup_srs_leg_dector.cpp	/^	Point pos2_;$/;"	m	class:Pair	file:
+pos2_	human_filter/src/backup_srs_leg_detector.cpp	/^	Point pos2_;$/;"	m	class:Pair	file:
+pos2_	human_filter/src/srs_leg_detector.cpp	/^	Point pos2_;$/;"	m	class:Pair	file:
+pos2_	srs_leg_detector/src/srs_leg_detector.cpp	/^	Point pos2_;$/;"	m	class:Pair	file:
 pos_	human_filter/include/people_tracking_filter/state_pos_vel.h	/^  tf::Vector3 pos_, vel_;$/;"	m	class:BFL::StatePosVel
+pos_data_	human_filter/src/train_leg_detector.cpp	/^  vector< vector<float> > pos_data_;$/;"	m	class:TrainLegDetector	file:
+pos_data_	srs_leg_detector/src/train_leg_detector.cpp	/^  vector< vector<float> > pos_data_;$/;"	m	class:TrainLegDetector	file:
+position_	human_filter/src/backup_srs_leg_dector.cpp	/^	Stamped<Point> position_;$/;"	m	class:SavedFeature	file:
+position_	human_filter/src/backup_srs_leg_detector.cpp	/^	Stamped<Point> position_;$/;"	m	class:SavedFeature	file:
+position_	human_filter/src/srs_leg_detector.cpp	/^	Stamped<Point> position_;$/;"	m	class:SavedFeature	file:
+position_	human_filter/src/srs_leg_detector.cpp	/^	Stamped<Point> position_;$/;"	m	class:SavedPersonFeature	file:
+position_	srs_leg_detector/src/srs_leg_detector.cpp	/^	Stamped<Point> position_;$/;"	m	class:SavedFeature	file:
 printPath	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::printPath()$/;"	f	class:MDPManager
 print_iter	villa_navi_service/include/navi_service_node.h	/^	int print_iter;$/;"	m	class:villa_navi_srv
 prior_	human_filter/include/people_tracking_filter/detector_particle.h	/^  BFL::MCPdfVector                                          prior_;$/;"	m	class:estimation::DetectorParticle
 prior_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  BFL::Gaussian                                           prior_;$/;"	m	class:estimation::TrackerKalman
 prior_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  BFL::MCPdfPosVel                                          prior_;$/;"	m	class:estimation::TrackerParticle
+probability	human_filter/src/srs_leg_detector.cpp	/^	double reliability, p, probability;$/;"	m	class:SavedFeature	file:
+probability	human_filter/src/srs_leg_detector.cpp	/^	double reliability, p, probability;$/;"	m	class:SavedPersonFeature	file:
 probability_	human_filter/include/people_tracking_filter/uniform_vector.h	/^  double probability_;$/;"	m	class:BFL::UniformVector
+probability_	human_filter/src/srs_leg_detector.cpp	/^	double probability_;$/;"	m	class:MatchedFeature	file:
+propagate	human_filter/src/backup_srs_leg_dector.cpp	/^	void propagate(ros::Time time)$/;"	f	class:SavedFeature
+propagate	human_filter/src/backup_srs_leg_detector.cpp	/^	void propagate(ros::Time time)$/;"	f	class:SavedFeature
+propagate	human_filter/src/srs_leg_detector.cpp	/^	void propagate(ros::Time time)$/;"	f	class:SavedFeature
+propagate	human_filter/src/srs_leg_detector.cpp	/^	void propagate(ros::Time time)$/;"	f	class:SavedPersonFeature
+propagate	srs_leg_detector/src/srs_leg_detector.cpp	/^	void propagate(ros::Time time)$/;"	f	class:SavedFeature
 pub	navi_mdp/scripts/human_marker.py	/^pub = rospy.Publisher('\/Int_cmd_trackhuman', Int8, queue_size=10)$/;"	v
 pub_iters	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  int pub_iters;$/;"	m	class:Edgeleg_manager
 pub_iters	human_filter/include/people_tracking_filter/followme_action.h	/^  int pub_iters;$/;"	m	class:Edgeleg_manager_action
@@ -827,9 +1295,14 @@ publish_filtered_target	human_filter/src/service_test.cpp	/^void Edgeleg_manager
 publish_leg_boxes	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::publish_leg_boxes()$/;"	f	class:Edgeleg_manager
 publish_leg_boxes	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::publish_leg_boxes()$/;"	f	class:Edgeleg_manager_action
 publish_leg_boxes	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::publish_leg_boxes()$/;"	f	class:Edgeleg_manager_srv
+publish_leg_markers_	human_filter/src/srs_leg_detector.cpp	/^    bool publish_legs_, publish_people_, publish_leg_markers_, publish_people_markers_, publish_vel_markers_;$/;"	m	class:LegDetector	file:
+publish_legs_	human_filter/src/srs_leg_detector.cpp	/^    bool publish_legs_, publish_people_, publish_leg_markers_, publish_people_markers_, publish_vel_markers_;$/;"	m	class:LegDetector	file:
+publish_people_	human_filter/src/srs_leg_detector.cpp	/^    bool publish_legs_, publish_people_, publish_leg_markers_, publish_people_markers_, publish_vel_markers_;$/;"	m	class:LegDetector	file:
+publish_people_markers_	human_filter/src/srs_leg_detector.cpp	/^    bool publish_legs_, publish_people_, publish_leg_markers_, publish_people_markers_, publish_vel_markers_;$/;"	m	class:LegDetector	file:
 publish_target	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::publish_target()$/;"	f	class:Edgeleg_manager
 publish_target	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::publish_target()$/;"	f	class:Edgeleg_manager_action
 publish_target	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::publish_target()$/;"	f	class:Edgeleg_manager_srv
+publish_vel_markers_	human_filter/src/srs_leg_detector.cpp	/^    bool publish_legs_, publish_people_, publish_leg_markers_, publish_people_markers_, publish_vel_markers_;$/;"	m	class:LegDetector	file:
 publisher	navi_mdp/scripts/human_marker.py	/^publisher = rospy.Publisher(topic, Marker,queue_size=10)$/;"	v
 publishnum	navi_mdp/include/MDPmanager.h	/^ 	int publishnum;$/;"	m	class:MDPManager
 publishpaths	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::publishpaths()$/;"	f	class:MDPManager
@@ -837,12 +1310,22 @@ quality_	human_filter/include/people_tracking_filter/detector_particle.h	/^  dou
 quality_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  double init_time_, filter_time_, quality_;$/;"	m	class:estimation::TrackerKalman
 quality_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  double init_time_, filter_time_, quality_;$/;"	m	class:estimation::TrackerParticle
 ra	navi_mdp/include/MDPmanager.h	55;"	d
+range	human_filter/include/laser_processor.h	/^    float range;$/;"	m	class:laser_processor::Sample
+range	srs_leg_detector/src/laser_processor.h	/^    float range;$/;"	m	class:laser_processor::Sample
 real_s	navi_mdp/include/types.h	/^	typedef double			real_s;$/;"	t
 real_s	navi_mdp/include/types.h	/^	typedef float			real_s;$/;"	t
+rec_x	edge_leg_detector/src/detector.cpp	/^vector < double > rec_x;$/;"	v
+rec_x	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^vector < double > rec_x;$/;"	v
+rec_y	edge_leg_detector/src/detector.cpp	/^vector < double > rec_y;$/;"	v
+rec_y	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^vector < double > rec_y;$/;"	v
+reliability	human_filter/src/srs_leg_detector.cpp	/^	double reliability, p, probability;$/;"	m	class:SavedFeature	file:
+reliability	human_filter/src/srs_leg_detector.cpp	/^	double reliability, p, probability;$/;"	m	class:SavedPersonFeature	file:
 reliability_threshold_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager
 reliability_threshold_	human_filter/include/people_tracking_filter/followme_action.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager_action
 reliability_threshold_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:estimation::PeopleTrackingNode
 reliability_threshold_	human_filter/include/people_tracking_filter/service_test.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager_srv
+removeLessThan	human_filter/src/laser_processor.cpp	/^ScanProcessor::removeLessThan(uint32_t num)$/;"	f	class:ScanProcessor
+removeLessThan	srs_leg_detector/src/laser_processor.cpp	/^ScanProcessor::removeLessThan(uint32_t num)$/;"	f	class:ScanProcessor
 resetTargetbasedYolo	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::resetTargetbasedYolo()$/;"	f	class:Edgeleg_manager_srv
 result	human_filter/scripts/follow_action.py	/^		result = follow_action_client()$/;"	v
 result_	human_filter/include/people_tracking_filter/followme_action.h	/^  human_filter::FollowMe result_;$/;"	m	class:Edgeleg_manager_action
@@ -851,10 +1334,41 @@ robot_state_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	
 robot_state_	human_filter/include/people_tracking_filter/followme_action.h	/^  tf::TransformListener robot_state_;$/;"	m	class:Edgeleg_manager_action
 robot_state_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  tf::TransformListener robot_state_;$/;"	m	class:estimation::PeopleTrackingNode
 robot_state_	human_filter/include/people_tracking_filter/service_test.h	/^  tf::TransformListener robot_state_;$/;"	m	class:Edgeleg_manager_srv
+save	human_filter/src/train_leg_detector.cpp	/^  void save(char* file)$/;"	f	class:TrainLegDetector
+save	srs_leg_detector/src/train_leg_detector.cpp	/^  void save(char* file)$/;"	f	class:TrainLegDetector
+save_	human_filter/src/backup_srs_leg_dector.cpp	/^	char save_[100];$/;"	m	class:LegDetector	file:
+save_	human_filter/src/backup_srs_leg_detector.cpp	/^	char save_[100];$/;"	m	class:LegDetector	file:
+save_	human_filter/src/srs_leg_detector.cpp	/^	char save_[100];$/;"	m	class:LegDetector	file:
+save_	srs_leg_detector/src/srs_leg_detector.cpp	/^	char save_[100];$/;"	m	class:LegDetector	file:
+saved_features_	human_filter/src/backup_srs_leg_dector.cpp	/^	list<SavedFeature*> saved_features_;$/;"	m	class:LegDetector	file:
+saved_features_	human_filter/src/backup_srs_leg_detector.cpp	/^	list<SavedFeature*> saved_features_;$/;"	m	class:LegDetector	file:
+saved_features_	human_filter/src/srs_leg_detector.cpp	/^	list<SavedFeature*> saved_features_;$/;"	m	class:LegDetector	file:
+saved_features_	srs_leg_detector/src/srs_leg_detector.cpp	/^	list<SavedFeature*> saved_features_;$/;"	m	class:LegDetector	file:
+saved_mutex_	human_filter/src/backup_srs_leg_dector.cpp	/^	boost::mutex saved_mutex_;$/;"	m	class:LegDetector	file:
+saved_mutex_	human_filter/src/backup_srs_leg_detector.cpp	/^	boost::mutex saved_mutex_;$/;"	m	class:LegDetector	file:
+saved_mutex_	human_filter/src/srs_leg_detector.cpp	/^	boost::mutex saved_mutex_;$/;"	m	class:LegDetector	file:
+saved_mutex_	srs_leg_detector/src/srs_leg_detector.cpp	/^	boost::mutex saved_mutex_;$/;"	m	class:LegDetector	file:
+saved_people_	human_filter/src/srs_leg_detector.cpp	/^	list<SavedPersonFeature*>saved_people_;$/;"	m	class:LegDetector	file:
 scaled_static_map_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 scaled_static_map_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 scaled_static_map_callback	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_srv
 scaling	navi_mdp/include/MDPmanager.h	/^	int  scaling=12;$/;"	m	class:MDPManager
+scan_	human_filter/include/laser_processor.h	/^    sensor_msgs::LaserScan scan_;$/;"	m	class:laser_processor::ScanProcessor
+scan_	srs_leg_detector/src/laser_processor.h	/^    sensor_msgs::LaserScan scan_;$/;"	m	class:laser_processor::ScanProcessor
+scan_topic	human_filter/src/backup_srs_leg_dector.cpp	/^string scan_topic = "hsrb\/base_scan";$/;"	v
+scan_topic	human_filter/src/backup_srs_leg_detector.cpp	/^string scan_topic = "hsrb\/base_scan";$/;"	v
+scan_topic	human_filter/src/srs_leg_detector.cpp	/^string scan_topic = "hsrb\/base_scan";$/;"	v
+scan_topic	srs_leg_detector/src/srs_leg_detector.cpp	/^string scan_topic = "scan_front";$/;"	v
+scans	human_filter/include/laser_processor.h	/^    int scans; \/\/ used only in the class Background to to averaging contains the number of scans that have gone into this scan$/;"	m	class:laser_processor::Sample
+scans	srs_leg_detector/src/laser_processor.h	/^    int scans; \/\/ used only in the class Background to to averaging contains the number of scans that have gone into this scan$/;"	m	class:laser_processor::Sample
+sendActionLibGoalPause	human_filter/src/backup_srs_leg_dector.cpp	/^   bool sendActionLibGoalPause()$/;"	f	class:LegDetector
+sendActionLibGoalPause	human_filter/src/backup_srs_leg_detector.cpp	/^   bool sendActionLibGoalPause()$/;"	f	class:LegDetector
+sendActionLibGoalPause	srs_leg_detector/src/srs_leg_detector.cpp	/^   bool sendActionLibGoalPause()$/;"	f	class:LegDetector
+sendActionLibGoalResume	human_filter/src/backup_srs_leg_dector.cpp	/^ bool sendActionLibGoalResume()$/;"	f	class:LegDetector
+sendActionLibGoalResume	human_filter/src/backup_srs_leg_detector.cpp	/^ bool sendActionLibGoalResume()$/;"	f	class:LegDetector
+sendActionLibGoalResume	srs_leg_detector/src/srs_leg_detector.cpp	/^ bool sendActionLibGoalResume()$/;"	f	class:LegDetector
+sensor_frame_id	edge_leg_detector/src/detector.cpp	/^string sensor_frame_id;$/;"	v
+sensor_frame_id	edge_leg_detector/src/edge_leg_detector/detector.cpp	/^string sensor_frame_id;$/;"	v
 sequencer_delay	human_filter/src/edge_leg_filter_node.cpp	/^static const double       sequencer_delay            = 0.5; \/\/TODO: this is probably too big, it was 0.8$/;"	v	file:
 sequencer_delay	human_filter/src/followme_action.cpp	/^static const double       sequencer_delay            = 0.5; \/\/TODO: this is probably too big, it was 0.8$/;"	v	file:
 sequencer_delay	human_filter/src/people_tracking_node.cpp	/^static const double       sequencer_delay            = 0.5; \/\/TODO: this is probably too big, it was 0.8$/;"	v	file:
@@ -867,6 +1381,9 @@ sequencer_subscribe_buffer	human_filter/src/edge_leg_filter_node.cpp	/^static co
 sequencer_subscribe_buffer	human_filter/src/followme_action.cpp	/^static const unsigned int sequencer_subscribe_buffer = 10;$/;"	v	file:
 sequencer_subscribe_buffer	human_filter/src/people_tracking_node.cpp	/^static const unsigned int sequencer_subscribe_buffer = 10;$/;"	v	file:
 sequencer_subscribe_buffer	human_filter/src/service_test.cpp	/^static const unsigned int sequencer_subscribe_buffer = 10;$/;"	v	file:
+service_server_detect_legs_	human_filter/src/backup_srs_leg_dector.cpp	/^        ros::ServiceServer service_server_detect_legs_;$/;"	m	class:LegDetector	file:
+service_server_detect_legs_	human_filter/src/backup_srs_leg_detector.cpp	/^        ros::ServiceServer service_server_detect_legs_;$/;"	m	class:LegDetector	file:
+service_server_detect_legs_	srs_leg_detector/src/srs_leg_detector.cpp	/^        ros::ServiceServer service_server_detect_legs_;$/;"	m	class:LegDetector	file:
 setDesiredHeading	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::setDesiredHeading(double _heading)$/;"	f	class:MDPManager
 setDynamicObs	navi_mdp/src/MDPmanager.cpp	/^ void MDPManager::setDynamicObs(const vector<int> dynamic_obs){$/;"	f	class:MDPManager
 setGoalConfig	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::setGoalConfig( const vector<int> _Goal )$/;"	f	class:MDPManager
@@ -896,6 +1413,10 @@ sigma_	human_filter/include/people_tracking_filter/gaussian_pos_vel.h	/^  StateP
 sigma_	human_filter/include/people_tracking_filter/gaussian_vector.h	/^  tf::Vector3 mu_, sigma_;$/;"	m	class:BFL::GaussianVector
 sigma_changed_	human_filter/include/people_tracking_filter/gaussian_vector.h	/^  mutable bool sigma_changed_;$/;"	m	class:BFL::GaussianVector
 sigma_sq_	human_filter/include/people_tracking_filter/gaussian_vector.h	/^  mutable tf::Vector3 sigma_sq_;$/;"	m	class:BFL::GaussianVector
+size	human_filter/include/laser_processor.h	/^    uint32_t size;$/;"	m	class:laser_processor::ScanMask
+size	human_filter/include/laser_processor.h	/^   uint32_t size;$/;"	m	class:laser_processor::Background
+size	srs_leg_detector/src/laser_processor.h	/^    uint32_t size;$/;"	m	class:laser_processor::ScanMask
+size	srs_leg_detector/src/laser_processor.h	/^   uint32_t size;$/;"	m	class:laser_processor::Background
 size_	human_filter/include/people_tracking_filter/uniform_vector.h	/^  tf::Vector3 mu_, size_;$/;"	m	class:BFL::UniformVector
 sound_cmd_sub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Subscriber sound_cmd_sub;$/;"	m	class:Edgeleg_manager_action
 sound_cmd_sub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Subscriber sound_cmd_sub;$/;"	m	class:Edgeleg_manager_srv
@@ -905,6 +1426,8 @@ spin	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::spin()$/;
 spin	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::spin()$/;"	f	class:Edgeleg_manager_action
 spin	human_filter/src/people_tracking_node.cpp	/^void PeopleTrackingNode::spin()$/;"	f	class:estimation::PeopleTrackingNode
 spin	human_filter/src/service_test.cpp	/^void Edgeleg_manager_srv::spin()$/;"	f	class:Edgeleg_manager_srv
+splitConnected	human_filter/src/laser_processor.cpp	/^ScanProcessor::splitConnected(float thresh)$/;"	f	class:ScanProcessor
+splitConnected	srs_leg_detector/src/laser_processor.cpp	/^ScanProcessor::splitConnected(float thresh)$/;"	f	class:ScanProcessor
 sqrt_	human_filter/include/people_tracking_filter/gaussian_vector.h	/^  mutable double sqrt_;$/;"	m	class:BFL::GaussianVector
 srBSpline	navi_mdp/include/srBSpline.h	/^class srBSpline$/;"	c
 srBSpline	navi_mdp/src/srBSpline.cpp	/^srBSpline::srBSpline( const srBSpline& T )$/;"	f	class:srBSpline
@@ -913,6 +1436,10 @@ srBSpline	navi_mdp/src/srBSpline.cpp	/^srBSpline::srBSpline( int Degree, int Num
 srBSpline	navi_mdp/src/srBSpline.cpp	/^srBSpline::srBSpline( int NumCPs, double Ti, double Tf, int Degree, bool KnotRepeat \/*= true*\/ )$/;"	f	class:srBSpline
 srBSpline	navi_mdp/src/srBSpline.cpp	/^srBSpline::srBSpline( void )$/;"	f	class:srBSpline
 srUtils	navi_mdp/include/utils.h	/^class srUtils$/;"	c
+srv_map	human_filter/src/backup_srs_leg_dector.cpp	/^ nav_msgs::GetMap srv_map;$/;"	m	class:LegDetector	file:
+srv_map	human_filter/src/backup_srs_leg_detector.cpp	/^ nav_msgs::GetMap srv_map;$/;"	m	class:LegDetector	file:
+srv_map	human_filter/src/srs_leg_detector.cpp	/^ nav_msgs::GetMap srv_map;$/;"	m	class:LegDetector	file:
+srv_map	srs_leg_detector/src/srs_leg_detector.cpp	/^ nav_msgs::GetMap srv_map;$/;"	m	class:LegDetector	file:
 start_distance_min_	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager
 start_distance_min_	human_filter/include/people_tracking_filter/followme_action.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:Edgeleg_manager_action
 start_distance_min_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  double freq_, start_distance_min_, reliability_threshold_;$/;"	m	class:estimation::PeopleTrackingNode
@@ -925,6 +1452,9 @@ static_belief_map_pub	human_filter/include/people_tracking_filter/edge_leg_filte
 static_belief_map_pub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Publisher static_belief_map_pub;$/;"	m	class:Edgeleg_manager_action
 static_belief_map_pub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Publisher static_belief_map_pub;$/;"	m	class:Edgeleg_manager_srv
 static_belief_map_pub	villa_navi_service/include/navi_service_node.h	/^	ros::Publisher static_belief_map_pub;$/;"	m	class:villa_navi_srv
+static_map	human_filter/src/backup_srs_leg_dector.cpp	/^ nav_msgs::OccupancyGrid static_map;$/;"	m	class:LegDetector	file:
+static_map	human_filter/src/backup_srs_leg_detector.cpp	/^ nav_msgs::OccupancyGrid static_map;$/;"	m	class:LegDetector	file:
+static_map	human_filter/src/srs_leg_detector.cpp	/^ nav_msgs::OccupancyGrid static_map;$/;"	m	class:LegDetector	file:
 static_mapCallback	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::static_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:MDPManager
 sys_matrix_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  MatrixWrapper::Matrix                                   sys_matrix_;$/;"	m	class:estimation::TrackerKalman
 sys_model_	human_filter/include/people_tracking_filter/detector_particle.h	/^  BFL::SysModelVector                                       sys_model_;$/;"	m	class:estimation::DetectorParticle
@@ -933,8 +1463,34 @@ sys_model_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  BF
 sys_pdf_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  BFL::LinearAnalyticConditionalGaussian*                 sys_pdf_;$/;"	m	class:estimation::TrackerKalman
 sys_sigma_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  BFL::StatePosVel sys_sigma_;$/;"	m	class:estimation::PeopleTrackingNode
 sys_sigma_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  MatrixWrapper::SymmetricMatrix                          sys_sigma_;$/;"	m	class:estimation::TrackerKalman
+sys_sigma_	human_filter/src/backup_srs_leg_dector.cpp	/^	BFL::StatePosVel sys_sigma_;$/;"	m	class:SavedFeature	file:
+sys_sigma_	human_filter/src/backup_srs_leg_detector.cpp	/^	BFL::StatePosVel sys_sigma_;$/;"	m	class:SavedFeature	file:
+sys_sigma_	human_filter/src/srs_leg_detector.cpp	/^	BFL::StatePosVel sys_sigma_;$/;"	m	class:SavedFeature	file:
+sys_sigma_	human_filter/src/srs_leg_detector.cpp	/^	BFL::StatePosVel sys_sigma_;$/;"	m	class:SavedPersonFeature	file:
+sys_sigma_	srs_leg_detector/src/srs_leg_detector.cpp	/^	BFL::StatePosVel sys_sigma_;$/;"	m	class:SavedFeature	file:
 t_	navi_mdp/src/base_conti_actionlib.cpp	/^std::vector<double> t_;$/;"	v
 targetup	villa_navi_service/include/navi_service_node.h	/^	int targetup;$/;"	m	class:villa_navi_srv
+test	human_filter/src/train_leg_detector.cpp	/^  void test()$/;"	f	class:TrainLegDetector
+test	srs_leg_detector/src/train_leg_detector.cpp	/^  void test()$/;"	f	class:TrainLegDetector
+test_data_	human_filter/src/train_leg_detector.cpp	/^  vector< vector<float> > test_data_;$/;"	m	class:TrainLegDetector	file:
+test_data_	srs_leg_detector/src/train_leg_detector.cpp	/^  vector< vector<float> > test_data_;$/;"	m	class:TrainLegDetector	file:
+tfl_	human_filter/src/backup_srs_leg_dector.cpp	/^	TransformListener tfl_;$/;"	m	class:LegDetector	file:
+tfl_	human_filter/src/backup_srs_leg_dector.cpp	/^	TransformListener& tfl_;$/;"	m	class:SavedFeature	file:
+tfl_	human_filter/src/backup_srs_leg_detector.cpp	/^	TransformListener tfl_;$/;"	m	class:LegDetector	file:
+tfl_	human_filter/src/backup_srs_leg_detector.cpp	/^	TransformListener& tfl_;$/;"	m	class:SavedFeature	file:
+tfl_	human_filter/src/srs_leg_detector.cpp	/^	TransformListener tfl_;$/;"	m	class:LegDetector	file:
+tfl_	human_filter/src/srs_leg_detector.cpp	/^	TransformListener& tfl_;$/;"	m	class:SavedFeature	file:
+tfl_	srs_leg_detector/src/srs_leg_detector.cpp	/^	TransformListener tfl_;$/;"	m	class:LegDetector	file:
+tfl_	srs_leg_detector/src/srs_leg_detector.cpp	/^	TransformListener& tfl_;$/;"	m	class:SavedFeature	file:
+time_	human_filter/src/backup_srs_leg_dector.cpp	/^	ros::Time time_;$/;"	m	class:SavedFeature	file:
+time_	human_filter/src/backup_srs_leg_detector.cpp	/^	ros::Time time_;$/;"	m	class:SavedFeature	file:
+time_	human_filter/src/srs_leg_detector.cpp	/^	ros::Time time_;$/;"	m	class:SavedFeature	file:
+time_	human_filter/src/srs_leg_detector.cpp	/^	ros::Time time_;$/;"	m	class:SavedPersonFeature	file:
+time_	srs_leg_detector/src/srs_leg_detector.cpp	/^	ros::Time time_;$/;"	m	class:SavedFeature	file:
+tmp	human_filter/src/backup_srs_leg_dector.cpp	/^ double tmp;$/;"	m	class:LegDetector	file:
+tmp	human_filter/src/backup_srs_leg_detector.cpp	/^ double tmp;$/;"	m	class:LegDetector	file:
+tmp	human_filter/src/srs_leg_detector.cpp	/^ double tmp;$/;"	m	class:LegDetector	file:
+tmp	srs_leg_detector/src/srs_leg_detector.cpp	/^ double tmp;$/;"	m	class:LegDetector	file:
 topic	navi_mdp/scripts/human_marker.py	/^topic = 'human_target'$/;"	v
 topic_array	navi_mdp/scripts/human_marker.py	/^topic_array = 'human_boxes'$/;"	v
 track_cmd	villa_navi_service/include/navi_service_node.h	/^	std_msgs::Int8 track_cmd;$/;"	m	class:villa_navi_srv
@@ -945,18 +1501,43 @@ tracker_init_dist	human_filter/src/people_tracking_node.cpp	/^static const doubl
 tracker_init_dist	human_filter/src/service_test.cpp	/^static const double       tracker_init_dist          = 4.0;$/;"	v	file:
 tracker_initialized_	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  bool tracker_initialized_;$/;"	m	class:estimation::TrackerKalman
 tracker_initialized_	human_filter/include/people_tracking_filter/tracker_particle.h	/^  bool tracker_initialized_;$/;"	m	class:estimation::TrackerParticle
+tracker_measurements_pub_	human_filter/src/backup_srs_leg_dector.cpp	/^	ros::Publisher tracker_measurements_pub_;$/;"	m	class:LegDetector	file:
+tracker_measurements_pub_	human_filter/src/backup_srs_leg_detector.cpp	/^	ros::Publisher tracker_measurements_pub_;$/;"	m	class:LegDetector	file:
+tracker_measurements_pub_	srs_leg_detector/src/srs_leg_detector.cpp	/^	ros::Publisher tracker_measurements_pub_;$/;"	m	class:LegDetector	file:
 trackers_	human_filter/include/people_tracking_filter/people_tracking_node.h	/^  std::list<Tracker*> trackers_;$/;"	m	class:estimation::PeopleTrackingNode
+traincl	human_filter/src/train_leg_detector.cpp	/^  void traincl()$/;"	f	class:TrainLegDetector
+traincl	srs_leg_detector/src/train_leg_detector.cpp	/^  void traincl()$/;"	f	class:TrainLegDetector
 trigger	navi_mdp/scripts/wrist_mk	/^    def trigger(self,req):$/;"	m	class:Wrist_Manager
+type_	human_filter/src/backup_srs_leg_dector.cpp	/^	string type_;$/;"	m	class:Legs	file:
+type_	human_filter/src/backup_srs_leg_detector.cpp	/^	string type_;$/;"	m	class:Legs	file:
+type_	human_filter/src/srs_leg_detector.cpp	/^	string type_;$/;"	m	class:Legs	file:
+type_	srs_leg_detector/src/srs_leg_detector.cpp	/^	string type_;$/;"	m	class:Legs	file:
 unit_step	navi_mdp/src/global_planner.cpp	/^double unit_step=0.25;$/;"	v
+update	human_filter/src/backup_srs_leg_dector.cpp	/^	void update(Stamped<Point> loc)$/;"	f	class:SavedFeature
+update	human_filter/src/backup_srs_leg_detector.cpp	/^	void update(Stamped<Point> loc)$/;"	f	class:SavedFeature
+update	human_filter/src/srs_leg_detector.cpp	/^	void update(Stamped<Point> loc, double probability)$/;"	f	class:SavedFeature
+update	human_filter/src/srs_leg_detector.cpp	/^	void update(Stamped<Point> loc, double probability)$/;"	f	class:SavedPersonFeature
+update	srs_leg_detector/src/srs_leg_detector.cpp	/^	void update(Stamped<Point> loc)$/;"	f	class:SavedFeature
 updateCorrection	human_filter/src/detector_particle.cpp	/^bool DetectorParticle::updateCorrection(const tf::Vector3&  meas, const MatrixWrapper::SymmetricMatrix& cov, const double time)$/;"	f	class:estimation::DetectorParticle
 updateCorrection	human_filter/src/tracker_kalman.cpp	/^bool TrackerKalman::updateCorrection(const tf::Vector3&  meas, const MatrixWrapper::SymmetricMatrix& cov)$/;"	f	class:estimation::TrackerKalman
 updateCorrection	human_filter/src/tracker_particle.cpp	/^bool TrackerParticle::updateCorrection(const tf::Vector3&  meas, const MatrixWrapper::SymmetricMatrix& cov)$/;"	f	class:estimation::TrackerParticle
 updateMap	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::updateMap(vector<int>& localmap_, vector<int>& local_start, vector<int>& local_goal)$/;"	f	class:MDPManager
+updatePosition	human_filter/src/backup_srs_leg_dector.cpp	/^	void updatePosition()$/;"	f	class:SavedFeature	file:
+updatePosition	human_filter/src/backup_srs_leg_detector.cpp	/^	void updatePosition()$/;"	f	class:SavedFeature	file:
+updatePosition	human_filter/src/srs_leg_detector.cpp	/^	void updatePosition()$/;"	f	class:SavedFeature	file:
+updatePosition	human_filter/src/srs_leg_detector.cpp	/^	void updatePosition()$/;"	f	class:SavedPersonFeature	file:
+updatePosition	srs_leg_detector/src/srs_leg_detector.cpp	/^	void updatePosition()$/;"	f	class:SavedFeature	file:
 updatePrediction	human_filter/src/detector_particle.cpp	/^bool DetectorParticle::updatePrediction(const double dt)$/;"	f	class:estimation::DetectorParticle
 updatePrediction	human_filter/src/tracker_kalman.cpp	/^bool TrackerKalman::updatePrediction(const double time)$/;"	f	class:estimation::TrackerKalman
 updatePrediction	human_filter/src/tracker_particle.cpp	/^bool TrackerParticle::updatePrediction(const double time)$/;"	f	class:estimation::TrackerParticle
 updateUprimePi	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::updateUprimePi(int state_id)$/;"	f	class:MDPManager
+use_filter	human_filter/src/srs_leg_detector.cpp	/^static bool use_filter = true;$/;"	v	file:
+use_seeds_	human_filter/src/srs_leg_detector.cpp	/^	bool use_seeds_;$/;"	m	class:LegDetector	file:
+variation	human_filter/include/laser_processor.h	/^    float variation; \/\/ used only in the class Background$/;"	m	class:laser_processor::Sample
+variation	srs_leg_detector/src/laser_processor.h	/^    float variation; \/\/ used only in the class Background$/;"	m	class:laser_processor::Sample
 vel_	human_filter/include/people_tracking_filter/state_pos_vel.h	/^  tf::Vector3 pos_, vel_;$/;"	m	class:BFL::StatePosVel
+velocity_	human_filter/src/srs_leg_detector.cpp	/^	Stamped<Vector3> velocity_;$/;"	m	class:SavedFeature	file:
+velocity_	human_filter/src/srs_leg_detector.cpp	/^	Stamped<Vector3> velocity_;$/;"	m	class:SavedPersonFeature	file:
 viewpoint_robot	villa_navi_service/include/navi_service_node.h	/^	std::vector< double >  viewpoint_robot;$/;"	m	class:villa_navi_srv
 villa_navi_srv	villa_navi_service/include/navi_service_node.h	/^class villa_navi_srv{$/;"	c
 villa_navi_srv	villa_navi_service/src/navi_service_node.cpp	/^villa_navi_srv::villa_navi_srv():index(0),m_numofhuman(0),m_receiveiter(0){$/;"	f	class:villa_navi_srv
@@ -972,9 +1553,13 @@ wrist_trigger_callback	navi_mdp/scripts/wrist_mk	/^    def wrist_trigger_callbac
 wrist_trigger_server	navi_mdp/scripts/wrist_mk	/^    def wrist_trigger_server(self):$/;"	m	class:Wrist_Manager
 wrist_trigger_sub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Subscriber wrist_trigger_sub;$/;"	m	class:Edgeleg_manager
 wrist_trigger_sub	human_filter/include/people_tracking_filter/service_test.h	/^  ros::Subscriber wrist_trigger_sub;$/;"	m	class:Edgeleg_manager_srv
+x	human_filter/include/laser_processor.h	/^    float x;$/;"	m	class:laser_processor::Sample
+x	srs_leg_detector/src/laser_processor.h	/^    float x;$/;"	m	class:laser_processor::Sample
 x_	navi_mdp/src/base_actionlib.cpp	/^std::vector<double> x_;$/;"	v
 x_	navi_mdp/src/base_conti_actionlib.cpp	/^std::vector<double> x_;$/;"	v
 x_size	navi_mdp/src/global_planner.cpp	/^int x_size=Grid_Num_X;$/;"	v
+y	human_filter/include/laser_processor.h	/^    float y;$/;"	m	class:laser_processor::Sample
+y	srs_leg_detector/src/laser_processor.h	/^    float y;$/;"	m	class:laser_processor::Sample
 y_	navi_mdp/src/base_actionlib.cpp	/^std::vector<double> y_;$/;"	v
 y_	navi_mdp/src/base_conti_actionlib.cpp	/^std::vector<double> y_;$/;"	v
 y_size	navi_mdp/src/global_planner.cpp	/^int y_size=Grid_Num_Y;$/;"	v
@@ -984,6 +1569,10 @@ y_size	navi_mdp/src/global_planner.cpp	/^int y_size=Grid_Num_Y;$/;"	v
 ~Edgeleg_manager_srv	human_filter/src/service_test.cpp	/^Edgeleg_manager_srv::~Edgeleg_manager_srv()$/;"	f	class:Edgeleg_manager_srv
 ~GaussianPosVel	human_filter/src/gaussian_pos_vel.cpp	/^GaussianPosVel::~GaussianPosVel() {}$/;"	f	class:BFL::GaussianPosVel
 ~GaussianVector	human_filter/src/gaussian_vector.cpp	/^GaussianVector::~GaussianVector() {}$/;"	f	class:BFL::GaussianVector
+~LegDetector	human_filter/src/backup_srs_leg_dector.cpp	/^	~LegDetector()$/;"	f	class:LegDetector
+~LegDetector	human_filter/src/backup_srs_leg_detector.cpp	/^	~LegDetector()$/;"	f	class:LegDetector
+~LegDetector	human_filter/src/srs_leg_detector.cpp	/^    ~LegDetector()$/;"	f	class:LegDetector
+~LegDetector	srs_leg_detector/src/srs_leg_detector.cpp	/^	~LegDetector()$/;"	f	class:LegDetector
 ~MCPdfPosVel	human_filter/src/mcpdf_pos_vel.cpp	/^MCPdfPosVel::~MCPdfPosVel() {}$/;"	f	class:MCPdfPosVel
 ~MCPdfVector	human_filter/src/mcpdf_vector.cpp	/^MCPdfVector::~MCPdfVector() {}$/;"	f	class:MCPdfVector
 ~MDPManager	navi_mdp/src/MDPmanager.cpp	/^MDPManager::~MDPManager()$/;"	f	class:MDPManager
@@ -993,6 +1582,10 @@ y_size	navi_mdp/src/global_planner.cpp	/^int y_size=Grid_Num_Y;$/;"	v
 ~MeasPdfPos	human_filter/src/measmodel_pos.cpp	/^MeasPdfPos::~MeasPdfPos()$/;"	f	class:MeasPdfPos
 ~MeasPdfVector	human_filter/src/measmodel_vector.cpp	/^MeasPdfVector::~MeasPdfVector()$/;"	f	class:MeasPdfVector
 ~PeopleTrackingNode	human_filter/src/people_tracking_node.cpp	/^PeopleTrackingNode::~PeopleTrackingNode()$/;"	f	class:estimation::PeopleTrackingNode
+~SampleSet	human_filter/include/laser_processor.h	/^    ~SampleSet() { clear(); }$/;"	f	class:laser_processor::SampleSet
+~SampleSet	srs_leg_detector/src/laser_processor.h	/^    ~SampleSet() { clear(); }$/;"	f	class:laser_processor::SampleSet
+~ScanProcessor	human_filter/src/laser_processor.cpp	/^ScanProcessor::~ScanProcessor()$/;"	f	class:ScanProcessor
+~ScanProcessor	srs_leg_detector/src/laser_processor.cpp	/^ScanProcessor::~ScanProcessor()$/;"	f	class:ScanProcessor
 ~StatePosVel	human_filter/include/people_tracking_filter/state_pos_vel.h	/^  ~StatePosVel() {};$/;"	f	class:BFL::StatePosVel
 ~SysModelPosVel	human_filter/include/people_tracking_filter/sysmodel_pos_vel.h	/^  ~SysModelPosVel()$/;"	f	class:BFL::SysModelPosVel
 ~SysModelVector	human_filter/include/people_tracking_filter/sysmodel_vector.h	/^  ~SysModelVector()$/;"	f	class:BFL::SysModelVector

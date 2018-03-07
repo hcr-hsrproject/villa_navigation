@@ -27,9 +27,6 @@
 
 #include <algorithm>
 
-//#include "actionlib/client/simple_action_client.h" - prevously used to pause the DM no longer needed
-//#include "srs_decision_making/ExecutionAction.h"
-
 #include <tf/transform_broadcaster.h>
 #include "nav_msgs/OccupancyGrid.h"
 #include "nav_msgs/GetMap.h"
@@ -530,7 +527,6 @@ string scan_topic = "hsrb/base_scan";
 class LegDetector
 {
  
- 
  bool pauseSent;
  int counter;
 
@@ -576,7 +572,6 @@ public:
     //TODO : dynamic_reconfigure
     //dynamic_reconfigure::Server<human_filter::LegDetectionConfig> server_;
     // topics
-    //
 
 	message_filters::Subscriber<people_msgs::PositionMeasurementArray> people_sub_;
 	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;
@@ -597,7 +592,8 @@ public:
 		nh_(nh),
 		mask_count_(0),
 		next_p_id_(0),
-		connected_thresh_(0.06),
+		connected_thresh_(0.07),
+        leg_reliability_limit_(-0.100),
 		feat_count_(0),
         laser_sub_(nh_,scan_topic,10),
 		laser_notifier_(laser_sub_,tfl_,fixed_frame,10)
@@ -635,14 +631,15 @@ public:
         //dynamic_reconfigure::Server<human_filter::LegDetectionConfig>::CallbackType f;
         //f = boost::bind(&LegDetector::configure, this, _1, _2);
         //server_.setCallback(f);
+        
+
+        publish_legs_           = true;
+        publish_people_         = true;
+        publish_leg_markers_    = true;
+        publish_vel_markers_    = true;
+        publish_people_markers_ = true; 
 
 		feature_id_ = 0;
-
-        // advertise topics
-        //    leg_cloud_pub_ = nh_.advertise<sensor_msgs::PointCloud>("kalman_filt_cloud",10);
-        //
-        //services
-        //service_server_detect_legs_ = nh_.advertiseService("detect_legs", &LegDetector::detectLegsCallback, this);
 
         //map_msgs
         nav_msgs::OccupancyGrid::ConstPtr dyn_msg = ros::topic::waitForMessage<nav_msgs::OccupancyGrid>("/dynamic_obstacle_map_ref");
@@ -710,27 +707,6 @@ public:
     //}
 
 
-
-    // alerts when the distance is bigger that a specified treshold              
-    //void measure_distance (double dist) {  
-        //printf ("Distance %f \n" , dist);  // the distance to the detected human
-
-        //mk
-        // distance_msg.distance = dist*100;
-        // human_distance_pub_.publish(distance_msg);
-
-        //if ( !pauseSent && dist < det_dist__for_pause )
-        //{
-            //printf ("Local user too close ! Sending Pause ActionLibGoal to the server. Waiting for Action server responce \n"); 
-            //sendActionLibGoalPause();
-        //} 
-        //else if ( dist > det_dist__for_resume && pauseSent ) {
-            //printf ("Local user is far away now ! Sending Resume ActionLibGoal to the server. Waiting for Action server responce \n"); 
-            //sendActionLibGoalResume();
-        //}
-    //}
-
-// ac
 //mk
 	void peopleCallback(const people_msgs::PositionMeasurementArray::ConstPtr& people_meas)
 	{
@@ -873,17 +849,18 @@ public:
 	}
 
 
-	void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
-	{
-		ScanProcessor processor(*scan, mask_);
-		processor.splitConnected(connected_thresh_);
-		processor.removeLessThan(5);
-#if CV_MAJOR_VERSION == 2
-		CvMat* tmp_mat = cvCreateMat(1,feat_count_,CV_32FC1);
-#else
-// OpenCV 3
-		cv::Mat tmp_mat = cv::Mat(1, feat_count_, CV_32FC1);
-#endif
+	 void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
+	{ 
+        geometry_msgs::Point32 pt_temp; // used in building the detected_legs vector
+        //detected_legs.clear(); //to be ready for the new detections
+        float map_value;
+
+        ScanProcessor processor(*scan, mask_);
+        processor.splitConnected(connected_thresh_);
+        processor.removeLessThan(5);
+
+        // OpenCV 3
+        cv::Mat tmp_mat = cv::Mat(1, feat_count_, CV_32FC1);
 
 		// if no measurement matches to a tracker in the last <no_observation_timeout>  seconds: erase tracker
 		ros::Time purge = scan->header.stamp + ros::Duration().fromSec(-no_observation_timeout_s);
@@ -898,7 +875,6 @@ public:
 				++sf_iter;
 		}
 
-
 		// System update of trackers, and copy updated ones in propagate list
 		list<SavedFeature*> propagated;
 		for (list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
@@ -908,6 +884,7 @@ public:
 			propagated.push_back(*sf_iter);
 		}
 
+        printf("I am here 5\n");
 		// Detection step: build up the set of "candidate" clusters
 		// For each candidate, find the closest tracker (within threshold) and add to the match list
 		// If no tracker is found, start a new one
@@ -927,6 +904,7 @@ public:
 				forest->predict(tmp_mat, cv::noArray(), cv::ml::RTrees::PREDICT_SUM) /
 				forest->getRoots().size();
 
+            printf("probablity: %f",probability);
 			Stamped<Point> loc((*i)->center(), scan->header.stamp, scan->header.frame_id);
 			try {
 				tfl_.transformPoint(fixed_frame, loc, loc);
@@ -949,8 +927,11 @@ public:
 			// Nothing close to it, start a new track
 			if (closest == propagated.end()){
 				list<SavedFeature*>::iterator new_saved = saved_features_.insert(saved_features_.end(), new SavedFeature(loc, tfl_));
+                printf("add new tracker\n");
 			}else // Add the candidate, the tracker and the distance to a match list
 				matches.insert(MatchedFeature(*i,*closest,closest_dist,probability));
+
+                  printf("closest tracker found\n");
 		}
 
 		// loop through _sorted_ matches list
@@ -973,6 +954,7 @@ public:
 					// Update the tracker with the candidate location
 					matched_iter->closest_->update(loc, matched_iter->probability_);
 
+                    printf("upadatedx closest tracker\n");
 					// remove this match and
 					matches.erase(matched_iter);
 					propagated.erase(pf_iter++);
@@ -986,6 +968,7 @@ public:
 			// didn't find tracker to update, because it was deleted above
 			// try to assign the candidate to another tracker
 			if (!found){
+                    printf("didn't find tracker\n");
 				Stamped<Point> loc(matched_iter->candidate_->center(), scan->header.stamp, scan->header.frame_id);
 				try {
 					tfl_.transformPoint(fixed_frame, loc, loc);
@@ -1022,6 +1005,7 @@ public:
 		vector<people_msgs::PositionMeasurement> people;
 		vector<people_msgs::PositionMeasurement> legs;
 
+        printf("size of savedFeature:%d", saved_features_.size());
 		for (list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
 				sf_iter != saved_features_.end(); sf_iter++,i++){
 			// reliability

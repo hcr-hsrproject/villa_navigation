@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(human_filter)
 
 SET(LEGSOURCES src/laser_processor.cpp src/srs_leg_detector.cpp src/calc_leg_features.cpp)
+SET(BACKUP_LEGSOURCES src/laser_processor.cpp src/backup_srs_leg_detector.cpp src/calc_leg_features.cpp)
 
 # Look for bfl (Bayesian Filtering Library)
 find_package(PkgConfig)
@@ -105,9 +106,9 @@ add_library(human_filter
             src/sysmodel_vector.cpp
             src/measmodel_pos.cpp
             src/measmodel_vector.cpp
-	          src/tracker_particle.cpp 
-	          src/tracker_kalman.cpp 
-	          src/detector_particle.cpp           
+            src/tracker_particle.cpp 
+            src/tracker_kalman.cpp 
+            src/detector_particle.cpp           
 )
 
 ## Declare a cpp executable
@@ -119,6 +120,10 @@ add_executable(follow_service_test src/service_test.cpp)
 add_executable(srs_leg_detector ${LEGSOURCES})
 target_link_libraries(srs_leg_detector human_filter ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${BFL_LIBRARIES} ${Boost_LIBRARIES} ${orocos_kdl_LIBRARIES})
 add_dependencies(srs_leg_detector ${catkin_EXPORTED_TARGETS})
+
+add_executable(backup_srs_leg_detector ${BACKUP_LEGSOURCES})
+target_link_libraries(backup_srs_leg_detector human_filter ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${BFL_LIBRARIES} ${Boost_LIBRARIES} ${orocos_kdl_LIBRARIES})
+add_dependencies(backup_srs_leg_detector ${catkin_EXPORTED_TARGETS})
 
 
 
@@ -169,6 +174,13 @@ install(TARGETS srs_leg_detector
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+#install(TARGETS backup_srs_leg_detector
+  #ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  #LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  #RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
+
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
