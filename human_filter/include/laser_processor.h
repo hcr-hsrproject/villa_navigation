@@ -47,6 +47,7 @@
 #include "sensor_msgs/LaserScan.h"
 #include "sensor_msgs/PointCloud.h"
 #include "geometry_msgs/Point.h"
+#include "geometry_msgs/PoseArray.h"
 
 #include <list>
 #include <set>
@@ -159,14 +160,15 @@ public:
 
     std::list<SampleSet*>& getClusters() { return clusters_; }
 
-    ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, float mask_threshold = 0.03);
-    ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, Background& background_ , float mask_threshold = 0.03 , float background_treshhold = 0.03);
+    ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, float mask_threshold = 0.05);
+    ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_, Background& background_ , float mask_threshold = 0.05 , float background_treshhold = 0.03);
 
     ~ScanProcessor();
 
     void removeLessThan(uint32_t num);
 
     void splitConnected(float thresh);
+    void filterwithPosesarrary(geometry_msgs::PoseArray poses);
   };
 };
 

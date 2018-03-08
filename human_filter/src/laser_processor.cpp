@@ -49,7 +49,13 @@ Sample* Sample::Extract(int ind, const sensor_msgs::LaserScan& scan)
   s->x = cos( scan.angle_min + ind*scan.angle_increment ) * s->range;
   s->y = sin( scan.angle_min + ind*scan.angle_increment ) * s->range;
   if (s->range > scan.range_min && s->range < scan.range_max)
-    return s;
+      if(s->range <2.5)
+          return s;
+      else
+      {
+          delete s;
+          return NULL;
+      } 
   else
   {
     delete s;
@@ -222,8 +228,10 @@ bool ScanMask::hasSample(Sample* s, float thresh)
   {
     SampleSet::iterator m = mask_.find(s);
     if ( m != mask_.end())
-      if ( s-> range > 25.8 || (((*m)->range - thresh) < s->range) )
+      if (((*m)->range - thresh) < s->range )
         return true;
+      //if ( s-> range > 25.8 || (((*m)->range - thresh) < s->range) )
+        //return true;
   }
   return false;
 }
@@ -324,6 +332,24 @@ ScanProcessor::removeLessThan(uint32_t num)
   list<SampleSet*>::iterator c_iter = clusters_.begin();
   while (c_iter != clusters_.end())
   {
+    if ( (*c_iter)->size() < num )
+    {
+      delete (*c_iter);
+      clusters_.erase(c_iter++);
+    } else {
+      ++c_iter;
+    }
+  }
+}
+
+void
+ScanProcessor::filterwithPosesarrary(geometry_msgs::PoseArray poses)
+{
+
+  list<SampleSet*>::iterator c_iter = clusters_.begin();
+  while (c_iter != clusters_.end())
+  {
+
     if ( (*c_iter)->size() < num )
     {
       delete (*c_iter);
