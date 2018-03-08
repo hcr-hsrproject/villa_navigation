@@ -343,14 +343,16 @@ ScanProcessor::removeLessThan(uint32_t num)
 }
 
 void
-ScanProcessor::filterwithPosesarrary(geometry_msgs::PoseArray poses)
+ScanProcessor::filterwithPosesarrary(geometry_msgs::PoseArray poses_array)
 {
 
+  int num_poses = poses_array.poses.size();
   list<SampleSet*>::iterator c_iter = clusters_.begin();
+  //should compare cluster and poses_array
   while (c_iter != clusters_.end())
   {
 
-    if ( (*c_iter)->size() < num )
+    if ( (*c_iter)->size() < num_poses)
     {
       delete (*c_iter);
       clusters_.erase(c_iter++);
