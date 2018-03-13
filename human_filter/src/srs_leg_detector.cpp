@@ -52,7 +52,9 @@ static const double max_meas_jump_m          = 0.75; //0.75; // 1.0
 static const double leg_pair_separation_m    = 0.35; //previos 0.5 mkmk
 //static const string fixed_frame              = "odom_combined";
 static const string fixed_frame              = "/map";
-static const string laser_frame              = "/base_range_sensor_link";
+static const string GLOBAL_FRAME              = "map";
+static const string laser_frame              = "base_range_sensor_link";
+static const string LASER_FRAME             = "base_range_sensor_link";
 static double cov_meas_legs_m          = 0.025;
 static double cov_meas_people_m        = 0.025;
 
@@ -585,6 +587,7 @@ public:
     vector<geometry_msgs::Point32> detected_legs;
     vector<geometry_msgs::Point> edge_legs;
     //geometry_msgs::PoseArray edge_legposes;
+    geometry_msgs::PoseStamped temp_leg_transformed_pose;
 
 	LegDetector(ros::NodeHandle nh):
 		nh_(nh),
@@ -795,7 +798,7 @@ public:
 		}
 
 
-		PRINT_LIST(saved_people_, "LIST saved_people ::  ");
+		//PRINT_LIST(saved_people_, "LIST saved_people ::  ");
 		//publish data
 
 		int i = 0;
@@ -850,46 +853,89 @@ public:
 
 	 //void edge_leg_Callback(const sensor_msgs::LaserScan::ConstPtr& scan)
 
-     void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
+    void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
      {
-         ROS_INFO("leg_callback");
-         //edge_legposes =(*msg);
+
+         //tf::StampedTransform transform_sensor_base;
+         //tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(1.0));
+         //tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
          //edge_legs.clear();
+
          //int num_leg_detected = msg->poses.size(); 
          //for(int i(0);i<num_leg_detected;i++){
 
+             //geometry_msgs::PoseStamped temp_leg_pose;
+             //temp_leg_pose.pose = msg->poses[i];
+             //temp_leg_pose.header.stamp=ros::Time::now();
+             //temp_leg_pose.header.frame_id=LASER_FRAME;
 
-             //Stamped<Point> leg_candidate(tf::Point(msg->poses[i].position.x,msg->poses[i].position.y,
-                         //0.0), ros::Time(), laser_frame);
-             //try {
-                 //tfl_.transformPoint(fixed_frame, leg_candidate, leg_candidate);
+             //try{
+
+                 //tfl_.lookupTransform(LASER_FRAME,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
+                 //tfl_.transformPose(GLOBAL_FRAME, temp_leg_pose,  temp_leg_transformed_pose);
+                 //temp_leg_transformed_pose.header.stamp=ros::Time::now();
+                 //temp_leg_transformed_pose.header.frame_id=GLOBAL_FRAME;
              //} catch(...) {
                  //ROS_WARN("TF exception spot 1.");
              //}
 
              //geometry_msgs::Point tmp_point;
-             //tmp_point.x=static_cast<double>(leg_candidate.x());
-             //tmp_point.y=static_cast<double>(leg_candidate.y());
-             //tmp_point.z=1.0;
-             
+             //tmp_point.x = temp_leg_transformed_pose.pose.position.x;
+             //tmp_point.y = temp_leg_transformed_pose.pose.position.y;
+             //tmp_point.z=0.0;
+
              //edge_legs.push_back(tmp_point);
 
          //}
          //printf("size edge_leg : %d \n", static_cast<int>(edge_legs.size()));
 
-    
-     
      }
+    
+//original callback using transform point
+     //void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
+     //{
+
+       //  //ROS_INFO("leg_callback";
+       //  //edge_legposes =(*msg);
+         
+         //edge_legs.clear();
+         //int num_leg_detected = msg->poses.size(); 
+         //for(int i(0);i<num_leg_detected;i++){
+
+         //Stamped<Point> leg_candidate(tf::Point(msg->poses[i].position.x,msg->poses[i].position.y,
+         //0.0), ros::Time(), laser_frame);
+         //Stamped<Point> temp_point;
+         //try {
+         //tfl_.transformPoint(fixed_frame, leg_candidate, temp_point);
+         //ROS_INFO("original x, y : %.3lf, %.3lf", leg_candidate.x(),leg_candidate.y());
+         //ROS_INFO("transform x, y : %.3lf, %.3lf", leg_candidate.x(),leg_candidate.y());
+         //} catch(...) {
+         //ROS_WARN("TF exception spot 1.");
+         //}
+
+         //geometry_msgs::Point tmp_point;
+         //tmp_point.x=static_cast<double>(leg_candidate.x());
+         //tmp_point.y=static_cast<double>(leg_candidate.y());
+         //tmp_point.z=0.0;
+
+         //edge_legs.push_back(tmp_point);
+
+         //}
+         //printf("size edge_leg : %d \n", static_cast<int>(edge_legs.size()));
+
+     //}
 
 	 void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
 	{ 
+        std::cout<< scan->header.frame_id<<std::endl;
         //geometry_msgs::Point32 pt_temp; // used in building the detected_legs vector
         //detected_legs.clear(); //to be ready for the new detections
         //float map_value;
-
+        //
         ScanProcessor processor(*scan, mask_);
         processor.splitConnected(connected_thresh_);
         processor.removeLessThan(5);
+        processor.filterwithPosesarray(edge_legs);
 
         // OpenCV 3
         cv::Mat tmp_mat = cv::Mat(1, feat_count_, CV_32FC1);
@@ -936,6 +982,7 @@ public:
                 forest->predict(tmp_mat, cv::noArray(), cv::ml::RTrees::PREDICT_SUM) /
                 forest->getRoots().size();
 
+            //printf("probablity: %f",probability);
             //printf("probablity: %f",probability);
             Stamped<Point> loc((*i)->center(), scan->header.stamp, scan->header.frame_id);
             try {

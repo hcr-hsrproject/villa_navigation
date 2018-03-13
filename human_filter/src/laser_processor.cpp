@@ -343,25 +343,92 @@ ScanProcessor::removeLessThan(uint32_t num)
 }
 
 void
-ScanProcessor::filterwithPosesarrary(geometry_msgs::PoseArray poses_array)
+ScanProcessor::filterwithPosesarray(const geometry_msgs::PoseArray poses_array)
 {
 
   int num_poses = poses_array.poses.size();
   list<SampleSet*>::iterator c_iter = clusters_.begin();
+
+  static const string laser_frame = "/base_range_sensor_link";
+
+  //if(pose)
   //should compare cluster and poses_array
   while (c_iter != clusters_.end())
   {
+    double dist =0.0;
+   for(size_t i=0;i<num_poses; i++) 
+   {
 
-    if ( (*c_iter)->size() < num_poses)
-    {
-      delete (*c_iter);
-      clusters_.erase(c_iter++);
-    } else {
-      ++c_iter;
-    }
+       tf::Point temp_center =(*c_iter)->center();
+       //ROS_INFO("point x: %.3lf, y: %.3lf",(double)temp_center.x,(double)temp_center.y);
+       std::cout<<temp_center.x() <<","<<temp_center.y()<<std::endl;
+
+       tf::Point temp_pose(poses_array.poses[i].position.x,poses_array.poses[i].position.y,0.0);
+
+       float dist = temp_pose.distance(temp_pose);
+       ROS_INFO("distance to target %.3lf",dist);
+       
+       //geometry_msgs::Point32 point;
+       //point.x = (*sample_iter)->x;
+       //point.y = (*sample_iter)->y;
+       //point.z = 0;
+       
+   }
+
+   //if there 
+    //if ( !uuuuuuuuuuuuuses)
+    //{
+      //delete (*c_iter);
+      //clusters_.erase(c_iter++);
+    //} else {
+      //++c_iter;
+    //}
   }
 }
 
+void
+ScanProcessor::filterwithPosesarray(const vector<geometry_msgs::Point> poses_array)
+{
+  float seperation_treshold =0.3;
+  int num_poses = poses_array.size();
+  list<SampleSet*>::iterator c_iter = clusters_.begin();
+
+  bool IsClose = false;
+  //static const string laser_frame = "/base_range_sensor_link";
+
+  if(poses_array.size()>0){
+  //should compare cluster and poses_array
+      while (c_iter != clusters_.end())
+      {
+          double dist =0.0;
+          for(size_t i=0;i<num_poses; i++) 
+          {
+
+              tf::Point temp_center =(*c_iter)->center();
+              std::cout<<temp_center.x() <<","<<temp_center.y()<<std::endl;
+
+              tf::Point temp_pose(poses_array[i].x,poses_array[i].y,0.0);
+
+              float dist = temp_pose.distance(temp_pose);
+              ROS_INFO("distance to target %.3lf",dist);
+
+              if(dist < seperation_treshold) 
+                  IsClose = true;
+
+          }
+
+          if (IsClose)
+          {
+              ++c_iter;
+
+          } else {
+              delete (*c_iter);
+              clusters_.erase(c_iter++);
+          }
+
+      }
+  }
+}
 
 void
 ScanProcessor::splitConnected(float thresh)
