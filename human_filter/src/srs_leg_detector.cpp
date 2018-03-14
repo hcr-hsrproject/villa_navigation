@@ -588,6 +588,9 @@ public:
     vector<geometry_msgs::Point> edge_legs;
     //geometry_msgs::PoseArray edge_legposes;
     geometry_msgs::PoseStamped temp_leg_transformed_pose;
+    geometry_msgs::PoseStamped temp_loc_transformed_pose;
+
+    tf::StampedTransform transform_sensor_base;
 
 	LegDetector(ros::NodeHandle nh):
 		nh_(nh),
@@ -619,8 +622,10 @@ public:
         people_pub_ = nh_.advertise<people_msgs::People_v2>("people",0);
         markers_pub_ = nh_.advertise<visualization_msgs::Marker>("visualization_marker", 20);
 
+        //laser_notifier_.
         laser_notifier_.registerCallback(boost::bind(&LegDetector::laserCallback, this, _1));
         laser_notifier_.setTolerance(ros::Duration(0.01));
+        laser_notifier_.setTargetFrame(fixed_frame);
         
         people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
@@ -856,39 +861,38 @@ public:
     void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
      {
 
-         //tf::StampedTransform transform_sensor_base;
-         //tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(1.0));
-         //tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
-         //edge_legs.clear();
+         tf::StampedTransform transform_sensor;
+         tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(1.0));
+         edge_legs.clear();
 
-         //int num_leg_detected = msg->poses.size(); 
-         //for(int i(0);i<num_leg_detected;i++){
+         int num_leg_detected = msg->poses.size(); 
+         for(int i(0);i<num_leg_detected;i++){
 
-             //geometry_msgs::PoseStamped temp_leg_pose;
-             //temp_leg_pose.pose = msg->poses[i];
-             //temp_leg_pose.header.stamp=ros::Time::now();
-             //temp_leg_pose.header.frame_id=LASER_FRAME;
+             geometry_msgs::PoseStamped temp_leg_pose;
+             temp_leg_pose.pose = msg->poses[i];
+             temp_leg_pose.header.stamp=ros::Time::now();
+             temp_leg_pose.header.frame_id=LASER_FRAME;
 
-             //try{
+             try{
 
-                 //tfl_.lookupTransform(LASER_FRAME,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
-                 //tfl_.transformPose(GLOBAL_FRAME, temp_leg_pose,  temp_leg_transformed_pose);
-                 //temp_leg_transformed_pose.header.stamp=ros::Time::now();
-                 //temp_leg_transformed_pose.header.frame_id=GLOBAL_FRAME;
-             //} catch(...) {
-                 //ROS_WARN("TF exception spot 1.");
-             //}
+                 tfl_.lookupTransform(LASER_FRAME,GLOBAL_FRAME, ros::Time(1.0), transform_sensor);
+                 tfl_.transformPose(GLOBAL_FRAME, temp_leg_pose,  temp_leg_transformed_pose);
+                 temp_leg_transformed_pose.header.stamp=ros::Time::now();
+                 temp_leg_transformed_pose.header.frame_id=GLOBAL_FRAME;
+             } catch(...) {
+                 ROS_WARN("TF exception spot 1.");
+             }
 
-             //geometry_msgs::Point tmp_point;
-             //tmp_point.x = temp_leg_transformed_pose.pose.position.x;
-             //tmp_point.y = temp_leg_transformed_pose.pose.position.y;
-             //tmp_point.z=0.0;
+             geometry_msgs::Point tmp_point;
+             tmp_point.x = temp_leg_transformed_pose.pose.position.x;
+             tmp_point.y = temp_leg_transformed_pose.pose.position.y;
+             tmp_point.z=0.0;
 
-             //edge_legs.push_back(tmp_point);
+             edge_legs.push_back(tmp_point);
 
-         //}
-         //printf("size edge_leg : %d \n", static_cast<int>(edge_legs.size()));
-
+         }
+         printf("size edge_leg : %d \n", static_cast<int>(edge_legs.size()));
+         tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(2.0));
      }
     
 //original callback using transform point
@@ -930,7 +934,7 @@ public:
         std::cout<< scan->header.frame_id<<std::endl;
         //geometry_msgs::Point32 pt_temp; // used in building the detected_legs vector
         //detected_legs.clear(); //to be ready for the new detections
-        //float map_value;
+        //
         //
         ScanProcessor processor(*scan, mask_);
         processor.splitConnected(connected_thresh_);
@@ -962,7 +966,6 @@ public:
             propagated.push_back(*sf_iter);
         }
 
-        //printf("I am here 5\n");
         // Detection step: build up the set of "candidate" clusters
         // For each candidate, find the closest tracker (within threshold) and add to the match list
         // If no tracker is found, start a new one
@@ -981,16 +984,45 @@ public:
             float probability = 0.5 -
                 forest->predict(tmp_mat, cv::noArray(), cv::ml::RTrees::PREDICT_SUM) /
                 forest->getRoots().size();
-
+            
             //printf("probablity: %f",probability);
+            
+            //tf::StampedTransform transform_sensor_base;
+            //********************************************
+            //geometry_msgs::PoseStamped loc_pose;
+            //loc_pose.header=scan->header;
+            //loc_pose.header.stamp=ros::Time::now();
+            //loc_pose.pose.position.x =(*i)->center().x();
+            //loc_pose.pose.position.y =(*i)->center().y();
+            //loc_pose.pose.position.z =(*i)->center().z();
+            //loc_pose.pose.orientation.x =0.0;
+            //loc_pose.pose.orientation.y =0.0;
+            //loc_pose.pose.orientation.z =0.0;
+            //loc_pose.pose.orientation.w =1.0;
+
+            tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(1.0));
+            tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
+           // ********************************************
+
             //printf("probablity: %f",probability);
             Stamped<Point> loc((*i)->center(), scan->header.stamp, scan->header.frame_id);
             try {
-                tfl_.transformPoint(fixed_frame, loc, loc);
+            //********************************************
+                //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
+                //tfl_.transformPose (GLOBAL_FRAME, loc_pose,  temp_loc_transformed_pose) ;
+                //temp_loc_transformed_pose.header.stamp=ros::Time::now();
+                //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
+            //********************************************
+              tfl_.transformPoint(fixed_frame, loc,loc);
             } catch(...) {
                 ROS_WARN("TF exception spot 3.");
             }
 
+            //Stamped<Point> loc(tf::Point(temp_loc_transformed_pose.pose.position.x,
+                                                 //temp_loc_transformed_pose.pose.position.y,
+                                                 //temp_loc_transformed_pose.pose.position.z),
+                                                 //ros::Time(0), GLOBAL_FRAME);
+ 
             list<SavedFeature*>::iterator closest = propagated.end();
             float closest_dist = max_track_jump_m;
 
@@ -998,6 +1030,9 @@ public:
                     pf_iter != propagated.end();pf_iter++){
                 // find the closest distance between candidate and trackers
                 float dist = loc.distance((*pf_iter)->position_);
+            //********************************************
+                //float dist = getdistance(loc_pose.pose,(*pf_iter)->position_);
+            //********************************************
                 if ( dist < closest_dist ){
                     closest = pf_iter;
                     closest_dist = dist;
@@ -1014,8 +1049,6 @@ public:
         }
 
 
-
-
         // loop through _sorted_ matches list
         // find the match with the shortest distance for each tracker
         while (matches.size() > 0){
@@ -1026,13 +1059,46 @@ public:
                 // update the tracker with this candidate
                 if (matched_iter->closest_ == *pf_iter){
                     // Transform candidate to fixed frame
+                    //
+                    //********************************************
+                    //geometry_msgs::PoseStamped loc_pose;
+                    //loc_pose.header=scan->header;
+                    //loc_pose.header.frame_id=LASER_FRAME;
+                    //loc_pose.header.stamp=ros::Time::now();
+                    //loc_pose.pose.position.x =matched_iter->candidate_->center().x();
+                    //loc_pose.pose.position.y =matched_iter->candidate_->center().y();
+                    //loc_pose.pose.position.z =matched_iter->candidate_->center().z();
+                    //loc_pose.pose.orientation.x =0.0;
+                    //loc_pose.pose.orientation.y =0.0;
+                    //loc_pose.pose.orientation.z =0.0;
+                    //loc_pose.pose.orientation.w =1.0;
+                    //********************************************
+
+                    tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
+
                     Stamped<Point> loc(matched_iter->candidate_->center(), scan->header.stamp, scan->header.frame_id);
+
+                    //Stamped<Point> tmp_loc;
                     try {
                         tfl_.transformPoint(fixed_frame, loc, loc);
+                        //********************************************
+                        //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
+                        //tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
+                        //tfl_.transformPose (GLOBAL_FRAME, loc_pose,  temp_loc_transformed_pose) ;
+                        //temp_loc_transformed_pose.header.stamp=ros::Time::now();
+                        //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
+                        //********************************************
                     } catch(...) {
                         ROS_WARN("TF exception spot 4.");
                     }
 
+                    //********************************************
+                    //Stamped<Point> loc(tf::Point(temp_loc_transformed_pose.pose.position.x,
+                                                 //temp_loc_transformed_pose.pose.position.y,
+                                                 //temp_loc_transformed_pose.pose.position.z),
+                                                 //ros::Time(0), GLOBAL_FRAME);
+                    //********************************************
+                    //
                     // Update the tracker with the candidate location
                     matched_iter->closest_->update(loc, matched_iter->probability_);
 
@@ -1051,12 +1117,45 @@ public:
             // try to assign the candidate to another tracker
             if (!found){
                 //printf("didn't find tracker\n");
+                //
+                //********************************************
+                //geometry_msgs::PoseStamped loc_pose;
+                //loc_pose.header=scan->header;
+                //loc_pose.header.frame_id=LASER_FRAME;
+                //loc_pose.header.stamp=ros::Time::now();
+                //loc_pose.pose.position.x =matched_iter->candidate_->center().x();
+                //loc_pose.pose.position.y =matched_iter->candidate_->center().y();
+                //loc_pose.pose.position.z =matched_iter->candidate_->center().z();
+                //loc_pose.pose.orientation.x =0.0;
+                //loc_pose.pose.orientation.y =0.0;
+                //loc_pose.pose.orientation.z =0.0;
+                //loc_pose.pose.orientation.w =1.0;
+                //********************************************
+
+                tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
                 Stamped<Point> loc(matched_iter->candidate_->center(), scan->header.stamp, scan->header.frame_id);
+
+                //Stamped<Point> loc(matched_iter->candidate_->center(), scan->header.stamp, scan->header.frame_id);
                 try {
                     tfl_.transformPoint(fixed_frame, loc, loc);
+                    //********************************************
+                    //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
+                    //tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
+                    //tfl_.transformPose (GLOBAL_FRAME, loc_pose,  temp_loc_transformed_pose) ;
+                    //temp_loc_transformed_pose.header.stamp=ros::Time::now();
+                    //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
+                    //********************************************
                 } catch(...) {
                     ROS_WARN("TF exception spot 5.");
                 }
+
+                //********************************************
+                //Stamped<Point> loc(tf::Point(temp_loc_transformed_pose.pose.position.x,
+                                                 //temp_loc_transformed_pose.pose.position.y,
+                                                 //temp_loc_transformed_pose.pose.position.z),
+                                                 //ros::Time(0), GLOBAL_FRAME);
+                //********************************************
+
                 list<SavedFeature*>::iterator closest = propagated.end();
                 float closest_dist = max_track_jump_m;
 
@@ -1199,7 +1298,8 @@ public:
                         try
                         {
                             br_.sendTransform(tf::StampedTransform(person, time,
-                                        "/base_link" , pos.name.c_str()));
+                                        "/map" , pos.name.c_str()));
+                                        //"/base_link" , pos.name.c_str()));
                         }catch (tf::TransformException ex){
                             ROS_ERROR("Broadcaster unavailable %s", ex.what());
                         }
@@ -1291,6 +1391,14 @@ public:
     double distance( list<SavedFeature*>::iterator it1,  list<SavedFeature*>::iterator it2)
     {
         Stamped<Point> one = (*it1)->position_, two = (*it2)->position_;
+        double dx = one[0]-two[0], dy = one[1]-two[1], dz = one[2]-two[2];
+        return sqrt(dx*dx+dy*dy+dz*dz);
+    }
+
+    double getdistance(geometry_msgs::Pose pose1 , Stamped<Point> pose2)
+    {
+        tf::Point one(pose1.position.x,pose1.position.y,pose1.position.z);
+        Stamped<Point> two = pose2;
         double dx = one[0]-two[0], dy = one[1]-two[1], dz = one[2]-two[2];
         return sqrt(dx*dx+dy*dy+dz*dz);
     }
