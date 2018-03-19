@@ -44,11 +44,14 @@
 
 #include <unistd.h>
 #include <math.h>
+#include <vector>
 #include "sensor_msgs/LaserScan.h"
 #include "sensor_msgs/PointCloud.h"
 #include "geometry_msgs/Point.h"
 #include "geometry_msgs/PoseArray.h"
 
+#include "tf/transform_listener.h"
+#include <tf/transform_broadcaster.h>
 #include <list>
 #include <set>
 #include <vector>
@@ -149,8 +152,6 @@ public:
     bool hasSample(Sample* s, float thresh);
   };
 
-
-
   class ScanProcessor
   {
     std::list<SampleSet*> clusters_;
@@ -168,7 +169,8 @@ public:
     void removeLessThan(uint32_t num);
 
     void splitConnected(float thresh);
-    void filterwithPosesarrary(geometry_msgs::PoseArray poses);
+    void filterwithPosesarray(const geometry_msgs::PoseArray poses);
+    void filterwithPosesarray(const std::vector<geometry_msgs::Point> poses);
   };
 };
 
