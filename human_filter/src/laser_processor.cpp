@@ -351,7 +351,6 @@ ScanProcessor::filterwithPosesarrary(geometry_msgs::PoseArray poses_array)
   //should compare cluster and poses_array
   while (c_iter != clusters_.end())
   {
-
     if ( (*c_iter)->size() < num_poses)
     {
       delete (*c_iter);
