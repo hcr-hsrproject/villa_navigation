@@ -66,6 +66,7 @@ Edgeleg_manager::Edgeleg_manager(ros::NodeHandle nh)
   // initialize
   // advertise filter output
   Leg_boxes_pub=nh_.advertise<visualization_msgs::MarkerArray>("/filtered_leg_target", 10);
+  Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/filtered_leg_poses", 10);
   human_target_pub=nh_.advertise<visualization_msgs::Marker>("/leg_target", 10);
   filtered_human_target_pub=nh_.advertise<visualization_msgs::Marker>("/filtered_target", 10);
   people_measurement_pub_ = nh_.advertise<people_msgs::PositionMeasurement>("people_tracker_measurements", 10);
@@ -162,8 +163,8 @@ void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr
           if(check_staticObs(tempVec[0],tempVec[1]))
             continue;
 
-          if(!check_cameraregion(tempVec[0],tempVec[1]))
-            continue;
+          //if(!check_cameraregion(tempVec[0],tempVec[1]))
+            //continue;
 
             // std::cout<<"here 1"<<std::endl;
            //distance check between two candidates!
@@ -171,7 +172,7 @@ void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr
               bool IsNearfromRobot= false;
               for(int j(0);j<Cur_leg_human.size();j++)
                 {
-                  if(Comparetwopoistions(tempVec,Cur_leg_human[j],0.65))
+                  if(Comparetwopoistions(tempVec,Cur_leg_human[j],0.4))
                     IsFarEnough=false;
                 }
               
@@ -857,25 +858,50 @@ void Edgeleg_manager::human_yolo_callback(const visualization_msgs::MarkerArray:
 
     for(int i(0);i<num_of_detected_human;i++)
     {
-      geometry_msgs::Vector3Stamped gV, tV;
+      //geometry_msgs::Vector3Stamped gV, tV;
 
-      gV.vector.x = msg->markers[i].pose.position.x;
-      gV.vector.y = msg->markers[i].pose.position.y;
-      gV.vector.z = msg->markers[i].pose.position.z;
+      //gV.vector.x = msg->markers[i].pose.position.x;
+      //gV.vector.y = msg->markers[i].pose.position.y;
+      //gV.vector.z = msg->markers[i].pose.position.z;
 
-      // std::cout<<"x :"<<_x<<"_y:"<<_y<<"_z:"<<_z<<std::endl;
-      tf::StampedTransform maptransform;
-      listener.waitForTransform("head_rgbd_sensor_rgb_frame", "map", ros::Time(0), ros::Duration(1.0));
+       //std::cout<<"x :"<<_x<<"_y:"<<_y<<"_z:"<<_z<<std::endl;
+      //tf::StampedTransform maptransform;
+      //listener.waitForTransform("head_rgbd_sensor_rgb_frame", "map", ros::Time(0), ros::Duration(1.0));
               
-      gV.header.stamp = ros::Time();
-      gV.header.frame_id = "/head_rgbd_sensor_rgb_frame";
-      listener.transformVector(std::string("/map"), gV, tV);
-              
-      cur_yolo_people[i].resize(2,0.0);
-      cur_yolo_people[i][0]=tV.vector.x+global_pose[0];
-      cur_yolo_people[i][1]=tV.vector.y+global_pose[1];
+      //gV.header.stamp = ros::Time();
+      //gV.header.frame_id = "/head_rgbd_sensor_rgb_frame";
+      //listener.transformVector(std::string("/map"), gV, tV);
+      
+      //cur_yolo_people[i].resize(2,0.0);
+      //cur_yolo_people[i][0]=tV.vector.x+global_pose[0];
+      //cur_yolo_people[i][1]=tV.vector.y+global_pose[1];
+
+       double time_sec = 0.0;
+       geometry_msgs::PoseStamped poseInOriginCoords;
+       geometry_msgs::PoseStamped poseInTargetCoords;
+       //poseInTargetCoords.header.frame_id = target_frame;
+       poseInOriginCoords.header.frame_id = "head_rgbd_sensor_rgb_frame";
+       poseInOriginCoords.header.stamp= ros::Time::now();
+       poseInOriginCoords.pose = msg->markers[i].pose;
+      
+       try{
+           ROS_DEBUG("Transforming received position into map frame");
+           //listener.waitForTransform(poseInTargetCoords.header.frame_id, BASE_LINK, poseInTargetCoords.header.stamp, ros::Duration(3.0));
+           listener.waitForTransform("head_rgbd_sensor_rgb_frame", "map", ros::Time(0), ros::Duration(1.0));
+           listener.transformPose("map", ros::Time(0), poseInOriginCoords, poseInOriginCoords.header.frame_id, poseInTargetCoords);
+
+       }catch(tf::TransformException ex){
+       
+           ROS_WARN("Failed transform: %s", ex.what());
+           continue;
+       }
+
+       cur_yolo_people[i].resize(2,0.0);
+       cur_yolo_people[i][0]=poseInTargetCoords.pose.position.x;
+       cur_yolo_people[i][1]=poseInTargetCoords.pose.position.y;
+
    }
-   // ROS_INFO("yolo size");
+    //ROS_INFO("yolo size");
 
    // printf("size yolo : %d \n",cur_yolo_people.size());
 }
@@ -894,11 +920,28 @@ void Edgeleg_manager::publish_leg_boxes()
 
 
   human_leg_boxes_array.markers.clear();
+  human_leg_poses_array.poses.clear();
+
   if(Cur_leg_human.size()>0)
   {
     for(int i(0);i<Cur_leg_human.size();i++)
     {
+        //geometry_msgsr
+        geometry_msgs::Pose pose_human_leg;
+
+        pose_human_leg.position.x=Cur_leg_human[i][0];
+        pose_human_leg.position.y=Cur_leg_human[i][1];
+        pose_human_leg.position.z=0.5;
+        pose_human_leg.orientation.x=0.0;
+        pose_human_leg.orientation.y=0.0;
+        pose_human_leg.orientation.z=0.0;
+        pose_human_leg.orientation.w=1.0;
+        human_leg_poses_array.poses.push_back(pose_human_leg);
+        //human_leg_poses_array.header.stamp=ros::Time::now();
+
+        //visualization_marker
         visualization_msgs::Marker marker_human_leg;
+
         marker_human_leg.header.frame_id = "/map"; 
         marker_human_leg.header.stamp = ros::Time::now();
         marker_human_leg.ns = "/human_leg_boxes";
@@ -935,6 +978,9 @@ void Edgeleg_manager::publish_leg_boxes()
       }
 
       Leg_boxes_pub.publish(human_leg_boxes_array);
+      human_leg_poses_array.header.stamp=ros::Time::now();
+      human_leg_poses_array.header.frame_id="map";
+      Leg_poses_pub.publish(human_leg_poses_array);
   }
 }
 
@@ -990,7 +1036,7 @@ void Edgeleg_manager::spin()
     publish_cameraregion();
     publish_target();
     publish_filtered_target();
-    Publish_nav_target();
+    //Publish_nav_target();
     // ------ LOCKED ------
     boost::mutex::scoped_lock lock(filter_mutex_);
     lock.unlock();

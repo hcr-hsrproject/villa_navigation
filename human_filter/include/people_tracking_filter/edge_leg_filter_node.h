@@ -39,7 +39,7 @@
 #define FOVW 60       //field of view width
 #define MATH_PI 3.14159265359
 #define Target_Dist_person 1.0
-#define LASER_Dist_person  2.5
+#define LASER_Dist_person  3.0
 
 class Edgeleg_manager
 {
@@ -115,7 +115,9 @@ private:
   
 
   ros::Publisher Leg_boxes_pub;
+  ros::Publisher Leg_poses_pub;
   visualization_msgs::MarkerArray human_leg_boxes_array;
+  geometry_msgs::PoseArray human_leg_poses_array;
 
   // tf listener
   tf::TransformListener robot_state_;

@@ -91,22 +91,22 @@ int main(int argc, char **argv){
       // Copying to proper PoseArray data structure
       vector < geometry_msgs::Pose > HumanPoseVector;
       for( int K = 0; K < rec_x.size(); K++ ){
-      	geometry_msgs::Point HumanPoint;
-      	geometry_msgs::Quaternion HumanQuaternion;
-      	
-      	HumanPoint.x = rec_x[ K ];
-      	HumanPoint.y = rec_y[ K ];
-      	HumanPoint.z = 0; 
-      	
-      	HumanQuaternion.x = 0;//|-> Orientation is ignored
-      	HumanQuaternion.y = 0;//|
-      	HumanQuaternion.z = 0;//|
-      	HumanQuaternion.w = 1;//|
+          geometry_msgs::Point HumanPoint;
+          geometry_msgs::Quaternion HumanQuaternion;
 
-      	geometry_msgs::Pose HumanPose;
-      	HumanPose.position = HumanPoint;
-      	HumanPose.orientation= HumanQuaternion;
-      	HumanPoseVector.push_back( HumanPose );
+          HumanPoint.x = rec_x[ K ];
+          HumanPoint.y = rec_y[ K ];
+          HumanPoint.z = 0; 
+
+          HumanQuaternion.x = 0;//|-> Orientation is ignored
+          HumanQuaternion.y = 0;//|
+          HumanQuaternion.z = 0;//|
+          HumanQuaternion.w = 1;//|
+
+          geometry_msgs::Pose HumanPose;
+          HumanPose.position = HumanPoint;
+          HumanPose.orientation= HumanQuaternion;
+          HumanPoseVector.push_back( HumanPose );
       }
 
       // Header config
@@ -256,7 +256,7 @@ void LaserCallback (const sensor_msgs::LaserScan::ConstPtr& msg){
   HumanPose( &rec_x, &rec_y, Pattern_LA,  TYPE_LA,  flank_id0, flank_id1,  laser_x, laser_y);
   HumanPose( &rec_x, &rec_y, Pattern_FS1, TYPE_FS,  flank_id0, flank_id1,  laser_x, laser_y);
   HumanPose( &rec_x, &rec_y, Pattern_FS2, TYPE_FS,  flank_id0, flank_id1,  laser_x, laser_y);
-  HumanPose( &rec_x, &rec_y, Pattern_SL,  TYPE_SL,  flank_id0, flank_id1,  laser_x, laser_y);
+  //HumanPose( &rec_x, &rec_y, Pattern_SL,  TYPE_SL,  flank_id0, flank_id1,  laser_x, laser_y);
 }
 
 
