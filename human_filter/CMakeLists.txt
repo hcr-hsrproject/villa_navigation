@@ -114,6 +114,7 @@ add_library(human_filter
 ## Declare a cpp executable
 add_executable(kalman_tracker src/people_tracking_node.cpp)
 add_executable(edge_midfilter src/edge_leg_filter_node.cpp)
+add_executable(opleg_filter src/leg_op_filter_node.cpp)
 add_executable(follow_service_test src/service_test.cpp)
 
 
@@ -141,6 +142,8 @@ target_link_libraries(kalman_tracker human_filter ${catkin_LIBRARIES} ${Boost_LI
 target_link_libraries(edge_midfilter human_filter ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${BFL_LIBRARIES}
 )
 
+target_link_libraries(opleg_filter human_filter ${catkin_LIBRARIES}
+    ${Boost_LIBRARIES} ${BFL_LIBRARIES})
 
 target_link_libraries(follow_service_test human_filter ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${BFL_LIBRARIES})
 
@@ -163,6 +166,11 @@ install(TARGETS edge_midfilter
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+install(TARGETS opleg_filter
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 install(TARGETS follow_service_test
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
