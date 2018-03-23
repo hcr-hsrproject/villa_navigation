@@ -13,6 +13,8 @@
 #include <signal.h>
 #include <boost/thread/thread.hpp>
 #include <villa_navi_service/GoTargetPos.h>
+#include <XmlRpcValue.h>
+
 using namespace Eigen;
 
 bool g_caught_sigint=false;
@@ -38,11 +40,22 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
          
   villa_navi_srvice.setNavTarget_pub=n.advertise<move_base_msgs::MoveBaseActionGoal>("/move_base/move/goal",50,true);
-  villa_navi_srvice.Gaze_point_pub= n.advertise<geometry_msgs::Point>("/gazed_point_fixing_node/target_point", 50, true);
-  villa_navi_srvice.Gaze_activate_pub= n.advertise<std_msgs::Bool>("/gazed_point_fixing_node/activate", 50, true);
+
+  //n.getParam("goal_locations",)
+
+  //villa_navi_srvice.Gaze_point_pub= n.advertise<geometry_msgs::Point>("/gazed_point_fixing_node/target_point", 50, true);
+  //villa_navi_srvice.Gaze_activate_pub= n.advertise<std_msgs::Bool>("/gazed_point_fixing_node/activate", 50, true);
   
-  // global_pos_sub= n.subscribe<geometry_msgs::PoseStamped>("/global_pose", 10, &villa_navi_srv::global_pose_callback,&villa_navi_srvice);
-  // edge_leg_sub=n.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &villa_navi_srv::edge_leg_callback,&villa_navi_srvice);
+  //XmlRpc::XmlRpcValue goal_point;
+    //n.getParam("goal_locations", goal_point);
+    //ROS_ASSERT(goal_point.getType() == XmlRpc::XmlRpcValue::TypeStruct);
+    //ROS_INFO_STREAM("goal point in the map : " << goal_point);
+ 
+    //double x_map = goal_point["x"];
+    //double y_map = goal_point["y"];
+    //double t_map = goal_point["t"];
+
+
   ros::Rate loop_rate(50);
 
   ros::ServiceServer service = n.advertiseService("/navi_go_base",  &villa_navi_srv::goTarget,&villa_navi_srvice);

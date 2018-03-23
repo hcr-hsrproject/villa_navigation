@@ -1,8 +1,0 @@
-<launch>
-  <include file="$(find hsrb_gazebo_launch)/launch/include/hsrb_gazebo_common.xml" >
-    <arg name="map" value="$(find villa_navi_service)/maps/arena/map.yaml" />
-    <arg name="world_name" value="[Path to the world which you made]" />
-    <arg name="robot_pos" value="[Initial pose of the robot]" />
-    <arg name="use_laser_odom" value="false" />
-  </include>
-</launch>
