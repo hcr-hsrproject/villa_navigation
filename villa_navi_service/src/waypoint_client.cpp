@@ -77,45 +77,40 @@ public:
 
   }
 
+  void LoadPositionfromConfig(ros::NodeHandle n, std::string input_locations)
+  {
+
+      XmlRpc::XmlRpcValue input_loc;
+      std::string param_name = "villa_navi_service/" + input_locations;
+      n.getParam(param_name, input_loc);
+      std::vector<double> tmp_pos(3,0.0);
+      for(XmlRpc::XmlRpcValue::ValueStruct::const_iterator it = input_loc.begin(); it != input_loc.end(); ++it) {
+          ROS_INFO_STREAM("Loded "<< input_locations << "-" << (std::string)(it->first) << ",  " << input_loc[it->first]);
+
+          tmp_pos[0]=static_cast<double>(input_loc["x"]);
+          tmp_pos[1]=static_cast<double>(input_loc["y"]);
+          tmp_pos[2]=static_cast<double>(input_loc["t"]);
+      }
+
+      goal_maps[input_locations]=tmp_pos;
+  }
+
   void parseparameters(ros::NodeHandle n)
   {
-  
-      XmlRpc::XmlRpcValue goal_point;
-      n.getParam("villa_navi_service/goal_locations", goal_point);
-      ROS_ASSERT(goal_point.getType() == XmlRpc::XmlRpcValue::TypeStruct);
-      ROS_INFO_STREAM("goal point: " << goal_point);
+      //XmlRpc::XmlRpcValue ref_frame;
+      std::string target_frame;
+      n.getParam("villa_navi_service/ref_frame", target_frame);
+      //ROS_ASSERT(ref_frame.getType() == XmlRpc::XmlRpcValue::TypeStruct);
+      ROS_INFO_STREAM("reference frame: " << target_frame);
 
-      XmlRpc::XmlRpcValue mid_goal;
-      std::string mid_goal_str = "mid_goal";
-      n.getParam("villa_navi_service/mid_goal", mid_goal);
-      std::vector<double> tmp_pos(3,0.0);
-      for(XmlRpc::XmlRpcValue::ValueStruct::const_iterator it = mid_goal.begin(); it != mid_goal.end(); ++it) {
-          ROS_INFO_STREAM("Found midgoal: " << (std::string)(it->first) << ",  " << mid_goal[it->first]);
+      LoadPositionfromConfig(n,"door");
+      LoadPositionfromConfig(n,"goal");
+      LoadPositionfromConfig(n,"living_room");
+      LoadPositionfromConfig(n,"home_pos");
+      LoadPositionfromConfig(n,"corridor");
 
-          tmp_pos[0]=static_cast<double>(mid_goal["x"]);
-          tmp_pos[1]=static_cast<double>(mid_goal["y"]);
-          tmp_pos[2]=static_cast<double>(mid_goal["t"]);
-
-      }
-
-      goal_maps[mid_goal_str]=tmp_pos;
-
-      XmlRpc::XmlRpcValue living_room;
-      std::string livingroom_str = "living_room";
-      n.getParam("villa_navi_service/living_room", living_room);
-      //std::vector<double> tmp_pos2(3,0.0);
-      for(XmlRpc::XmlRpcValue::ValueStruct::const_iterator it = living_room.begin(); it != living_room.end(); ++it) {
-          ROS_INFO_STREAM("Found living_room: " << (std::string)(it->first) << ",  " << living_room[it->first]);
-
-          tmp_pos[0]=static_cast<double>(living_room["x"]);
-          tmp_pos[1]=static_cast<double>(living_room["y"]);
-          tmp_pos[2]=static_cast<double>(living_room["t"]);
-      }
-
-      goal_maps[livingroom_str]=tmp_pos;
-      
+      //print goalmaps
       std::map< std::string, std::vector<double> >::iterator goal_it = goal_maps.begin();
-
       for(goal_it ; goal_it!=goal_maps.end();goal_it++)
       {
           std::cout<<"goal: " <<  goal_it->first << ", positions: "
