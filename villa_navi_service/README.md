@@ -27,10 +27,6 @@ rosrun villa_navi_service client_test
 roslaunch Villa_navi_service service.launch
 ````
 
-````
-rosrun villa_navi_service waypoint_test
-````
-
 Publish rostopic msg 
 ````
 rostopic pub /way_point std_msgs/String "'data: door'"
