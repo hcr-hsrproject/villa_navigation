@@ -828,13 +828,12 @@ void MDPManager::global_pose_callback(const geometry_msgs::PoseStamped::ConstPtr
 	global_pose[0]=msg->pose.position.x;
 	global_pose[1]=msg->pose.position.y;
 
-
    tf::StampedTransform baselinktransform;
    listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(10.0));
    listener.lookupTransform("map", "base_link", ros::Time(0), baselinktransform);
    double yaw_tf =   tf::getYaw(baselinktransform.getRotation()); 
 
-	global_pose[2]=yaw_tf;
+   global_pose[2]=yaw_tf;
 
    CurVector[0]= global_pose[0];
    CurVector[1]= global_pose[1];
@@ -846,7 +845,7 @@ void MDPManager::global_pose_callback(const geometry_msgs::PoseStamped::ConstPtr
 void MDPManager::Local_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
 {
 
-	 if(ReceiveData==0)
+    if(ReceiveData==0)
     {
       ROS_INFO("width : %d" ,msg->info.width);
       ROS_INFO("height : %d" ,msg->info.height);
@@ -871,7 +870,6 @@ void MDPManager::Local_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
    // }	
 
    ReceiveData++;
-
 
 }
 
