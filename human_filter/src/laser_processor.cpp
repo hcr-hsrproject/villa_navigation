@@ -355,6 +355,15 @@ ScanProcessor::filterwithPosesarray(const geometry_msgs::PoseArray poses_array)
   //should compare cluster and poses_array
   while (c_iter != clusters_.end())
   {
+//<<<<<<< HEAD
+    if ( (*c_iter)->size() < num_poses)
+    {
+      delete (*c_iter);
+      clusters_.erase(c_iter++);
+    } else {
+      ++c_iter;
+    }
+//=======
     double dist =0.0;
    for(size_t i=0;i<num_poses; i++) 
    {
@@ -383,6 +392,7 @@ ScanProcessor::filterwithPosesarray(const geometry_msgs::PoseArray poses_array)
     //} else {
       //++c_iter;
     //}
+//>>>>>>> 89edb84914a96c8bb38bd046d80624279312f483
   }
 }
 

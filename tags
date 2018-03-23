@@ -216,7 +216,10 @@ LASER_Dist_person	human_filter/include/people_tracking_filter/edge_leg_filter_no
 LASER_Dist_person	human_filter/include/people_tracking_filter/followme_action.h	47;"	d
 LASER_Dist_person	human_filter/include/people_tracking_filter/leg_op_filter_node.h	42;"	d
 LASER_Dist_person	human_filter/include/people_tracking_filter/service_test.h	42;"	d
+<<<<<<< HEAD
+=======
 LASER_Dist_person	visual_perception/include/visible_region.h	36;"	d
+>>>>>>> bba0a7da52061ddae28fcac6bafcf82c05c14075
 LASER_FRAME	human_filter/src/srs_leg_detector.cpp	/^static const string LASER_FRAME             = "base_range_sensor_link";$/;"	v	file:
 LASER_Point_Step	villa_navi_service/include/navi_service_node.h	50;"	d
 LASER_SCAN_LASERPROCESSOR_HH	human_filter/include/laser_processor.h	43;"	d
@@ -605,7 +608,10 @@ camera_visible_region_pub	visual_perception/include/visible_region.h	/^  ros::Pu
 candidate_	human_filter/src/backup_srs_leg_dector.cpp	/^	Legs* candidate_;$/;"	m	class:MatchedFeature	file:
 candidate_	human_filter/src/backup_srs_leg_detector.cpp	/^	Legs* candidate_;$/;"	m	class:MatchedFeature	file:
 candidate_	human_filter/src/srs_leg_detector.cpp	/^	SampleSet* candidate_;$/;"	m	class:MatchedFeature	file:
+<<<<<<< HEAD
+=======
 cartesianToPolar	visual_perception/src/people_marker.cpp	/^std::vector<double> PeopleMarker::cartesianToPolar(geometry_msgs::Point point) {$/;"	f	class:PeopleMarker
+>>>>>>> bba0a7da52061ddae28fcac6bafcf82c05c14075
 cell_xy	navi_mdp/include/MDPmanager.h	/^ 	vector<int>		  cell_xy;$/;"	m	class:MDPManager
 center	human_filter/src/laser_processor.cpp	/^tf::Point SampleSet::center()$/;"	f	class:SampleSet
 center_offset	navi_mdp/src/global_planner.cpp	/^double center_offset=0.3;$/;"	v
@@ -981,7 +987,10 @@ isInitialized	human_filter/include/people_tracking_filter/detector_particle.h	/^
 isInitialized	human_filter/include/people_tracking_filter/tracker_kalman.h	/^  virtual bool isInitialized() const$/;"	f	class:estimation::TrackerKalman
 isInitialized	human_filter/include/people_tracking_filter/tracker_particle.h	/^  virtual bool isInitialized() const$/;"	f	class:estimation::TrackerParticle
 isSamplebelongstoBackgrond	human_filter/src/laser_processor.cpp	/^bool Background::isSamplebelongstoBackgrond(Sample* s, float thresh)$/;"	f	class:Background
+<<<<<<< HEAD
+=======
 joint_state_sub	visual_perception/include/visible_region.h	/^  ros::Subscriber joint_state_sub;$/;"	m	class:visible_manager
+>>>>>>> bba0a7da52061ddae28fcac6bafcf82c05c14075
 joint_states_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 joint_states_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 joint_states_callback	human_filter/src/leg_op_filter_node.cpp	/^void leg_pose_manager::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)$/;"	f	class:leg_pose_manager
@@ -1180,7 +1189,10 @@ nh_	human_filter/include/people_tracking_filter/service_test.h	/^  ros::NodeHand
 nh_	human_filter/src/backup_srs_leg_dector.cpp	/^	NodeHandle nh_;$/;"	m	class:LegDetector	file:
 nh_	human_filter/src/backup_srs_leg_detector.cpp	/^	NodeHandle nh_;$/;"	m	class:LegDetector	file:
 nh_	human_filter/src/srs_leg_detector.cpp	/^	NodeHandle nh_;$/;"	m	class:LegDetector	file:
+<<<<<<< HEAD
+=======
 nh_	visual_perception/include/visible_region.h	/^  ros::NodeHandle nh_;$/;"	m	class:visible_manager
+>>>>>>> bba0a7da52061ddae28fcac6bafcf82c05c14075
 no_observation_timeout_s	human_filter/src/backup_srs_leg_dector.cpp	/^static const double no_observation_timeout_s = 0.5;$/;"	v	file:
 no_observation_timeout_s	human_filter/src/backup_srs_leg_detector.cpp	/^static const double no_observation_timeout_s = 0.5;$/;"	v	file:
 no_observation_timeout_s	human_filter/src/srs_leg_detector.cpp	/^static const double no_observation_timeout_s = 0.5;$/;"	v	file:

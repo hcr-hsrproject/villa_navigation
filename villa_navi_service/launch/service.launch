@@ -1,0 +1,10 @@
+<launch>
+    <arg name="param_file" default="$(find villa_navi_service)/config/naviconfig.yaml" />
+    <rosparam command="load" file="$(arg param_file)"/>
+    <arg name="target_frame" default="/map" />
+
+    <node pkg="villa_navi_service" type="nav_service_test" name="villa_navi_srv_node" output="screen" respawn="true">
+        <param name="target_frame" value="$(arg target_frame)" type="string"/>
+    </node>
+
+</launch> 

@@ -1,0 +1,14 @@
+villa_navi_service:
+    ref_frame: "map"                                         # The Kalman filter type: EKF = Extended Kalman Filter, UKF = Uncented Kalman Filter
+    goal_locations:                                           # The noise for the constant velocity prediction model
+        x: 0.8
+        y: 0.8
+        t: 0.0 
+    mid_goal:
+        x: 2.0
+        y: 3.0
+        t: 0.5
+    living_room:
+        x: 10.0
+        y: -2.0
+        t: 0.0
