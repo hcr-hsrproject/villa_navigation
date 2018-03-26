@@ -40,6 +40,7 @@ std::vector<double> PeopleMarker::cartesianToPolar(geometry_msgs::Point point) {
 
 void PeopleMarker::human_boxes_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)
 {
+    //received marker.header.frame_id is assumed as "map"
     marker_seq=0;
 
     int num_of_detected_human=msg->markers.size();

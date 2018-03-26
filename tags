@@ -198,6 +198,7 @@ IN	navi_mdp/include/srBSpline.h	10;"	d
 Init	navi_mdp/src/MDPmanager.cpp	/^void MDPManager::Init()$/;"	f	class:MDPManager
 Int16	navi_mdp/include/types.h	/^typedef	short int			Int16;		\/\/< 2 bytes integer -32768 ~ 32767$/;"	t
 Int32	navi_mdp/include/types.h	/^typedef int					Int32;		\/\/< 4 bytes integer -2147483648 ~ 2147483647$/;"	t
+IsNear_OpenPose	human_filter/src/leg_op_filter_node.cpp	/^bool leg_pose_manager::IsNear_OpenPose(float x_pos,float y_pos)$/;"	f	class:leg_pose_manager
 IsNotInitilized	human_filter/src/edge_leg_filter_node.cpp	/^bool IsNotInitilized = true;$/;"	v
 IsNotInitilized	human_filter/src/followme_action.cpp	/^bool IsNotInitilized = true;$/;"	v
 IsNotInitilized	human_filter/src/leg_op_filter_node.cpp	/^bool IsNotInitilized = true;$/;"	v
@@ -658,6 +659,7 @@ createLegs	visual_perception/src/people_marker.cpp	/^std::vector<visualization_m
 createMarker	visual_perception/src/people_marker.cpp	/^visualization_msgs::Marker PeopleMarker::createMarker($/;"	f	class:PeopleMarker
 createVisualisation	visual_perception/src/people_marker.cpp	/^void PeopleMarker::createVisualisation(std::vector<geometry_msgs::Pose> poses) {$/;"	f	class:PeopleMarker
 cur_coord	navi_mdp/include/MDPmanager.h	/^	std::vector<int> cur_coord;$/;"	m	class:MDPManager
+cur_op_human	human_filter/include/people_tracking_filter/leg_op_filter_node.h	/^  std::vector< std::vector< double > > cur_op_human;$/;"	m	class:leg_pose_manager
 cur_yolo_chair	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  std::vector< std::vector< double > > cur_yolo_chair;$/;"	m	class:Edgeleg_manager
 cur_yolo_chair	human_filter/include/people_tracking_filter/leg_op_filter_node.h	/^  std::vector< std::vector< double > > cur_yolo_chair;$/;"	m	class:leg_pose_manager
 cur_yolo_people	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  std::vector< std::vector< double > > cur_yolo_people;$/;"	m	class:Edgeleg_manager
@@ -937,6 +939,7 @@ human_leg_poses_array	human_filter/include/people_tracking_filter/leg_op_filter_
 human_leg_target_pub	villa_navi_service/include/navi_service_node.h	/^	ros::Publisher human_leg_target_pub;$/;"	m	class:villa_navi_srv
 human_occupied_idx	villa_navi_service/include/navi_service_node.h	/^	std::vector<int> human_occupied_idx;$/;"	m	class:villa_navi_srv
 human_occupied_leg_idx	villa_navi_service/include/navi_service_node.h	/^	std::vector<int> human_occupied_leg_idx;$/;"	m	class:villa_navi_srv
+human_op_poses_array	human_filter/include/people_tracking_filter/leg_op_filter_node.h	/^  geometry_msgs::PoseArray human_op_poses_array;$/;"	m	class:leg_pose_manager
 human_target_Intcmd_pub	villa_navi_service/include/navi_service_node.h	/^	ros::Publisher human_target_Intcmd_pub;$/;"	m	class:villa_navi_srv
 human_target_pub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Publisher human_target_pub;$/;"	m	class:Edgeleg_manager
 human_target_pub	human_filter/include/people_tracking_filter/followme_action.h	/^  ros::Publisher human_target_pub;$/;"	m	class:Edgeleg_manager_action
@@ -1210,6 +1213,8 @@ object_id	human_filter/src/backup_srs_leg_detector.cpp	/^	string object_id;$/;"	
 object_id	human_filter/src/srs_leg_detector.cpp	/^	string object_id;$/;"	m	class:SavedFeature	file:
 object_id	human_filter/src/srs_leg_detector.cpp	/^	string object_id;$/;"	m	class:SavedPersonFeature	file:
 obsmap_Pub	navi_mdp/include/MDPmanager.h	/^	ros::Publisher   obsmap_Pub;$/;"	m	class:MDPManager
+openpose_pose_callback	human_filter/src/leg_op_filter_node.cpp	/^void leg_pose_manager::openpose_pose_callback(const geometry_msgs::PoseArray::ConstPtr& msg)$/;"	f	class:leg_pose_manager
+openpose_sub	human_filter/include/people_tracking_filter/leg_op_filter_node.h	/^  ros::Subscriber openpose_sub;$/;"	m	class:leg_pose_manager
 operator &	navi_mdp/include/srBSpline.h	/^	const srBSpline* operator&() const { return this; }$/;"	f	class:srBSpline
 operator &	navi_mdp/include/srBSpline.h	/^	srBSpline* operator&() { return this; }$/;"	f	class:srBSpline
 operator ()	human_filter/include/laser_processor.h	/^    inline bool operator() (const Sample* a, const Sample* b)$/;"	f	struct:laser_processor::CompareSample

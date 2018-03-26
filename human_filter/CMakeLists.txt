@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(human_filter)
 
 SET(LEGSOURCES src/laser_processor.cpp src/srs_leg_detector.cpp src/calc_leg_features.cpp)
+SET(OPSOURCES src/laser_processor.cpp src/op_tracker.cpp src/calc_leg_features.cpp)
 SET(BACKUP_LEGSOURCES src/laser_processor.cpp src/backup_srs_leg_detector.cpp src/calc_leg_features.cpp)
 
 # Look for bfl (Bayesian Filtering Library)
@@ -121,6 +122,10 @@ add_executable(follow_service_test src/service_test.cpp)
 add_executable(srs_leg_detector ${LEGSOURCES})
 target_link_libraries(srs_leg_detector human_filter ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${BFL_LIBRARIES} ${Boost_LIBRARIES} ${orocos_kdl_LIBRARIES})
 add_dependencies(srs_leg_detector ${catkin_EXPORTED_TARGETS})
+
+add_executable(op_tracker ${OPSOURCES})
+target_link_libraries(op_tracker human_filter ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${BFL_LIBRARIES} ${Boost_LIBRARIES} ${orocos_kdl_LIBRARIES})
+add_dependencies(op_tracker ${catkin_EXPORTED_TARGETS})
 
 add_executable(backup_srs_leg_detector ${BACKUP_LEGSOURCES})
 target_link_libraries(backup_srs_leg_detector human_filter ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${BFL_LIBRARIES} ${Boost_LIBRARIES} ${orocos_kdl_LIBRARIES})

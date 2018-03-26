@@ -61,6 +61,7 @@ public:
   void filter_result_callback(const people_msgs::PositionMeasurement::ConstPtr& msg);
   void joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg);
   void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& message);
+  void openpose_pose_callback(const geometry_msgs::PoseArray::ConstPtr& msg);
   void global_pose_callback(const geometry_msgs::PoseStamped::ConstPtr& msg);
   void human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& message);
   void filter_act_callback(const std_msgs::Int8::ConstPtr& msg);
@@ -68,6 +69,7 @@ public:
   void wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg);
   void scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg);
   bool check_staticObs(float x_pos,float y_pos);
+  bool IsNear_OpenPose(float x_pos,float y_pos);
   int globalcoord_To_SScaled_map_index(float x_pos,float y_pos);
   bool getlinevalue(int line_type,double input_x, double input_y);
 
@@ -112,12 +114,14 @@ private:
   ros::Subscriber filter_result_sub;
   ros::Subscriber chair_sub;
   ros::Subscriber wrist_trigger_sub;
+  ros::Subscriber openpose_sub;
   
 
   ros::Publisher Leg_boxes_pub;
   ros::Publisher Leg_poses_pub;
   visualization_msgs::MarkerArray human_leg_boxes_array;
   geometry_msgs::PoseArray human_leg_poses_array;
+  geometry_msgs::PoseArray human_op_poses_array;
 
   // tf listener
   tf::TransformListener robot_state_;
@@ -141,6 +145,7 @@ private:
   std::vector< std::vector< double > > Cur_leg_human;
   std::vector< std::vector< double > > cur_yolo_people;
   std::vector< std::vector< double > > cur_yolo_chair;
+  std::vector< std::vector< double > > cur_op_human;
   std::vector<double> leg_target;
   std::vector<double> filtered_leg_target;
   std::vector<double> Head_Pos; 

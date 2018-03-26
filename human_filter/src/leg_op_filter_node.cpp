@@ -66,7 +66,8 @@ leg_pose_manager::leg_pose_manager(ros::NodeHandle nh)
   // initialize
   // advertise filter output
   Leg_boxes_pub=nh_.advertise<visualization_msgs::MarkerArray>("/filtered_leg_target", 10);
-  Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/filtered_leg_poses", 10);
+  //Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/filtered_leg_poses", 10);
+  Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10);
   human_target_pub=nh_.advertise<visualization_msgs::Marker>("/leg_target", 10);
   filtered_human_target_pub=nh_.advertise<visualization_msgs::Marker>("/filtered_target", 10);
   people_measurement_pub_ = nh_.advertise<people_msgs::PositionMeasurement>("people_tracker_measurements", 10);
@@ -74,8 +75,9 @@ leg_pose_manager::leg_pose_manager(ros::NodeHandle nh)
   setNavTarget_pub=nh_.advertise<move_base_msgs::MoveBaseActionGoal>("/move_base/move/goal",50,true);
 
   chair_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/chair_boxes", 10, &leg_pose_manager::chair_yolo_callback,this);
-  people_yolo_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &leg_pose_manager::human_yolo_callback,this);
+  //people_yolo_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &leg_pose_manager::human_yolo_callback,this);
   edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &leg_pose_manager::edge_leg_callback,this);
+  openpose_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_pose_array", 10, &leg_pose_manager::openpose_pose_callback,this);
   filter_act_sub=nh_.subscribe<std_msgs::Int8>("/filter_act_cmd", 10, &leg_pose_manager::filter_act_callback,this);
   globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&leg_pose_manager::global_pose_callback,this);
   keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &leg_pose_manager::keyboard_callback,this);
@@ -129,9 +131,39 @@ void leg_pose_manager::filter_result_callback(const people_msgs::PositionMeasure
 
       filtered_leg_target[0]=msg->pos.x;
       filtered_leg_target[1]=msg->pos.y;
+}
 
 
+void leg_pose_manager::openpose_pose_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
+{
+  //openpose comes w.r.t map frame
+  human_op_poses_array = *msg;
 
+}
+
+bool leg_pose_manager::IsNear_OpenPose(float x_pos,float y_pos)
+{
+
+    bool IsNear_OpenPose =false;
+    std::vector<double> input_vector(2,0.0);
+    std::vector<double> test_vector(2,0.0);
+
+    input_vector[0]=x_pos;
+    input_vector[1]=y_pos;
+
+
+    for(int i(0); i< human_op_poses_array.poses.size();i++ )
+    {
+ 
+        test_vector[0]=human_op_poses_array.poses[i].position.x;
+        test_vector[1]=human_op_poses_array.poses[i].position.y;
+
+        if(Comparetwopoistions(input_vector, test_vector, 0.25))
+            IsNear_OpenPose=true;
+    }
+
+
+    return IsNear_OpenPose;
 
 }
 
@@ -163,78 +195,30 @@ void leg_pose_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPt
           if(check_staticObs(tempVec[0],tempVec[1]))
             continue;
 
-          //if(!check_cameraregion(tempVec[0],tempVec[1]))
-            //continue;
+          //check with open_pose_array
 
-            // std::cout<<"here 1"<<std::endl;
+
            //distance check between two candidates!
-              bool IsFarEnough = true;
-              bool IsNearfromRobot= false;
-              for(int j(0);j<Cur_leg_human.size();j++)
-                {
-                  if(Comparetwopoistions(tempVec,Cur_leg_human[j],0.4))
-                    IsFarEnough=false;
-                }
-              
-                if(Comparetwopoistions(global_pose,tempVec,LASER_Dist_person))
-                   IsNearfromRobot=true;
+          //bool IsFarEnough = true;
 
-            // std::cout<<"here 2"<<std::endl;
-              //add only if candidate pose ins far from 0.75 from previous candidates
-              if(IsFarEnough && IsNearfromRobot)
-              { 
+          bool IsNear_Openposes = IsNear_OpenPose(tempVec[0],tempVec[1]);
 
-               Cur_leg_human.push_back(tempVec);
-              }
-         
+          //for(int j(0);j<Cur_leg_human.size();j++)
+          //{
+              //if(Comparetwopoistions(tempVec,Cur_leg_human[j],0.4))
+                  //IsFarEnough=false;
+          //}
+
+          //add only if candidate pose ins far from 0.45 from previous candidates
+          //if(IsFarEnough && IsNear_Openposes )
+          if(IsNear_Openposes )
+          { 
+
+              Cur_leg_human.push_back(tempVec);
+          }
+
       }
-
-      // std::cout<<"here 3"<<std::endl;
-      if(Cur_leg_human.size()>0)
-    {
-        int NearestLegIdx=FindNearesetLegIdx();
-          
-        std::vector<double> temp_leg_target(2,0.0); 
-        temp_leg_target[0]=Cur_leg_human[NearestLegIdx][0];
-        temp_leg_target[1]=Cur_leg_human[NearestLegIdx][1];
-
-        if(Comparetwopoistions(temp_leg_target,leg_target,1.2))
-        {
-            // std::cout<<"update target - person is in a range"<<std::endl;
-            leg_target[0]=temp_leg_target[0];
-            leg_target[1]=temp_leg_target[1];
-        }
-
-        
-        people_msgs::PositionMeasurement pos;
-        pos.header.stamp = ros::Time();
-        pos.header.frame_id = "/map";
-        pos.name = "leg_laser";
-        pos.object_id ="person 0";
-        pos.pos.x = leg_target[0];
-        pos.pos.y = leg_target[1];
-        pos.pos.z = 1.0;
-        pos.reliability = 0.85;
-        pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
-        pos.covariance[1] = 0.0;
-        pos.covariance[2] = 0.0;
-        pos.covariance[3] = 0.0;
-        pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
-        pos.covariance[5] = 0.0;
-        pos.covariance[6] = 0.0;
-        pos.covariance[7] = 0.0;
-        pos.covariance[8] = 10000.0;
-        pos.initialization = 0;
-      
-        people_measurement_pub_.publish(pos);
-
-
-    }
-    // edge_leg_iter=0;
-    // }
-
-    // edge_leg_iter++;
-
+    
 }
 
 void leg_pose_manager::publish_cameraregion()
@@ -918,7 +902,6 @@ void leg_pose_manager::callbackRcv(const people_msgs::PositionMeasurement::Const
 void leg_pose_manager::publish_leg_boxes()
 {
 
-
   human_leg_boxes_array.markers.clear();
   human_leg_poses_array.poses.clear();
 
@@ -1035,7 +1018,7 @@ void leg_pose_manager::spin()
     publish_leg_boxes();
     publish_cameraregion();
     publish_target();
-    publish_filtered_target();
+    //publish_filtered_target();
     //Publish_nav_target();
     // ------ LOCKED ------
     boost::mutex::scoped_lock lock(filter_mutex_);

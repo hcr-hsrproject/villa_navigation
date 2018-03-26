@@ -7,4 +7,5 @@
         <param name="target_frame" value="$(arg target_frame)" type="string"/>
     </node>
 
+    <node pkg="villa_navi_service" type="waypoint_test" name="waypoint_node" output="screen" respawn="true"></node>
 </launch> 
