@@ -67,7 +67,7 @@ leg_pose_manager::leg_pose_manager(ros::NodeHandle nh)
   // advertise filter output
   Leg_boxes_pub=nh_.advertise<visualization_msgs::MarkerArray>("/filtered_leg_target", 10);
   //Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/filtered_leg_poses", 10);
-  Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/openpose_pose_array", 10);
+  Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10);
   human_target_pub=nh_.advertise<visualization_msgs::Marker>("/leg_target", 10);
   filtered_human_target_pub=nh_.advertise<visualization_msgs::Marker>("/filtered_target", 10);
   people_measurement_pub_ = nh_.advertise<people_msgs::PositionMeasurement>("people_tracker_measurements", 10);

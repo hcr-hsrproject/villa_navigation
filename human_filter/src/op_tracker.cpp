@@ -12,6 +12,7 @@
 #include <visualization_msgs/Marker.h>
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 //#include <visualization_msgs/MarkerArrary.h>
 #include "sensor_msgs/LaserScan.h"
 #include "std_msgs/Header.h"
@@ -48,7 +49,7 @@ using namespace MatrixWrapper;
 
 static const double no_observation_timeout_s = 0.5;
 static const double max_second_leg_age_s     = 2.0;
-static const double max_track_jump_m         = 0.7; //1.0;
+static const double max_track_jump_m         = 1.0; //1.0;
 static const double max_meas_jump_m          = 0.75; //0.75; // 1.0
 static const double leg_pair_separation_m    = 0.35; //previos 0.5 mkmk
 //static const string fixed_frame              = "odom_combined";
@@ -66,7 +67,6 @@ static bool use_filter = true;
 static string detector_="hsrb/base_scan";
 //static const unsigned int num_particles=100; // particle
 
-
 class SavedPersonFeature
 {
 public:
@@ -79,7 +79,6 @@ public:
 	Stamped<Vector3> velocity_;
 
 	//static int nextid;
-	//TransformListener& tfl_;
 	BFL::StatePosVel sys_sigma_;
 	TrackerKalman filter_;
 	ros::Time time_;
@@ -496,8 +495,8 @@ class MatchedFeature
 {
 public:
 	SampleSet* candidate_;
-    geometry_msgs::Pose m_pose;
 	//Legs* candidate_;
+    geometry_msgs::Pose m_pose;
 	SavedFeature* closest_;
 	float distance_;
 	double probability_;
@@ -509,7 +508,7 @@ public:
 	, probability_(probability)
 	{}
     
-	MatchedFeature(geometry_msgs::Pose Pose_, SavedFeature* closest, float distance, double probability)
+    MatchedFeature(geometry_msgs::Pose Pose_, SavedFeature* closest, float distance, double probability)
 	: m_pose(Pose_)
 	, closest_(closest)
 	, distance_(distance)
@@ -527,6 +526,7 @@ public:
 int g_argc;
 char** g_argv;
 string scan_topic = "hsrb/base_scan";
+string pose_scan_topic = "base_scan";
 
 
 // actual legdetector node
@@ -584,8 +584,11 @@ public:
 
 	message_filters::Subscriber<people_msgs::PositionMeasurementArray> people_sub_;
 	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;
+    message_filters::Subscriber<geometry_msgs::PoseArray> poses_sub_;
     //tf::MessageFilter<people_msgs::PositionMeasurement> people_notifier_;
-	tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;
+    tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;
+    //tf::MessageFilter<geometry_msgs::PoseWithCovarianceStamped> poses_notifier_;
+
 
 	list<SavedPersonFeature*>saved_people_;
 	tf::TransformBroadcaster br_;
@@ -608,25 +611,14 @@ public:
 		nh_(nh),
 		mask_count_(0),
 		next_p_id_(0),
-		//connected_thresh_(0.07),
-		connected_thresh_(0.12),
+		connected_thresh_(0.10),
         leg_reliability_limit_(-0.100),
 		feat_count_(0),
         laser_sub_(nh_,scan_topic,10),
-		laser_notifier_(laser_sub_,tfl_,fixed_frame,10)
+        laser_notifier_(laser_sub_,tfl_,fixed_frame,10)
+        //poses_sub_(nh_,pose_scan_topic,10),
+		//poses_notifier_(poses_sub_,tfl_,fixed_frame,10)
 	{
-        if (g_argc > 1) {
-
-            forest = cv::ml::RTrees::create();
-            cv::String feature_file = cv::String(g_argv[1]);
-            forest = cv::ml::StatModel::load<cv::ml::RTrees>(feature_file);
-            feat_count_ = forest->getVarCount();
-            printf("Loaded forest with %d features: %s\n", feat_count_, g_argv[1]);
-
-        } else {
-            printf("Please provide a trained random forests classifier as an input.\n");
-            shutdown();
-        }
 
         leg_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("leg_tracker_measurements",0);
         people_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("people_tracker_measurements", 0);
@@ -635,15 +627,27 @@ public:
         markers_pub_ = nh_.advertise<visualization_msgs::Marker>("visualization_marker", 20);
 
         //laser_notifier_.
-        laser_notifier_.registerCallback(boost::bind(&LegDetector::laserCallback, this, _1));
-        laser_notifier_.setTolerance(ros::Duration(0.01));
-        laser_notifier_.setTargetFrame(fixed_frame);
+        //laser_notifier_.registerCallback(boost::bind(&LegDetector::laserCallback, this, _1));
+        //laser_notifier_.setTolerance(ros::Duration(0.01));
+        //laser_notifier_.setTargetFrame(fixed_frame);
+        //
+
+        //poses_sub_ =messnh_.subscribe<geometry_msgs::PoseArray>(pose_scan_topic)
         
+        //todo
+        //poses_sub_.subscribe(nh_,pose_scan_topic,10);
+
+        //poses_notifier_.registerCallback(boost::bind(&LegDetector::posesCallback, this, _1));
+        //poses_notifier_.setTolerance(ros::Duration(0.01));
+        //poses_notifier_.setTargetFrame(fixed_frame);
+        
+
         people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
         
         edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &LegDetector::edge_leg_callback,this);
-        filter_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10, &LegDetector::filter_leg_callback,this);
+        //filter_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10, &LegDetector::filter_leg_callback,this);
+        //
         //people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         //people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
         
@@ -695,37 +699,6 @@ public:
     ~LegDetector()
     {
     }
-
-    //void configure(human_filter::LegDetectionConfig &config, uint32_t level)
-    //{
-        //connected_thresh_       = config.connection_threshold;
-        //min_points_per_group    = config.min_points_per_group;
-        //leg_reliability_limit_  = config.leg_reliability_limit;
-        //publish_legs_           = config.publish_legs;
-        //publish_people_         = config.publish_people;
-        //publish_leg_markers_    = config.publish_leg_markers;
-        //publish_vel_markers_    = config.publish_vel_markers;
-        //publish_people_markers_ = config.publish_people_markers;
-
-        //no_observation_timeout_s = config.no_observation_timeout;
-        //max_second_leg_age_s     = config.max_second_leg_age;
-        //max_track_jump_m         = config.max_track_jump;
-        //max_meas_jump_m          = config.max_meas_jump;
-        //leg_pair_separation_m    = config.leg_pair_separation;
-        //cov_meas_legs_m			 = config.cov_meas_legs;
-        //cov_meas_people_m        = config.cov_meas_people;
-
-        //if(fixed_frame.compare(config.fixed_frame) != 0){
-            //fixed_frame              = config.fixed_frame;
-            //laser_notifier_.setTargetFrame(fixed_frame);
-             //people_notifier_.setTargetFrame(fixed_frame);
-        //}
-        //kal_p                    = config.kalman_p;
-        //kal_q                    = config.kalman_q;
-        //kal_r                    = config.kalman_r;
-    //    //use_filter               = config.kalman_on == 1;
-        //use_filter               = 1;
-    //}
 
 
 //mk
@@ -963,18 +936,381 @@ public:
 
      //}
 
+    void posesCallback(const geometry_msgs::PoseArray::ConstPtr& msg)
+    {
+
+        std::cout<< msg->header.frame_id<<std::endl;
+
+        ros::Time purge = msg->header.stamp + ros::Duration().fromSec(-no_observation_timeout_s);
+        list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
+        while (sf_iter != saved_features_.end()){
+            if ((*sf_iter)->meas_time_ < purge){
+                if( (*sf_iter)->other )
+                    (*sf_iter)->other->other = NULL;
+                delete (*sf_iter);
+                saved_features_.erase(sf_iter++);
+            }else
+                ++sf_iter;
+        }
+
+        //propagage
+        list<SavedFeature*> propagated;
+        for (list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
+                sf_iter != saved_features_.end();
+                sf_iter++){
+            (*sf_iter)->propagate(msg->header.stamp);
+            propagated.push_back(*sf_iter);
+        }
+
+
+        // Detection step: build up the set of "candidate" poses
+        // For each candidate, find the closest tracker (within threshold) and add to the match list
+        // If no tracker is found, start a new one
+        multiset<MatchedFeature> matches;
+        int num_detected_poses = msg->poses.size();
+        for(size_t pose_idx (0); pose_idx< num_detected_poses; pose_idx++){
+
+            float probability= 0.6;
+            Stamped<Point> loc(tf::Point(msg->poses[pose_idx].position.x,
+                                        msg->poses[pose_idx].position.y,
+                                        msg->poses[pose_idx].position.z),
+                                        msg->header.stamp,
+                                        msg->header.frame_id);
+
+
+            
+            list<SavedFeature*>::iterator closest = propagated.end();
+            float closest_dist = max_track_jump_m;
+
+            for (list<SavedFeature*>::iterator pf_iter = propagated.begin();
+                    pf_iter != propagated.end();pf_iter++){
+                // find the closest distance between candidate and trackers
+                float dist = loc.distance((*pf_iter)->position_);
+            //********************************************
+            //float dist = getdistance(loc_pose.pose,(*pf_iter)->position_);
+            //********************************************
+                if ( dist < closest_dist ){
+                    closest = pf_iter;
+                    closest_dist = dist;
+                }
+            }
+
+            // Nothing close to it, start a new track
+            if (closest == propagated.end()){
+                list<SavedFeature*>::iterator new_saved = saved_features_.insert(saved_features_.end(), new SavedFeature(loc, tfl_));
+                //printf("add new tracker\n");
+            }else // Add the candidate, the tracker and the distance to a match list
+                matches.insert(MatchedFeature(msg->poses[pose_idx],*closest,closest_dist,probability));
+            //printf("closest tracker found\n");
+        }
+
+
+    while(matches.size() > 0){
+            multiset<MatchedFeature>::iterator matched_iter = matches.begin();
+            bool found = false;
+            list<SavedFeature*>::iterator pf_iter = propagated.begin();
+            while (pf_iter != propagated.end()){
+                // update the tracker with this candidate
+                if (matched_iter->closest_ == *pf_iter){
+
+                    Stamped<Point> loc(matched_iter->candidate_->center(),
+                                        msg->header.stamp,
+                                        msg->header.frame_id);
+
+                    // Update the tracker with the candidate location
+                    matched_iter->closest_->update(loc, matched_iter->probability_);
+                    //printf("upadatedx closest tracker\n");
+                    // remove this match and
+                    matches.erase(matched_iter);
+                    propagated.erase(pf_iter++);
+                    found = true;
+                    break;
+                }else{  // still looking for the tracker to update
+                    pf_iter++;
+                }
+            }
+
+            // didn't find tracker to update, because it was deleted above
+            // try to assign the candidate to another tracker
+            if (!found){
+                //printf("didn't find tracker\n");
+                Stamped<Point> loc(matched_iter->candidate_->center(),
+                                   msg->header.stamp,
+                                   msg->header.frame_id);
+
+                //********************************************
+                list<SavedFeature*>::iterator closest = propagated.end();
+                float closest_dist = max_track_jump_m;
+
+                for (list<SavedFeature*>::iterator remain_iter = propagated.begin();
+                        remain_iter != propagated.end();remain_iter++){
+                    float dist = loc.distance((*remain_iter)->position_);
+                    if ( dist < closest_dist ){
+                        closest = remain_iter;
+                        closest_dist = dist;
+                    }
+                }
+
+                // no tracker is within a threshold of this candidate
+                // so create a new tracker for this candidate
+                if (closest == propagated.end())
+                    list<SavedFeature*>::iterator new_saved = saved_features_.insert(saved_features_.end(), new SavedFeature(loc, tfl_));
+                else
+                    matches.insert(MatchedFeature(matched_iter->candidate_,*closest,closest_dist, matched_iter->probability_));
+                matches.erase(matched_iter);
+            }
+        
+
+
+    if (!found){
+                //printf("didn't find tracker\n");
+                //tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
+                //Stamped<Point> loc(matched_iter->candidate_->center(), scan->header.stamp, scan->header.frame_id);
+                Stamped<Point> loc(matched_iter->candidate_->center(),
+                                   msg->header.stamp,
+                                   msg->header.frame_id);
+
+                list<SavedFeature*>::iterator closest = propagated.end();
+                float closest_dist = max_track_jump_m;
+
+                for (list<SavedFeature*>::iterator remain_iter = propagated.begin();
+                        remain_iter != propagated.end();remain_iter++){
+                    float dist = loc.distance((*remain_iter)->position_);
+                    if ( dist < closest_dist ){
+                        closest = remain_iter;
+                        closest_dist = dist;
+                    }
+                }
+
+                // no tracker is within a threshold of this candidate
+                // so create a new tracker for this candidate
+                if (closest == propagated.end())
+                    list<SavedFeature*>::iterator new_saved = saved_features_.insert(saved_features_.end(), new SavedFeature(loc, tfl_));
+                else
+                    matches.insert(MatchedFeature(matched_iter->candidate_,*closest,closest_dist, matched_iter->probability_));
+                matches.erase(matched_iter);
+            }
+        }
+
+       int i = 0;
+        vector<people_msgs::PositionMeasurement> people;
+        vector<people_msgs::PositionMeasurement> legs;
+
+        //printf("size of savedFeature:%d", saved_features_.size());
+        for (list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
+                sf_iter != saved_features_.end(); sf_iter++,i++){
+            // reliability
+            double reliability = (*sf_iter)->getReliability();
+            //  ROS_INFO("reliability %f", reliability);
+
+            if ((*sf_iter)->getReliability() > leg_reliability_limit_
+                    && publish_legs_){
+
+                people_msgs::PositionMeasurement pos;
+                pos.header.stamp = msg->header.stamp;
+                pos.header.frame_id = fixed_frame;
+                pos.name = "leg_detection";
+                pos.object_id = (*sf_iter)->id_;
+                pos.pos.x = (*sf_iter)->position_[0];
+                pos.pos.y = (*sf_iter)->position_[1];
+                pos.pos.z = (*sf_iter)->position_[2];
+                pos.vel.x = (*sf_iter)->velocity_[0];
+                pos.vel.y = (*sf_iter)->velocity_[1];
+                pos.vel.z = (*sf_iter)->velocity_[2];
+                pos.reliability = reliability;
+                pos.covariance[0] = pow(0.3 / reliability,2.0);
+                pos.covariance[1] = 0.0;
+                pos.covariance[2] = 0.0;
+                pos.covariance[3] = 0.0;
+                pos.covariance[4] = pow(0.3 / reliability,2.0);
+                pos.covariance[5] = 0.0;
+                pos.covariance[6] = 0.0;
+                pos.covariance[7] = 0.0;
+                pos.covariance[8] = 10000.0;
+                pos.initialization = 0;
+                legs.push_back(pos);
+            }
+
+            if (publish_leg_markers_){
+                visualization_msgs::Marker m;
+                m.header.stamp = (*sf_iter)->time_;
+                m.header.frame_id = fixed_frame;
+                m.ns = "LEGS";
+                m.id = i;
+                m.type = m.SPHERE;
+                m.pose.position.x = (*sf_iter)->position_[0];
+                m.pose.position.y = (*sf_iter)->position_[1];
+                m.pose.position.z = (*sf_iter)->position_[2];
+
+                m.scale.x = .1;
+                m.scale.y = .1;
+                m.scale.z = .1;
+                m.color.a = 1;
+                m.lifetime = ros::Duration(0.5);
+                if((*sf_iter)->object_id != ""){
+                    m.color.r = 1;
+                }else{
+                    m.color.b = (*sf_iter)->getReliability();
+                }
+                markers_pub_.publish(m);
+            }
+
+            if (publish_people_ || publish_people_markers_ ){
+                SavedFeature* other = (*sf_iter)->other;
+                if(other!=NULL && other<(*sf_iter)){
+
+                    Stamped<Point> one = (*sf_iter)->position_, two = (other)->position_;
+                    double ddx = one[0]-two[0], ddy = one[1]-two[1], ddz = one[2]-two[2];
+                    double d =  sqrt(ddx*ddx + ddy*ddy + ddz*ddz);
+                    //ROS_INFO("Person %s with distance %f",  (*sf_iter)->object_id.c_str() , d);
+
+                    double dx = ((*sf_iter)->position_[0] + other->position_[0])/2,
+                           dy = ((*sf_iter)->position_[1] + other->position_[1])/2,
+                           dz = ((*sf_iter)->position_[2] + other->position_[2])/2;
+
+                    double vx = ((*sf_iter)->velocity_[0]- ((*sf_iter)->velocity_[0] - other->velocity_[0])/2),
+                           vy = ((*sf_iter)->velocity_[1]- ((*sf_iter)->velocity_[1] - other->velocity_[1])/2),
+                           vz = ((*sf_iter)->velocity_[2]- ((*sf_iter)->velocity_[2] - other->velocity_[2])/2);
+
+                    double speed = sqrt(vx*vx + vy*vy + vz*vz);
+                    //ROS_INFO("speed %f: ", speed );
+
+                    if (publish_people_ ){
+
+                        reliability = reliability * other->reliability;
+                        people_msgs::PositionMeasurement pos;
+                        pos.header.stamp = (*sf_iter)->time_;
+                        pos.header.frame_id = fixed_frame;
+                        pos.name = (*sf_iter)->object_id;
+                        pos.object_id = (*sf_iter)->id_ + "|" + other->id_;
+                        pos.pos.x = dx;
+                        pos.pos.y = dy;
+                        pos.pos.z = dz;
+                        pos.vel.x = vx;
+                        pos.vel.y = vy;
+                        pos.vel.z = vz;
+                        pos.reliability = reliability;
+                        pos.covariance[0] = pow(0.3 / reliability,2.0);
+                        pos.covariance[1] = 0.0;
+                        pos.covariance[2] = 0.0;
+                        pos.covariance[3] = 0.0;
+                        pos.covariance[4] = pow(0.3 / reliability,2.0);
+                        pos.covariance[5] = 0.0;
+                        pos.covariance[6] = 0.0;
+                        pos.covariance[7] = 0.0;
+                        pos.covariance[8] = 10000.0;
+                        pos.initialization = 0;
+
+                        people.push_back(pos);
+
+                        ros::Time time = ros::Time::now();
+                        tf::Transform person(tf::Quaternion(0,0,0,1), tf::Vector3(dx, dy, dz));
+                        try
+                        {
+                            br_.sendTransform(tf::StampedTransform(person, time,
+                                        "/map" , pos.name.c_str()));
+                                        //"/base_link" , pos.name.c_str()));
+                        }catch (tf::TransformException ex){
+                            ROS_ERROR("Broadcaster unavailable %s", ex.what());
+                        }
+                    }
+
+                    if (publish_people_markers_ ){
+                        visualization_msgs::Marker m;
+                        m.header.stamp = (*sf_iter)->time_;
+                        m.header.frame_id = fixed_frame;
+                        m.ns = "PEOPLE";
+                        m.id = i;
+                        m.type = m.SPHERE;
+                        m.pose.position.x = dx;
+                        m.pose.position.y = dy;
+                        m.pose.position.z = dz;
+                        m.scale.x = .2;
+                        m.scale.y = .2;
+                        m.scale.z = .2;
+                        m.color.a = 1;
+                        m.color.g = 1;
+                        m.lifetime = ros::Duration(0.5);
+                        markers_pub_.publish(m);
+                    }
+
+                    if(publish_people_markers_ ){
+                        visualization_msgs::Marker m;
+                        m.header.stamp = (*sf_iter)->time_;
+                        m.header.frame_id = fixed_frame;
+                        m.ns = "TEXT";
+                        m.id = i;
+                        m.type = m.TEXT_VIEW_FACING;
+                        m.pose.position.x = dx;
+                        m.pose.position.y = dy;
+                        m.pose.position.z = dz;
+                        m.pose.orientation.w = 1.0;
+                        m.text = (*sf_iter)->object_id.c_str();
+                        m.scale.z = 0.3;
+                        m.color.a = 1;
+                        m.color.r = 0.5;
+                        m.color.g = 0.5;
+                        m.lifetime = ros::Duration(0.5);
+                        markers_pub_.publish(m);
+                    }
+                    /*
+                       if (publish_people_markers_ ){
+                       visualization_msgs::Marker m;
+                       m.header.stamp = (*sf_iter)->time_;
+                       m.header.frame_id = fixed_frame;
+                       m.ns = "SPEED";
+                       m.id = i;
+                       m.type = m.ARROW;
+                       m.pose.position.x = dx;
+                       m.pose.position.y = dy;
+                       m.pose.position.z = dz;
+                       m.pose.orientation.x = vx;
+                       m.pose.orientation.y = vy;
+                       m.pose.orientation.z = vz;
+
+                       m.scale.x = .4;
+                       m.scale.y = .05;
+                       m.scale.z = .05;
+                       m.color.a = 1;
+                       m.color.r = 1;
+                       m.lifetime = ros::Duration(0.5);
+
+                       markers_pub_.publish(m);
+                       }
+                       */
+                }
+            }
+        }
+        people_msgs::PositionMeasurementArray array;
+        array.header.stamp = ros::Time::now();
+        array.header.frame_id = fixed_frame;
+
+        if(publish_legs_){
+            array.people = legs;
+            leg_measurements_pub_.publish(array);
+        }
+
+        if(publish_people_){
+            array.people = people;
+            people_measurements_pub_.publish(array);
+        }
+
+
+
+    }
+    
 	 void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
 	{ 
         std::cout<< scan->header.frame_id<<std::endl;
         //geometry_msgs::Point32 pt_temp; // used in building the detected_legs vector
         //detected_legs.clear(); //to be ready for the new detections
-        //
-        //
+
+
         ScanProcessor processor(*scan, mask_);
         processor.splitConnected(connected_thresh_);
-        processor.removeLessThan(5);
+        processor.removeLessThan(3);
         //processor.filterwithPosesarray(edge_legs);
-        processor.filterwithPosesarray(filter_legs);
+        //processor.filterwithPosesarray(filter_legs);
 
         // OpenCV 3
         cv::Mat tmp_mat = cv::Mat(1, feat_count_, CV_32FC1);
@@ -1001,10 +1337,14 @@ public:
             propagated.push_back(*sf_iter);
         }
 
+
         // Detection step: build up the set of "candidate" clusters
         // For each candidate, find the closest tracker (within threshold) and add to the match list
         // If no tracker is found, start a new one
+        //
         multiset<MatchedFeature> matches;
+        //mk::should check new receiving poses
+
         for (list<SampleSet*>::iterator i = processor.getClusters().begin();
                 i != processor.getClusters().end();i++){
             vector<float> f = calcLegFeatures(*i, *scan);
@@ -1021,19 +1361,6 @@ public:
                 forest->getRoots().size();
             
             //printf("probablity: %f",probability);
-            
-            //tf::StampedTransform transform_sensor_base;
-            //********************************************
-            //geometry_msgs::PoseStamped loc_pose;
-            //loc_pose.header=scan->header;
-            //loc_pose.header.stamp=ros::Time::now();
-            //loc_pose.pose.position.x =(*i)->center().x();
-            //loc_pose.pose.position.y =(*i)->center().y();
-            //loc_pose.pose.position.z =(*i)->center().z();
-            //loc_pose.pose.orientation.x =0.0;
-            //loc_pose.pose.orientation.y =0.0;
-            //loc_pose.pose.orientation.z =0.0;
-            //loc_pose.pose.orientation.w =1.0;
 
             tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(1.0));
             tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
@@ -1042,12 +1369,6 @@ public:
             //printf("probablity: %f",probability);
             Stamped<Point> loc((*i)->center(), scan->header.stamp, scan->header.frame_id);
             try {
-            //********************************************
-                //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
-                //tfl_.transformPose (GLOBAL_FRAME, loc_pose,  temp_loc_transformed_pose) ;
-                //temp_loc_transformed_pose.header.stamp=ros::Time::now();
-                //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
-            //********************************************
               tfl_.transformPoint(fixed_frame, loc,loc);
             } catch(...) {
                 ROS_WARN("TF exception spot 3.");
@@ -1057,7 +1378,7 @@ public:
                                                  //temp_loc_transformed_pose.pose.position.y,
                                                  //temp_loc_transformed_pose.pose.position.z),
                                                  //ros::Time(0), GLOBAL_FRAME);
- 
+
             list<SavedFeature*>::iterator closest = propagated.end();
             float closest_dist = max_track_jump_m;
 
@@ -1066,13 +1387,14 @@ public:
                 // find the closest distance between candidate and trackers
                 float dist = loc.distance((*pf_iter)->position_);
             //********************************************
-                //float dist = getdistance(loc_pose.pose,(*pf_iter)->position_);
+            //float dist = getdistance(loc_pose.pose,(*pf_iter)->position_);
             //********************************************
                 if ( dist < closest_dist ){
                     closest = pf_iter;
                     closest_dist = dist;
                 }
             }
+
             // Nothing close to it, start a new track
             if (closest == propagated.end()){
                 list<SavedFeature*>::iterator new_saved = saved_features_.insert(saved_features_.end(), new SavedFeature(loc, tfl_));
@@ -1093,21 +1415,6 @@ public:
             while (pf_iter != propagated.end()){
                 // update the tracker with this candidate
                 if (matched_iter->closest_ == *pf_iter){
-                    // Transform candidate to fixed frame
-                    //
-                    //********************************************
-                    //geometry_msgs::PoseStamped loc_pose;
-                    //loc_pose.header=scan->header;
-                    //loc_pose.header.frame_id=LASER_FRAME;
-                    //loc_pose.header.stamp=ros::Time::now();
-                    //loc_pose.pose.position.x =matched_iter->candidate_->center().x();
-                    //loc_pose.pose.position.y =matched_iter->candidate_->center().y();
-                    //loc_pose.pose.position.z =matched_iter->candidate_->center().z();
-                    //loc_pose.pose.orientation.x =0.0;
-                    //loc_pose.pose.orientation.y =0.0;
-                    //loc_pose.pose.orientation.z =0.0;
-                    //loc_pose.pose.orientation.w =1.0;
-                    //********************************************
 
                     tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
 
@@ -1116,13 +1423,6 @@ public:
                     //Stamped<Point> tmp_loc;
                     try {
                         tfl_.transformPoint(fixed_frame, loc, loc);
-                        //********************************************
-                        //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
-                        //tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
-                        //tfl_.transformPose (GLOBAL_FRAME, loc_pose,  temp_loc_transformed_pose) ;
-                        //temp_loc_transformed_pose.header.stamp=ros::Time::now();
-                        //temp_loc_transformed_pose.header.frame_id=GLOBAL_FRAME;
-                        //********************************************
                     } catch(...) {
                         ROS_WARN("TF exception spot 4.");
                     }
@@ -1152,21 +1452,6 @@ public:
             // try to assign the candidate to another tracker
             if (!found){
                 //printf("didn't find tracker\n");
-                //
-                //********************************************
-                //geometry_msgs::PoseStamped loc_pose;
-                //loc_pose.header=scan->header;
-                //loc_pose.header.frame_id=LASER_FRAME;
-                //loc_pose.header.stamp=ros::Time::now();
-                //loc_pose.pose.position.x =matched_iter->candidate_->center().x();
-                //loc_pose.pose.position.y =matched_iter->candidate_->center().y();
-                //loc_pose.pose.position.z =matched_iter->candidate_->center().z();
-                //loc_pose.pose.orientation.x =0.0;
-                //loc_pose.pose.orientation.y =0.0;
-                //loc_pose.pose.orientation.z =0.0;
-                //loc_pose.pose.orientation.w =1.0;
-                //********************************************
-
                 tfl_.lookupTransform(laser_frame,GLOBAL_FRAME, ros::Time(0), transform_sensor_base);
                 Stamped<Point> loc(matched_iter->candidate_->center(), scan->header.stamp, scan->header.frame_id);
 
@@ -1585,6 +1870,7 @@ int main(int argc, char **argv)
       
     //if (g_argc > 2) {
         scan_topic = "hsrb/base_scan";
+        pose_scan_topic = "hsrb/base_scan";
         //scan_topic = g_argv[2];
         //printf("Listening on topic %s : \n", g_argv[2]);
     //} else {
