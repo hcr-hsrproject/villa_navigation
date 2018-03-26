@@ -1388,6 +1388,7 @@ pos_	human_filter/include/people_tracking_filter/state_pos_vel.h	/^  tf::Vector3
 pos_data_	human_filter/src/train_leg_detector.cpp	/^  vector< vector<float> > pos_data_;$/;"	m	class:TrainLegDetector	file:
 pose_scan_topic	human_filter/src/op_tracker.cpp	/^string pose_scan_topic = "base_scan";$/;"	v
 posesCallback	human_filter/src/op_tracker.cpp	/^    void posesCallback(const geometry_msgs::PoseArray::ConstPtr& msg)$/;"	f	class:LegDetector
+poses_notifier_	human_filter/src/op_tracker.cpp	/^    message_filters::Cache<geometry_msgs::PoseArray> poses_notifier_;$/;"	m	class:LegDetector	file:
 poses_sub_	human_filter/src/op_tracker.cpp	/^    message_filters::Subscriber<geometry_msgs::PoseArray> poses_sub_;$/;"	m	class:LegDetector	file:
 position_	human_filter/src/backup_srs_leg_dector.cpp	/^	Stamped<Point> position_;$/;"	m	class:SavedFeature	file:
 position_	human_filter/src/backup_srs_leg_detector.cpp	/^	Stamped<Point> position_;$/;"	m	class:SavedFeature	file:

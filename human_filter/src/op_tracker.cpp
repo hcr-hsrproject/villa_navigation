@@ -20,6 +20,7 @@
 #include "tf/transform_listener.h"
 #include "tf/message_filter.h"
 #include "message_filters/subscriber.h"
+#include "message_filters/cache.h"
 
 #include "people_tracking_filter/tracker_kalman.h"
 #include "people_tracking_filter/gaussian_pos_vel.h"
@@ -585,11 +586,12 @@ public:
 	message_filters::Subscriber<people_msgs::PositionMeasurementArray> people_sub_;
 	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;
     message_filters::Subscriber<geometry_msgs::PoseArray> poses_sub_;
+    message_filters::Cache<geometry_msgs::PoseArray> poses_notifier_;
     //tf::MessageFilter<people_msgs::PositionMeasurement> people_notifier_;
     tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;
-    //tf::MessageFilter<geometry_msgs::PoseWithCovarianceStamped> poses_notifier_;
 
 
+    //what is changed
 	list<SavedPersonFeature*>saved_people_;
 	tf::TransformBroadcaster br_;
     // services
@@ -615,9 +617,9 @@ public:
         leg_reliability_limit_(-0.100),
 		feat_count_(0),
         laser_sub_(nh_,scan_topic,10),
-        laser_notifier_(laser_sub_,tfl_,fixed_frame,10)
-        //poses_sub_(nh_,pose_scan_topic,10),
-		//poses_notifier_(poses_sub_,tfl_,fixed_frame,10)
+        laser_notifier_(laser_sub_,tfl_,fixed_frame,10),
+        poses_sub_(nh_,pose_scan_topic,10),
+        poses_notifier_(poses_sub_,50)
 	{
 
         leg_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("leg_tracker_measurements",0);
@@ -626,21 +628,12 @@ public:
         people_pub_ = nh_.advertise<people_msgs::People_v2>("people",0);
         markers_pub_ = nh_.advertise<visualization_msgs::Marker>("visualization_marker", 20);
 
-        //laser_notifier_.
-        //laser_notifier_.registerCallback(boost::bind(&LegDetector::laserCallback, this, _1));
-        //laser_notifier_.setTolerance(ros::Duration(0.01));
-        //laser_notifier_.setTargetFrame(fixed_frame);
-        //
-
         //poses_sub_ =messnh_.subscribe<geometry_msgs::PoseArray>(pose_scan_topic)
         
         //todo
         //poses_sub_.subscribe(nh_,pose_scan_topic,10);
 
-        //poses_notifier_.registerCallback(boost::bind(&LegDetector::posesCallback, this, _1));
-        //poses_notifier_.setTolerance(ros::Duration(0.01));
-        //poses_notifier_.setTargetFrame(fixed_frame);
-        
+        poses_notifier_.registerCallback(boost::bind(&LegDetector::posesCallback, this, _1));
 
         people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
