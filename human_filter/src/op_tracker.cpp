@@ -527,11 +527,11 @@ public:
 int g_argc;
 char** g_argv;
 string scan_topic = "hsrb/base_scan";
-string pose_scan_topic = "base_scan";
+string pose_scan_topic = "openpose_pose_array";
 
 
 // actual legdetector node
-class LegDetector
+class PoseDetector
 {
  
  bool pauseSent;
@@ -584,11 +584,11 @@ public:
     // topics
 
 	message_filters::Subscriber<people_msgs::PositionMeasurementArray> people_sub_;
-	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;
+	//message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;
     message_filters::Subscriber<geometry_msgs::PoseArray> poses_sub_;
     message_filters::Cache<geometry_msgs::PoseArray> poses_notifier_;
     //tf::MessageFilter<people_msgs::PositionMeasurement> people_notifier_;
-    tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;
+    //tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;
 
 
     //what is changed
@@ -609,47 +609,47 @@ public:
 
     tf::StampedTransform transform_sensor_base;
 
-	LegDetector(ros::NodeHandle nh):
+	PoseDetector(ros::NodeHandle nh):
 		nh_(nh),
 		mask_count_(0),
 		next_p_id_(0),
 		connected_thresh_(0.10),
         leg_reliability_limit_(-0.100),
-		feat_count_(0),
-        laser_sub_(nh_,scan_topic,10),
-        laser_notifier_(laser_sub_,tfl_,fixed_frame,10),
+        feat_count_(0),
         poses_sub_(nh_,pose_scan_topic,10),
         poses_notifier_(poses_sub_,50)
+        //laser_sub_(nh_,scan_topic,10),
+        //laser_notifier_(laser_sub_,tfl_,fixed_frame,10)
 	{
 
+            //feat_count_=0;
         leg_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("leg_tracker_measurements",0);
         people_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("people_tracker_measurements", 0);
         //people_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("people",0);
         people_pub_ = nh_.advertise<people_msgs::People_v2>("people",0);
-        markers_pub_ = nh_.advertise<visualization_msgs::Marker>("visualization_marker", 20);
+        markers_pub_ = nh_.advertise<visualization_msgs::Marker>("optracker_visualization_marker", 20);
 
-        //poses_sub_ =messnh_.subscribe<geometry_msgs::PoseArray>(pose_scan_topic)
+        //poses_sub_ =nh_.subscribe<geometry_msgs::PoseArray>(pose_scan_topic)
         
         //todo
         //poses_sub_.subscribe(nh_,pose_scan_topic,10);
-
-        poses_notifier_.registerCallback(boost::bind(&LegDetector::posesCallback, this, _1));
+        poses_notifier_.registerCallback(boost::bind(&PoseDetector::posesCallback, this, _1));
 
         people_sub_.subscribe(nh_,"people_tracker_measurements",10);
-        people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
+        people_sub_.registerCallback(boost::bind(&PoseDetector::peopleCallback, this, _1));
         
-        edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &LegDetector::edge_leg_callback,this);
-        //filter_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10, &LegDetector::filter_leg_callback,this);
+        //edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &PoseDetector::edge_leg_callback,this);
+        //
+        //filter_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10, &PoseDetector::filter_leg_callback,this);
         //
         //people_sub_.subscribe(nh_,"people_tracker_measurements",10);
-        //people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
+        //people_sub_.registerCallback(boost::bind(&PoseDetector::peopleCallback, this, _1));
         
-        //people_sub_ = nh_.subscribe<people_msgs::PositionMeasurementArray>("/people_tracker_measurements", 30, &LegDetector::peopleCallback,this);
+        //people_sub_ = nh_.subscribe<people_msgs::PositionMeasurementArray>("/people_tracker_measurements", 30, &PoseDetector::peopleCallback,this);
         // /Todo
         //dynamic_reconfigure::Server<human_filter::LegDetectionConfig>::CallbackType f;
-        //f = boost::bind(&LegDetector::configure, this, _1, _2);
+        //f = boost::bind(&PoseDetector::configure, this, _1, _2);
         //server_.setCallback(f);
-        
 
         publish_legs_           = true;
         publish_people_         = true;
@@ -689,7 +689,7 @@ public:
             }
        }
 
-    ~LegDetector()
+    ~PoseDetector()
     {
     }
 
@@ -932,6 +932,7 @@ public:
     void posesCallback(const geometry_msgs::PoseArray::ConstPtr& msg)
     {
 
+        ROS_INFO("pose_callback");
         std::cout<< msg->header.frame_id<<std::endl;
 
         ros::Time purge = msg->header.stamp + ros::Duration().fromSec(-no_observation_timeout_s);
@@ -1858,12 +1859,13 @@ public:
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv,"laser_processor");
+
 	g_argc = argc;
 	g_argv = argv;
       
     //if (g_argc > 2) {
-        scan_topic = "hsrb/base_scan";
-        pose_scan_topic = "hsrb/base_scan";
+        //scan_topic = "hsrb/base_scan";
+        //pose_scan_topic = "openpose_pose_array";
         //scan_topic = g_argv[2];
         //printf("Listening on topic %s : \n", g_argv[2]);
     //} else {
@@ -1872,7 +1874,7 @@ int main(int argc, char **argv)
     //}
 
     ros::NodeHandle nh;
-    LegDetector ld(nh);
+    PoseDetector ld(nh);
 	ROS_INFO("Execute main");
     ros::spin();
 
