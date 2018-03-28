@@ -87,7 +87,6 @@ leg_pose_manager::leg_pose_manager(ros::NodeHandle nh)
 
     
   // One_People_pos_pub=nh_.advertise<people_msgs::PositionMeasurement>("/people_tracker_measurements", 0 );
- 
   global_pose.resize(3,0.0);
   leg_target.resize(2,0.0);
   Head_Pos.resize(2,0.0);
@@ -137,6 +136,7 @@ void leg_pose_manager::filter_result_callback(const people_msgs::PositionMeasure
 void leg_pose_manager::openpose_pose_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
 {
   //openpose comes w.r.t map frame
+  ROS_INFO("openposes callback: poses size : %d ", msg->poses.size());
   human_op_poses_array = *msg;
 
 }
@@ -158,7 +158,7 @@ bool leg_pose_manager::IsNear_OpenPose(float x_pos,float y_pos)
         test_vector[0]=human_op_poses_array.poses[i].position.x;
         test_vector[1]=human_op_poses_array.poses[i].position.y;
 
-        if(Comparetwopoistions(input_vector, test_vector, 0.25))
+        if(Comparetwopoistions(input_vector, test_vector, 0.5))
             IsNear_OpenPose=true;
     }
 
@@ -190,34 +190,29 @@ void leg_pose_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPt
           tempVec[0]=tV.vector.x+global_pose[0];
           tempVec[1]=tV.vector.y+global_pose[1];
 
-          if(check_chair(tempVec[0],tempVec[1]))
-              continue;
-          if(check_staticObs(tempVec[0],tempVec[1]))
-            continue;
+          //if(check_chair(tempVec[0],tempVec[1]))
+              //continue;
+          //if(check_staticObs(tempVec[0],tempVec[1]))
+            //continue;
 
           //check with open_pose_array
-
-
-           //distance check between two candidates!
-          //bool IsFarEnough = true;
-
           bool IsNear_Openposes = IsNear_OpenPose(tempVec[0],tempVec[1]);
 
-          //for(int j(0);j<Cur_leg_human.size();j++)
-          //{
-              //if(Comparetwopoistions(tempVec,Cur_leg_human[j],0.4))
-                  //IsFarEnough=false;
-          //}
-
-          //add only if candidate pose ins far from 0.45 from previous candidates
-          //if(IsFarEnough && IsNear_Openposes )
           if(IsNear_Openposes )
           { 
 
               Cur_leg_human.push_back(tempVec);
+              ROS_INFO("saved to cur_leg_human");
+          }
+          else{
+          
+              ROS_INFO("passed");
+          
           }
 
       }
+
+      publish_leg_boxes(Cur_leg_human);
     
 }
 
@@ -899,9 +894,84 @@ void leg_pose_manager::callbackRcv(const people_msgs::PositionMeasurement::Const
 }
 
 
+void leg_pose_manager::publish_leg_boxes(std::vector< std::vector<double> > leg_human)
+{
+
+  ROS_INFO("leg published : size of leg : %d", leg_human.size());
+  human_leg_boxes_array.markers.clear();
+  human_leg_poses_array.poses.clear();
+
+  if(leg_human.size()>0)
+  {
+    for(int i(0);i<leg_human.size();i++)
+    {
+        //geometry_msgsr
+        geometry_msgs::Pose pose_human_leg;
+
+        pose_human_leg.position.x=leg_human[i][0];
+        pose_human_leg.position.y=leg_human[i][1];
+        pose_human_leg.position.z=0.5;
+        pose_human_leg.orientation.x=0.0;
+        pose_human_leg.orientation.y=0.0;
+        pose_human_leg.orientation.z=0.0;
+        pose_human_leg.orientation.w=1.0;
+
+        human_leg_poses_array.poses.push_back(pose_human_leg);
+        //human_leg_poses_array.header.stamp=ros::Time::now();
+
+        //visualization_marker
+        visualization_msgs::Marker marker_human_leg;
+
+        marker_human_leg.header.frame_id = "/map"; 
+        marker_human_leg.header.stamp = ros::Time::now();
+        marker_human_leg.ns = "/human_leg_boxes";
+        marker_human_leg.id = i;
+
+        uint32_t shape = visualization_msgs::Marker::SPHERE;
+        marker_human_leg.type = shape;
+
+        marker_human_leg.pose.position.x = leg_human[i][0];
+        marker_human_leg.pose.position.y = leg_human[i][1];
+        marker_human_leg.pose.position.z = 1;
+
+        marker_human_leg.pose.orientation.x = 0.0;
+        marker_human_leg.pose.orientation.y = 0.0;
+        marker_human_leg.pose.orientation.z = 0.0;
+        marker_human_leg.pose.orientation.w = 1.0;
+
+        double temp_dist,temp_dist2,temp_dist3;
+        temp_dist  =0.5;
+        temp_dist2 =0.5;
+        temp_dist3 =0.5;
+
+        //ROS_INFO("temp dist : %.3lf, temp dist2 : %.3lf, temp dist3 : %.3lf",temp_dist,temp_dist2,temp_dist3);
+        marker_human_leg.scale.x = std::abs(temp_dist);
+        marker_human_leg.scale.y = std::abs(temp_dist2);
+        marker_human_leg.scale.z = std::abs(temp_dist3);
+
+        marker_human_leg.color.r = 0.83;
+        marker_human_leg.color.g = 0.6;
+        marker_human_leg.color.b = 0.5;
+        marker_human_leg.color.a = 0.85;
+
+        human_leg_boxes_array.markers.push_back(marker_human_leg);
+      }
+
+      Leg_boxes_pub.publish(human_leg_boxes_array);
+      human_leg_poses_array.header.stamp=ros::Time::now();
+      human_leg_poses_array.header.frame_id="map";
+      Leg_poses_pub.publish(human_leg_poses_array);
+      ROS_INFO("published");
+  }
+}
+
+
+
+
 void leg_pose_manager::publish_leg_boxes()
 {
 
+  ROS_INFO("leg published : size of leg : %d", Cur_leg_human.size());
   human_leg_boxes_array.markers.clear();
   human_leg_poses_array.poses.clear();
 
@@ -965,6 +1035,7 @@ void leg_pose_manager::publish_leg_boxes()
       human_leg_poses_array.header.stamp=ros::Time::now();
       human_leg_poses_array.header.frame_id="map";
       Leg_poses_pub.publish(human_leg_poses_array);
+      ROS_INFO("published");
   }
 }
 
@@ -1000,12 +1071,14 @@ bool leg_pose_manager::Comparetwopoistions(std::vector<double> pos,std::vector<d
   }
 
   temp_dist=sqrt(temp_dist);
+  ROS_INFO("pos1 x : %.3lf , y : %.3lf , pos2 x: %.3lf , y : %.3lf", pos[0],pos[1], pos2[0], pos2[1],temp_dist);
 
   if(temp_dist<criterion)
     return true;
   
 
   return false;
+  //return truefalse;
 
 }
 
@@ -1013,11 +1086,12 @@ bool leg_pose_manager::Comparetwopoistions(std::vector<double> pos,std::vector<d
 void leg_pose_manager::spin()
 {
   ROS_INFO("People tracking manager started.");
+  freq_=10;
 
   while (ros::ok())
   {
-    publish_leg_boxes();
-    publish_cameraregion();
+    //publish_leg_boxes();
+    //publish_cameraregion();
     //publish_target();
     //publish_filtered_target();
     //Publish_nav_target();
@@ -1040,7 +1114,7 @@ void leg_pose_manager::spin()
 int main(int argc, char **argv)
 {
   // Initialize ROS
-  ros::init(argc, argv, "edge_lef_filter");
+  ros::init(argc, argv, "edge_leg_op_filter");
   ros::NodeHandle(nh);
 
   // create tracker node

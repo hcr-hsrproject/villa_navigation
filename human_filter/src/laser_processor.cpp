@@ -49,7 +49,7 @@ Sample* Sample::Extract(int ind, const sensor_msgs::LaserScan& scan)
   s->x = cos( scan.angle_min + ind*scan.angle_increment ) * s->range;
   s->y = sin( scan.angle_min + ind*scan.angle_increment ) * s->range;
   if (s->range > scan.range_min && s->range < scan.range_max)
-      if(s->range <2.5)
+      if(s->range <2.8)
           return s;
       else
       {
@@ -413,7 +413,6 @@ ScanProcessor::filterwithPosesarray(const vector<geometry_msgs::Point> poses_arr
   list<SampleSet*>::iterator c_iter = clusters_.begin();
 
   bool IsClose = false;
-  //static const string laser_frame = "/base_range_sensor_link";
 
   if(poses_array.size()>0){
   //should compare cluster and poses_array

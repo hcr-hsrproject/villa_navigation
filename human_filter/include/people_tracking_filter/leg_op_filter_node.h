@@ -79,6 +79,7 @@ public:
   bool check_cameraregion(float x_pos,float y_pos);
   int FindNearesetLegIdx();
   void publish_leg_boxes();
+  void publish_leg_boxes(std::vector< std::vector < double > > legs);
   void getCameraregion();
   void publish_cameraregion();
   void publish_target();

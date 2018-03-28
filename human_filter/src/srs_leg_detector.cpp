@@ -45,10 +45,9 @@ using namespace estimation;
 using namespace BFL;
 using namespace MatrixWrapper;
 
-
 static const double no_observation_timeout_s = 0.5;
-static const double max_second_leg_age_s     = 2.0;
-static const double max_track_jump_m         = 1.00; //1.0;
+static const double max_second_leg_age_s     = 2.0;   //2.0
+static const double max_track_jump_m         = 1.0; //1.0;
 static const double max_meas_jump_m          = 0.75; //0.75; // 1.0
 static const double leg_pair_separation_m    = 0.45; //previos 0.5 mkmk
 //static const string fixed_frame              = "odom_combined";
@@ -59,13 +58,10 @@ static const string LASER_FRAME             = "base_range_sensor_link";
 static double cov_meas_legs_m          = 0.025;
 static double cov_meas_people_m        = 0.025;
 
-static const double det_dist__for_pause      = 0.5; // the distance to the person when the robot decides to pause
-static const double det_dist__for_resume      = 2.5; // the distance to the person when the robot decides to resume
 static double kal_p =4, kal_q = 0.002, kal_r = 10;
 static bool use_filter = true;
 static string detector_="hsrb/base_scan";
 //static const unsigned int num_particles=100; // particle
-
 
 class SavedPersonFeature
 {
@@ -201,7 +197,6 @@ public:
 	SavedFeature* other;
 	float dist_to_person_;
 
-
 	// one leg tracker
 	SavedFeature(Stamped<Point> loc, TransformListener& tfl)
 	: tfl_(tfl),
@@ -305,167 +300,6 @@ private:
 };
 
 int SavedFeature::nextid = 0;
-
-
-
-
-
-
-//class SavedFeature
-//{
-//public:
-	//static int nextid;
-	//TransformListener& tfl_;
-
-    //BFL::StatePosVel sys_sigma_;
-    //TrackerKalman filter_;
-    //TrackerParticle filter_;  // particle
-
-	//string id_;
-	//string object_id;
-    //string person_name;          //added by mk
-	//ros::Time time_;
-	//ros::Time meas_time_;
-
-	//Stamped<Point> position_;
-	//float dist_to_person_;
-
-    //Stamped<Vector3> velocity_; 
-	//BFL::StatePosVel sys_sigma_;
-	//TrackerKalman filter_;
-	//ros::Time time_;
-	//ros::Time meas_time_;
-
-	//double reliability, p, probability;
-
-    //  //leg tracker
-    //SavedFeature(Stamped<Point> loc, std::string& id, std::string& name)
-	//: sys_sigma_(Vector3(0.05, 0.05, 0.05), Vector3(1.0, 1.0, 1.0)),
-	  //filter_("tracker_people",sys_sigma_),
-	  //reliability(-1.), p(4)
-	//{
-		//object_id = id;
-		//person_name = name;
-		//time_ = loc.stamp_;
-
-     //   //P-Matrix = covariance matrix
-      //  //Q-Matrix = process noise covariance matrix
-       // //F-Matrix = state matrix
-		//StatePosVel prior_sigma(Vector3(0.1,0.1,0.1), Vector3(0.0000001, 0.0000001, 0.0000001));
-		//filter_.initialize(loc, prior_sigma, time_.toSec());
-		//StatePosVel est;
-		//filter_.getEstimate(est);
-		//updatePosition();
-	//}
-
-    //SavedFeature(Stamped<Point> loc, TransformListener& tfl)
-    //: tfl_(tfl),
-      //sys_sigma_(Vector3(0.05, 0.05, 0.05), Vector3(1.0, 1.0, 1.0)),
-        //filter_("tracker_name",sys_sigma_)
-    //{
-        //char id[100];
-        //snprintf(id,100,"legtrack%d", nextid++);
-        //id_ = std::string(id);
-
-        //object_id = "";
-        //time_ = loc.stamp_;
-        //meas_time_ = loc.stamp_;
-
-        //try {
-            //tfl_.transformPoint(fixed_frame, loc, loc);
-        //} catch(...) {
-            //ROS_WARN("TF exception spot 6.");
-        //}
-        //StampedTransform pose( tf::Pose(Quaternion(0.0, 0.0, 0.0, 1.0), loc), loc.stamp_, id_, loc.frame_id_);
-        //tfl_.setTransform(pose);
-
-        //StatePosVel prior_sigma(Vector3(0.1,0.1,0.1), Vector3(0.0000001, 0.0000001, 0.0000001));
-        //cout<<loc.m_floats[0]<<", "<<loc.m_floats[1]<<","<<loc.m_floats[2]<<endl;
-        //filter_.initialize(loc, prior_sigma, time_.toSec());
-
-        //StatePosVel est;
-        //filter_.getEstimate(est);
-
-        //updatePosition();
-    //}
-
-	//void propagate(ros::Time time)
-	//{
-		//time_ = time;
-		//filter_.updatePrediction(time.toSec());
-		//updatePosition();
-	//}
-
-	//void update(Stamped<Point> loc)
-	//{
-		//StampedTransform pose( tf::Pose(Quaternion(0.0, 0.0, 0.0, 1.0), loc), loc.stamp_, id_, loc.frame_id_);
-		//tfl_.setTransform(pose);
-
-		//meas_time_ = loc.stamp_;
-		//time_ = meas_time_;
-
-		//SymmetricMatrix cov(3);
-		//cov = 0.0;
-		//cov(1,1) = 0.0025;
-		//cov(2,2) = 0.0025;
-		//cov(3,3) = 0.0025;
-
-		//filter_.updateCorrection(loc, cov);
-
-		//updatePosition();
-	//}
-
-    //void update(Stamped<Point> loc, double probability)
-	//{
-		//meas_time_ = loc.stamp_;
-		//time_ = meas_time_;
-
-        // //R-Matrix
-		//SymmetricMatrix cov(3);
-		//cov = 0.0;
-		//cov(1,1) = cov_meas_people_m;
-		//cov(2,2) = cov_meas_people_m;
-		//cov(3,3) = cov_meas_people_m;
-
-		//filter_.updateCorrection(loc, cov);
-		//updatePosition();
-
-	//}
-
-	//double getLifetime()
-	//{
-		//return filter_.getLifetime();
-	//}
-    //double getReliability(){
-    
-        //return reliability;
-    //}
-
-//private:
-	//void updatePosition()
-	//{
-		//StatePosVel est;
-		//filter_.getEstimate(est);
-
-		//position_[0] = est.pos_[0];
-		//position_[1] = est.pos_[1];
-		//position_[2] = est.pos_[2];
-		//position_.stamp_ = time_;
-		//position_.frame_id_ = fixed_frame;
-
-        //velocity_[0] = est.vel_[0];
-		//velocity_[1] = est.vel_[1];
-		//velocity_[2] = est.vel_[2];
-
-		//velocity_.stamp_ = time_;
-		//velocity_.frame_id_ = fixed_frame;
-
-	//}
-//};
-
-//int SavedFeature::nextid = 0;
-
-
 
 class Legs
 {
@@ -577,6 +411,8 @@ public:
 	ros::Publisher markers_pub_;
     ros::Subscriber edge_leg_sub;
     ros::Subscriber filter_leg_sub;
+    ros::Subscriber op_human_sub;
+    ros::Subscriber globalpose_sub;
 
     //TODO : dynamic_reconfigure
     //dynamic_reconfigure::Server<human_filter::LegDetectionConfig> server_;
@@ -598,10 +434,12 @@ public:
     vector<geometry_msgs::Point32> detected_legs;
     vector<geometry_msgs::Point> edge_legs;
     vector<geometry_msgs::Point> filter_legs;
+    vector<geometry_msgs::Point> op_poses;
+    std::vector<double> global_pose;
     //geometry_msgs::PoseArray edge_legposes;
     geometry_msgs::PoseStamped temp_leg_transformed_pose;
     geometry_msgs::PoseStamped temp_loc_transformed_pose;
-
+    geometry_msgs::PoseArray human_op_poses_array;
     tf::StampedTransform transform_sensor_base;
 
 	LegDetector(ros::NodeHandle nh):
@@ -628,6 +466,7 @@ public:
             shutdown();
         }
 
+        op_human_sub =nh_.subscribe<geometry_msgs::PoseArray>("/openpose_pose_array", 10, &LegDetector::openpose_pose_callback,this);
         leg_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("leg_tracker_measurements",0);
         people_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("people_tracker_measurements", 0);
         //people_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("people",0);
@@ -642,8 +481,9 @@ public:
         people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
         
-        //edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &LegDetector::edge_leg_callback,this);
-        filter_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10, &LegDetector::filter_leg_callback,this);
+        globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&LegDetector::global_pose_callback,this);
+        edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &LegDetector::edge_leg_callback,this);
+        //filter_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10, &LegDetector::filter_leg_callback,this);
         //people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         //people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
         
@@ -663,6 +503,7 @@ public:
         publish_vel_markers_    = true;
         publish_people_markers_ = true; 
 
+        global_pose.resize(2,0.0);
 		feature_id_ = 0;
 
         //map_msgs
@@ -732,6 +573,57 @@ public:
 
 
 //mk
+//
+//IS_NEAR_OPhuman
+    bool IS_NEAR_OPhuman(double pos_x,double  pos_y)
+    {
+        double  seperation_treshold=2.0;
+        bool IsClose = false;
+        double dist =0.0;
+
+        if(op_poses.size()>0){
+            //should compare cluster and poses_array
+            for(size_t idx (0); idx<op_poses.size();idx++ )
+            {
+
+                float x_diff = abs(op_poses[idx].x-pos_x);
+                float y_diff = abs(op_poses[idx].y-pos_y);
+                float dist = sqrt(pow(x_diff,2)+pow(y_diff,2));
+
+                ROS_INFO("distance to target %.3lf",dist);
+
+                if(dist < seperation_treshold) 
+                    IsClose = true;
+
+            }
+        }
+
+        return IsClose;
+    }
+    bool IS_NEAR_legs(double pos_x,double  pos_y)
+    {
+        double  seperation_treshold=1.00;
+        bool IsClose = false;
+        double dist =0.0;
+
+        if(filter_legs.size()>0){
+            //should compare cluster and poses_array
+            for(size_t idx (0); idx<filter_legs.size();idx++ )
+            {
+
+                float x_diff = abs(filter_legs[idx].x-pos_x);
+                float y_diff = abs(filter_legs[idx].y-pos_y);
+                float dist = sqrt(pow(x_diff,2)+pow(y_diff,2));
+                ROS_INFO("distance to target %.3lf",dist);
+
+                if(dist < seperation_treshold) 
+                    IsClose = true;
+
+            }
+        }
+
+        return IsClose;
+    }
 	void peopleCallback(const people_msgs::PositionMeasurementArray::ConstPtr& people_meas)
 	{
         //ROS_INFO("start people callback");
@@ -873,12 +765,19 @@ public:
 	}
 
 	 //void edge_leg_Callback(const sensor_msgs::LaserScan::ConstPtr& scan)
+    void global_pose_callback(const geometry_msgs::PoseStamped::ConstPtr& msg)
+    {
+
+        global_pose[0]=msg->pose.position.x;
+        global_pose[1]=msg->pose.position.y;
+
+    }
+
 
     void filter_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
      {
 
          filter_legs.clear();
-
          int num_leg_detected = msg->poses.size(); 
          for(int i(0);i<num_leg_detected;i++){
 
@@ -894,42 +793,93 @@ public:
          //tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(2.0));
      }
 
+    void openpose_pose_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
+    {
+        //openpose comes w.r.t map frame
+        ROS_INFO("openposes callback: poses size : %d ", msg->poses.size());
+        human_op_poses_array = *msg;
+
+        op_poses.clear();
+        int num_leg_detected = msg->poses.size(); 
+         for(int i(0);i<num_leg_detected;i++){
+             geometry_msgs::Point tmp_point;
+             tmp_point.x = msg->poses[i].position.x;
+             tmp_point.y = msg->poses[i].position.y;
+             tmp_point.z=0.0;
+             op_poses.push_back(tmp_point);
+         }
+
+    }
 
     void edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
-     {
+    {
 
-         tf::StampedTransform transform_sensor;
-         tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(1.0));
-         edge_legs.clear();
+        filter_legs.clear();
+        int num_leg_detected = msg->poses.size(); 
+         std::vector<double> tempVec(2,0.0);
 
-         int num_leg_detected = msg->poses.size(); 
-         for(int i(0);i<num_leg_detected;i++){
+         for(int i(0);i<num_leg_detected;i++)
+         {
+             geometry_msgs::Vector3Stamped gV, tV;
 
-             geometry_msgs::PoseStamped temp_leg_pose;
-             temp_leg_pose.pose = msg->poses[i];
-             temp_leg_pose.header.stamp=ros::Time::now();
-             temp_leg_pose.header.frame_id=LASER_FRAME;
+             gV.vector.x = msg->poses[i].position.x;
+             gV.vector.y = msg->poses[i].position.y;
+             gV.vector.z = 1.0;
 
-             try{
-
-                 tfl_.lookupTransform(LASER_FRAME,GLOBAL_FRAME, ros::Time(1.0), transform_sensor);
-                 tfl_.transformPose(GLOBAL_FRAME, temp_leg_pose,  temp_leg_transformed_pose);
-                 temp_leg_transformed_pose.header.stamp=ros::Time::now();
-                 temp_leg_transformed_pose.header.frame_id=GLOBAL_FRAME;
-             } catch(...) {
-                 ROS_WARN("TF exception spot 1.");
-             }
+             gV.header.stamp = ros::Time();
+             gV.header.frame_id = "/base_range_sensor_link";
+             tfl_.transformVector("/map", gV, tV);
 
              geometry_msgs::Point tmp_point;
-             tmp_point.x = temp_leg_transformed_pose.pose.position.x;
-             tmp_point.y = temp_leg_transformed_pose.pose.position.y;
+             tmp_point.x = tV.vector.x+global_pose[0];
+             tmp_point.y = tV.vector.y+global_pose[1];
              tmp_point.z=0.0;
 
-             edge_legs.push_back(tmp_point);
+             //check with open_pose_array
+             bool IsNear_Openposes = IS_NEAR_OPhuman(tmp_point.x,tmp_point.y);
+             if(IsNear_Openposes )
+             { 
+                 filter_legs.push_back(tmp_point);
+             }
+             else{
+
+                 ROS_INFO("passed");
+             }
 
          }
-         printf("size edge_leg : %d \n", static_cast<int>(edge_legs.size()));
-         tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(2.0));
+
+         //tf::StampedTransform transform_sensor;
+         //tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(1.0));
+         //edge_legs.clear();
+
+         //int num_leg_detected = msg->poses.size(); 
+         //for(int i(0);i<num_leg_detected;i++){
+
+             //geometry_msgs::PoseStamped temp_leg_pose;
+             //temp_leg_pose.pose = msg->poses[i];
+             //temp_leg_pose.header.stamp=ros::Time::now();
+             //temp_leg_pose.header.frame_id=LASER_FRAME;
+
+             //try{
+
+                 //tfl_.lookupTransform(LASER_FRAME,GLOBAL_FRAME, ros::Time(1.0), transform_sensor);
+                 //tfl_.transformPose(GLOBAL_FRAME, temp_leg_pose,  temp_leg_transformed_pose);
+                 //temp_leg_transformed_pose.header.stamp=ros::Time::now();
+                 //temp_leg_transformed_pose.header.frame_id=GLOBAL_FRAME;
+             //} catch(...) {
+                 //ROS_WARN("TF exception spot 1.");
+             //}
+
+             //geometry_msgs::Point tmp_point;
+             //tmp_point.x = temp_leg_transformed_pose.pose.position.x;
+             //tmp_point.y = temp_leg_transformed_pose.pose.position.y;
+             //tmp_point.z=0.0;
+
+             //edge_legs.push_back(tmp_point);
+
+         //}
+         //printf("size edge_leg : %d \n", static_cast<int>(edge_legs.size()));
+         //tfl_.waitForTransform(LASER_FRAME,GLOBAL_FRAME,  ros::Time(0), ros::Duration(2.0));
      }
     
 //original callback using transform point
@@ -978,6 +928,7 @@ public:
         processor.removeLessThan(5);
         //processor.filterwithPosesarray(edge_legs);
         processor.filterwithPosesarray(filter_legs);
+        //processor.filterwithPosesarray(op_poses);
 
         // OpenCV 3
         cv::Mat tmp_mat = cv::Mat(1, feat_count_, CV_32FC1);
@@ -1230,6 +1181,12 @@ public:
             // reliability
             double reliability = (*sf_iter)->getReliability();
             //  ROS_INFO("reliability %f", reliability);
+            double people_pos_x = (*sf_iter)->position_[0];
+            double people_pos_y = (*sf_iter)->position_[1];
+
+            //if(!IS_NEAR_legs(people_pos_x,people_pos_y))
+                //continue;
+
 
             if ((*sf_iter)->getReliability() > leg_reliability_limit_
                     && publish_legs_){
@@ -1450,38 +1407,6 @@ public:
         }
         std::cout << std::endl;
     }
-
-
-
-
-
-
-
-      // calback for the DetectLegs service        
-        //bool detectLegsCallback(human_filter::DetectLegs::Request &req, human_filter::DetectLegs::Response &res)
-        //{
-        
-
-         //res.leg_list.header.stamp = ros::Time::now();
-
-
-         //geometry_msgs::Point32 pt1,pt2,pt3,pt4;
-
-         //pt1.x=2.0; pt1.y=2.0;
-         //pt2.x=-2.0; pt2.y=2.0;
-         //pt3.x=2.0; pt3.y=-2.0;
-         //pt4.x=-2.0; pt4.y=-2.0;
-          
-         //res.leg_list.points = detected_legs;
-         //res.leg_list.points.push_back(pt1);	
-         //res.leg_list.points.push_back(pt2);
-         //res.leg_list.points.push_back(pt3);
-         //res.leg_list.points.push_back(pt4);
-
-         //return true;
-        //}
-
-
 
     void pairLegs()
     {
