@@ -79,7 +79,7 @@ int main(int argc, char **argv){
   geometry_msgs::PoseArray msgx;
 
   // ros::ServiceServer service = n.advertiseService("/laser_leg_service",  &Edgeleg_manager_srv::followingLoop,this);
-  ros::Rate loop_rate(50);
+  ros::Rate loop_rate(40);
   int seq_counter = 0;
   
   while( ros::ok() ){

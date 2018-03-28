@@ -33,7 +33,7 @@
 #define ANTRO_b0 0   //  |
 #define ANTRO_b1 0.6 //  |-> Free space between two legs (min-max)
 #define ANTRO_c0 0.1 //    |
-#define ANTRO_c1 0.45 //    |-> Two legs together width (min-max)
+#define ANTRO_c1 0.5 //    |-> Two legs together width (min-max)
 
 // Pattern Type
 #define TYPE_LA 1 // Legs separated
@@ -76,7 +76,7 @@ int main(int argc, char **argv){
   ros::param::get("~laser_scan", laser_scan);
   ros::Subscriber node_sub = n.subscribe(laser_scan, 2, LaserCallback);
   geometry_msgs::PoseArray msgx;
-  ros::Rate loop_rate(50);
+  ros::Rate loop_rate(40);
 
 
   int seq_counter = 0;
@@ -201,13 +201,13 @@ void LaserCallback (const sensor_msgs::LaserScan::ConstPtr& msg){
   FindPattern( flank_string, LEGS_LA,  &Pattern_LA  );
   FindPattern( flank_string, LEGS_FS1, &Pattern_FS1 );
   FindPattern( flank_string, LEGS_FS2, &Pattern_FS2 );
-  FindPattern( flank_string, LEGS_SL,  &Pattern_SL  );  
+  //FindPattern( flank_string, LEGS_SL,  &Pattern_SL  );  
 
   // ANTROPOMETRIC VALIDATION (the non antropometric patterns are erased from the list)
   ValidatePattern( &Pattern_LA,  TYPE_LA, flank_id0, flank_id1,  laser_x, laser_y);
   ValidatePattern( &Pattern_FS1, TYPE_FS, flank_id0, flank_id1,  laser_x, laser_y);
   ValidatePattern( &Pattern_FS2, TYPE_FS, flank_id0, flank_id1,  laser_x, laser_y);
-  ValidatePattern( &Pattern_SL,  TYPE_SL, flank_id0, flank_id1,  laser_x, laser_y);
+  //ValidatePattern( &Pattern_SL,  TYPE_SL, flank_id0, flank_id1,  laser_x, laser_y);
 
   // ERASE REDUNDANT PATTERNS FROM ACCEPTED ONES (If a LA or FS pattern is accepted, we erase the SL on it)
   // a) Erase SL from LA
@@ -255,7 +255,7 @@ void LaserCallback (const sensor_msgs::LaserScan::ConstPtr& msg){
   
   HumanPose( &rec_x, &rec_y, Pattern_LA,  TYPE_LA,  flank_id0, flank_id1,  laser_x, laser_y);
   HumanPose( &rec_x, &rec_y, Pattern_FS1, TYPE_FS,  flank_id0, flank_id1,  laser_x, laser_y);
-  HumanPose( &rec_x, &rec_y, Pattern_FS2, TYPE_FS,  flank_id0, flank_id1,  laser_x, laser_y);
+  //HumanPose( &rec_x, &rec_y, Pattern_FS2, TYPE_FS,  flank_id0, flank_id1,  laser_x, laser_y);
   //HumanPose( &rec_x, &rec_y, Pattern_SL,  TYPE_SL,  flank_id0, flank_id1,  laser_x, laser_y);
 }
 

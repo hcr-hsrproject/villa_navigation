@@ -435,6 +435,7 @@ void belief_manager::human_yolo_callback(const visualization_msgs::MarkerArray::
 
       int human_mapidx=CoordinateTransform_Global2_beliefMap(cur_people_x,cur_people_y);
       index_of_human_occ_cells_updated_recently.push_back(human_mapidx);
+      Human_Belief_Scan_map.data[human_mapidx] = 70;
 
       if (map_index_of_human_cells_to_prob.count(human_mapidx) == 1){
           // Encountered the same cells. Update probability:
@@ -469,7 +470,6 @@ void belief_manager::update_human_occ_belief(int update_type){
     // For each cell, check if is labeled as human.
     // If cell is recently updated, continue;
     // If labeled as human, update probability of cell regions
-    
     std::vector<int> indices_to_assign_as_free;
 
     for(int i(0);i< visiblie_idx_set.size();i++)
@@ -483,19 +483,24 @@ void belief_manager::update_human_occ_belief(int update_type){
             float prior = map_index_of_human_cells_to_prob[cell_idx]; // P(H)
             float P_S = P_Sc_given_H*(prior) + P_Sc_given_Hc*(1-prior);
             float posterior = prior*0.4;
-            //map_index_of_human_cells_to_prob[cell_idx] =posterior;
-            map_index_of_human_cells_to_prob[cell_idx] =0.05;
-
-            //std::cout << "Prob: " << posterior << std::endl;
+            map_index_of_human_cells_to_prob[cell_idx] =posterior;
+            //map_index_of_human_cells_to_prob[cell_idx] =0.05;
+            std::cout << "index : "<<cell_idx<< ", Prob: " << posterior << std::endl;
             if (posterior < PROB_THRESH){
                 indices_to_assign_as_free.push_back(cell_idx);
             }
 
         }
+        //else{
+        
+            //map_index_of_human_cells_to_prob[cell_idx] =0.05;
+        
+        //}
 
         for(size_t i = 0; i < indices_to_assign_as_free.size(); i++){
             int index_to_erase =  indices_to_assign_as_free[i];
             map_index_of_human_cells_to_prob.erase(index_to_erase);
+            //Human_Belief_Scan_map.data[index_to_erase]=0.00;
         }
     
     }

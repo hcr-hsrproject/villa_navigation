@@ -48,11 +48,11 @@ using namespace MatrixWrapper;
 
 static const double no_observation_timeout_s = 0.5;
 static const double max_second_leg_age_s     = 2.0;
-static const double max_track_jump_m         = 0.7; //1.0;
+static const double max_track_jump_m         = 1.00; //1.0;
 static const double max_meas_jump_m          = 0.75; //0.75; // 1.0
-static const double leg_pair_separation_m    = 0.35; //previos 0.5 mkmk
+static const double leg_pair_separation_m    = 0.45; //previos 0.5 mkmk
 //static const string fixed_frame              = "odom_combined";
-static const string fixed_frame              = "/map";
+static const string fixed_frame              = "map";
 static const string GLOBAL_FRAME              = "map";
 static const string laser_frame              = "base_range_sensor_link";
 static const string LASER_FRAME             = "base_range_sensor_link";
@@ -608,8 +608,8 @@ public:
 		nh_(nh),
 		mask_count_(0),
 		next_p_id_(0),
-		//connected_thresh_(0.07),
-		connected_thresh_(0.12),
+        //connected_thresh_(0.07),
+        connected_thresh_(0.1),
         leg_reliability_limit_(-0.100),
 		feat_count_(0),
         laser_sub_(nh_,scan_topic,10),
@@ -642,7 +642,7 @@ public:
         people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
         
-        edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &LegDetector::edge_leg_callback,this);
+        //edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &LegDetector::edge_leg_callback,this);
         filter_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10, &LegDetector::filter_leg_callback,this);
         //people_sub_.subscribe(nh_,"people_tracker_measurements",10);
         //people_sub_.registerCallback(boost::bind(&LegDetector::peopleCallback, this, _1));
@@ -656,6 +656,9 @@ public:
 
         publish_legs_           = true;
         publish_people_         = true;
+        //publish_leg_markers_    = false;
+        //publish_vel_markers_    = false;
+        //publish_people_markers_ = false; 
         publish_leg_markers_    = true;
         publish_vel_markers_    = true;
         publish_people_markers_ = true; 
@@ -731,7 +734,7 @@ public:
 //mk
 	void peopleCallback(const people_msgs::PositionMeasurementArray::ConstPtr& people_meas)
 	{
-		//ROS_INFO("start people callback");
+        //ROS_INFO("start people callback");
 		if (people_meas->people.empty())
 			return;
 

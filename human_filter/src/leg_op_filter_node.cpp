@@ -70,7 +70,7 @@ leg_pose_manager::leg_pose_manager(ros::NodeHandle nh)
   Leg_poses_pub=nh_.advertise<geometry_msgs::PoseArray>("/openpose_filter_pose_array", 10);
   human_target_pub=nh_.advertise<visualization_msgs::Marker>("/leg_target", 10);
   filtered_human_target_pub=nh_.advertise<visualization_msgs::Marker>("/filtered_target", 10);
-  people_measurement_pub_ = nh_.advertise<people_msgs::PositionMeasurement>("people_tracker_measurements", 10);
+  //people_measurement_pub_ = nh_.advertise<people_msgs::PositionMeasurement>("people_tracker_measurements", 10);
   static_belief_map_pub=nh_.advertise<nav_msgs::OccupancyGrid>("/camera_region_map", 10, true);
   setNavTarget_pub=nh_.advertise<move_base_msgs::MoveBaseActionGoal>("/move_base/move/goal",50,true);
 
@@ -82,7 +82,7 @@ leg_pose_manager::leg_pose_manager(ros::NodeHandle nh)
   globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&leg_pose_manager::global_pose_callback,this);
   keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &leg_pose_manager::keyboard_callback,this);
   Scaled_static_map_sub=nh_.subscribe<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, &leg_pose_manager::scaled_static_map_callback,this);
-  filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&leg_pose_manager::filter_result_callback,this);
+  //filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&leg_pose_manager::filter_result_callback,this);
   wrist_trigger_sub=nh_.subscribe<std_msgs::Int8>("/cmd_trackhuman", 10,&leg_pose_manager::wrist_trigger_callback,this);
 
     
@@ -919,6 +919,7 @@ void leg_pose_manager::publish_leg_boxes()
         pose_human_leg.orientation.y=0.0;
         pose_human_leg.orientation.z=0.0;
         pose_human_leg.orientation.w=1.0;
+
         human_leg_poses_array.poses.push_back(pose_human_leg);
         //human_leg_poses_array.header.stamp=ros::Time::now();
 
@@ -1017,7 +1018,7 @@ void leg_pose_manager::spin()
   {
     publish_leg_boxes();
     publish_cameraregion();
-    publish_target();
+    //publish_target();
     //publish_filtered_target();
     //Publish_nav_target();
     // ------ LOCKED ------

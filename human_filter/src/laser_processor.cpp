@@ -356,15 +356,16 @@ ScanProcessor::filterwithPosesarray(const geometry_msgs::PoseArray poses_array)
   while (c_iter != clusters_.end())
   {
 //<<<<<<< HEAD
-    if ( (*c_iter)->size() < num_poses)
-    {
-      delete (*c_iter);
-      clusters_.erase(c_iter++);
-    } else {
-      ++c_iter;
-    }
+    //if ( (*c_iter)->size() < num_poses)
+    //{
+      //delete (*c_iter);
+      //clusters_.erase(c_iter++);
+    //} else {
+      //++c_iter;
+    //}
 //=======
     double dist =0.0;
+    double min_dist =40;
    for(size_t i=0;i<num_poses; i++) 
    {
 
@@ -373,33 +374,41 @@ ScanProcessor::filterwithPosesarray(const geometry_msgs::PoseArray poses_array)
        std::cout<<temp_center.x() <<","<<temp_center.y()<<std::endl;
 
        tf::Point temp_pose(poses_array.poses[i].position.x,poses_array.poses[i].position.y,0.0);
+       std::cout<<temp_center.x() <<","<<temp_center.y()<<std::endl;
 
        float dist = temp_pose.distance(temp_pose);
        ROS_INFO("distance to target %.3lf",dist);
+       if(dist<min_dist)
+       {
+           min_dist =dist;
        
-       //geometry_msgs::Point32 point;
-       //point.x = (*sample_iter)->x;
-       //point.y = (*sample_iter)->y;
-       //point.z = 0;
+       
+       }
+   }
+       
+       if(min_dist>0.7)
+       {
+
+           delete (*c_iter);
+           clusters_.erase(c_iter++);
+       
+       }
+       else
+       {
+       
+           ++c_iter;
+       
+       }
        
    }
 
-   //if there 
-    //if ( !uuuuuuuuuuuuuses)
-    //{
-      //delete (*c_iter);
-      //clusters_.erase(c_iter++);
-    //} else {
-      //++c_iter;
-    //}
-//>>>>>>> 89edb84914a96c8bb38bd046d80624279312f483
-  }
+  
 }
 
 void
 ScanProcessor::filterwithPosesarray(const vector<geometry_msgs::Point> poses_array)
 {
-  float seperation_treshold =0.3;
+  float seperation_treshold =0.75;
   int num_poses = poses_array.size();
   list<SampleSet*>::iterator c_iter = clusters_.begin();
 
@@ -411,6 +420,7 @@ ScanProcessor::filterwithPosesarray(const vector<geometry_msgs::Point> poses_arr
       while (c_iter != clusters_.end())
       {
           double dist =0.0;
+          IsClose =false;
           for(size_t i=0;i<num_poses; i++) 
           {
 
@@ -419,7 +429,11 @@ ScanProcessor::filterwithPosesarray(const vector<geometry_msgs::Point> poses_arr
 
               tf::Point temp_pose(poses_array[i].x,poses_array[i].y,0.0);
 
-              float dist = temp_pose.distance(temp_pose);
+              //float dist = temp_pose.distance(temp_pose);
+              float x_diff = abs(poses_array[i].x-temp_center.x());
+              float y_diff = abs(poses_array[i].y-temp_center.y());
+              float dist = sqrt(pow(x_diff,2)+pow(y_diff,2));
+
               ROS_INFO("distance to target %.3lf",dist);
 
               if(dist < seperation_treshold) 
