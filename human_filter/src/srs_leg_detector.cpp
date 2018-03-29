@@ -927,7 +927,7 @@ public:
         processor.splitConnected(connected_thresh_);
         processor.removeLessThan(5);
         //processor.filterwithPosesarray(edge_legs);
-        processor.filterwithPosesarray(filter_legs);
+        //processor.filterwithPosesarray(filter_legs);
         //processor.filterwithPosesarray(op_poses);
 
         // OpenCV 3
@@ -1184,8 +1184,8 @@ public:
             double people_pos_x = (*sf_iter)->position_[0];
             double people_pos_y = (*sf_iter)->position_[1];
 
-            //if(!IS_NEAR_legs(people_pos_x,people_pos_y))
-                //continue;
+            if(!IS_NEAR_OPhuman(people_pos_x,people_pos_y))
+                continue;
 
 
             if ((*sf_iter)->getReliability() > leg_reliability_limit_

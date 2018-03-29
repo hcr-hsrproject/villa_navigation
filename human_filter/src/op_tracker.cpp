@@ -594,7 +594,6 @@ public:
     //tf::MessageFilter<people_msgs::PositionMeasurement> people_notifier_;
     //tf::MessageFilter<sensor_msgs::LaserScan> laser_notifier_;
 
-
     //what is changed
 	list<SavedPersonFeature*>saved_people_;
 	tf::TransformBroadcaster br_;
@@ -626,7 +625,7 @@ public:
         //laser_notifier_(laser_sub_,tfl_,fixed_frame,10)
 	{
 
-            //feat_count_=0;
+        //feat_count_=0;
         leg_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("leg_tracker_measurements",0);
         people_measurements_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("people_tracker_measurements", 0);
         //people_pub_ = nh_.advertise<people_msgs::PositionMeasurementArray>("people",0);
@@ -634,7 +633,7 @@ public:
         markers_pub_ = nh_.advertise<visualization_msgs::Marker>("optracker_visualization_marker", 20);
 
         //poses_sub_ =nh_.subscribe<geometry_msgs::PoseArray>(pose_scan_topic)
-        
+
         //todo
         //poses_sub_.subscribe(nh_,pose_scan_topic,10);
         poses_notifier_.registerCallback(boost::bind(&PoseDetector::posesCallback, this, _1));
@@ -784,7 +783,6 @@ public:
 				saved_people_.erase(iter++);
 			}
 		}
-
 
 		//PRINT_LIST(saved_people_, "LIST saved_people ::  ");
 		//publish data
