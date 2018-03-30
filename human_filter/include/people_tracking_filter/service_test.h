@@ -8,7 +8,8 @@
 #include <tf/transform_listener.h>
 #include "tf/message_filter.h"
 #include <tf/transform_datatypes.h>
-#include <keyboard/Key.h>
+//#include <keyboard/Key.h>
+
 
 
 // people tracking stuff
@@ -67,7 +68,7 @@ public:
   void global_pose_callback(const geometry_msgs::PoseStamped::ConstPtr& msg);
   void human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& message);
   void filter_act_callback(const std_msgs::Int8::ConstPtr& msg);
-  void keyboard_callback(const keyboard::Key::ConstPtr& msg);
+  //void keyboard_callback(const keyboard::Key::ConstPtr& msg);
   void scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg);
   bool check_staticObs(float x_pos,float y_pos);
   int  globalcoord_To_SScaled_map_index(float x_pos,float y_pos);

@@ -26,8 +26,8 @@ find_package(catkin REQUIRED COMPONENTS
   people_msgs
   sensor_msgs
   nav_msgs
-  actionlib_msgs
   keyboard
+  actionlib_msgs
   actionlib
   message_generation
   cv_bridge
@@ -137,6 +137,7 @@ add_dependencies(backup_srs_leg_detector ${catkin_EXPORTED_TARGETS})
 add_dependencies(kalman_tracker human_filter ${cakin_EXPORTED_TARGETS})
 add_dependencies(edge_midfilter human_filter ${cakin_EXPORTED_TARGETS})
 add_dependencies(follow_service_test human_filter ${cakin_EXPORTED_TARGETS})
+add_dependencies(opleg_filter human_filter ${cakin_EXPORTED_TARGETS})
 
 
 

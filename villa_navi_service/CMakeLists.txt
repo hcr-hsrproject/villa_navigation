@@ -65,12 +65,15 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_executable(nav_service_test src/service_test.cpp ${SOURCES})
 target_link_libraries(nav_service_test ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(nav_service_test ${catkin_EXPORTED_TARGETS})
 
 
 add_executable(client_test src/service_client.cpp ${SOURCES})
 target_link_libraries(client_test ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(client_test ${catkin_EXPORTED_TARGETS})
 
 add_executable(waypoint_test src/waypoint_client.cpp ${SOURCES})
 target_link_libraries(waypoint_test ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(waypoint_test  ${catkin_EXPORTED_TARGETS})
 
 

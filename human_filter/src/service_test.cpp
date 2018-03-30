@@ -60,7 +60,7 @@ Edgeleg_manager_srv::Edgeleg_manager_srv(ros::NodeHandle nh)
   //global pose call back - w.r.t map frame
   globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&Edgeleg_manager_srv::global_pose_callback,this);
   //keyboard callback
-  keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &Edgeleg_manager_srv::keyboard_callback,this);
+  //keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &Edgeleg_manager_srv::keyboard_callback,this);
   //scaled_map
   Scaled_static_map_sub=nh_.subscribe<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, &Edgeleg_manager_srv::scaled_static_map_callback,this);
   //filtering result from kalman filter
@@ -436,28 +436,28 @@ void Edgeleg_manager_srv::scaled_static_map_callback(const nav_msgs::OccupancyGr
 
 }
 
-void Edgeleg_manager_srv::keyboard_callback(const keyboard::Key::ConstPtr& msg)
-{
+//void Edgeleg_manager_srv::keyboard_callback(const keyboard::Key::ConstPtr& msg)
+//{
 
-  ROS_INFO("Received Keyboard");
-  printf("(key board)\n");
-  int ReceivedNum= (int) msg->code;
-  std::cout<<msg->code<<std::endl;
-  if(ReceivedNum==116)    //if keyboard input is "t"
-  {
-    if(cur_yolo_people.size()>0)
-     {
-          leg_target.resize(2,0.0);
-          leg_target[0]=cur_yolo_people[0][0];
-          leg_target[1]=cur_yolo_people[0][1];
-          OnceTarget=true;
-          ROS_INFO("set Target");
-          std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
-          // ROS_INFO("Filter : Set Target pos X : %.3lf, y : %.3lf", cur_yolo_people[0],cur_yolo_people[1]);
-      }
+  //ROS_INFO("Received Keyboard");
+  //printf("(key board)\n");
+  //int ReceivedNum= (int) msg->code;
+  //std::cout<<msg->code<<std::endl;
+  //if(ReceivedNum==116)    //if keyboard input is "t"
+  //{
+    //if(cur_yolo_people.size()>0)
+     //{
+          //leg_target.resize(2,0.0);
+          //leg_target[0]=cur_yolo_people[0][0];
+          //leg_target[1]=cur_yolo_people[0][1];
+          //OnceTarget=true;
+          //ROS_INFO("set Target");
+          //std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
+           //ROS_INFO("Filter : Set Target pos X : %.3lf, y : %.3lf", cur_yolo_people[0],cur_yolo_people[1]);
+      //}
 
-  }
-}
+  //}
+//}
 
 bool Edgeleg_manager_srv::check_staticObs(float x_pos,float y_pos)
 {

@@ -80,7 +80,6 @@ leg_pose_manager::leg_pose_manager(ros::NodeHandle nh)
   openpose_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_pose_array", 10, &leg_pose_manager::openpose_pose_callback,this);
   filter_act_sub=nh_.subscribe<std_msgs::Int8>("/filter_act_cmd", 10, &leg_pose_manager::filter_act_callback,this);
   globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&leg_pose_manager::global_pose_callback,this);
-  keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &leg_pose_manager::keyboard_callback,this);
   Scaled_static_map_sub=nh_.subscribe<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, &leg_pose_manager::scaled_static_map_callback,this);
   //filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&leg_pose_manager::filter_result_callback,this);
   wrist_trigger_sub=nh_.subscribe<std_msgs::Int8>("/cmd_trackhuman", 10,&leg_pose_manager::wrist_trigger_callback,this);
@@ -396,7 +395,6 @@ void leg_pose_manager::scaled_static_map_callback(const nav_msgs::OccupancyGrid:
 void leg_pose_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg)
 {
 
-  ROS_INFO("Received Keyboard");
   int ReceivedNum= (int) msg->data;
   if(ReceivedNum==1)    //if keyboard input is "t"
   {
@@ -409,29 +407,6 @@ void leg_pose_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& ms
           ROS_INFO("set Target");
           std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
      }
-  }
-}
-
-void leg_pose_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
-{
-
-  ROS_INFO("Received Keyboard");
-  printf("(key board)\n");
-  int ReceivedNum= (int) msg->code;
-  std::cout<<msg->code<<std::endl;
-  if(ReceivedNum==116)    //if keyboard input is "t"
-  {
-    if(cur_yolo_people.size()>0)
-     {
-          leg_target.resize(2,0.0);
-          leg_target[0]=cur_yolo_people[0][0];
-          leg_target[1]=cur_yolo_people[0][1];
-          OnceTarget=true;
-          ROS_INFO("set Target");
-          std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
-          // ROS_INFO("Filter : Set Target pos X : %.3lf, y : %.3lf", cur_yolo_people[0],cur_yolo_people[1]);
-       }
-
   }
 }
 
