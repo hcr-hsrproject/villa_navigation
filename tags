@@ -218,8 +218,6 @@ IsNotInitilized	visual_perception/src/human_belief.cpp	/^bool IsNotInitilized = 
 IsNotInitilized	visual_perception/src/visible_region.cpp	/^bool IsNotInitilized = true;$/;"	v
 IsTargetMoved	navi_mdp/src/MDPmanager.cpp	/^bool MDPManager::IsTargetMoved(float target_x, float target_y, float criterion)$/;"	f	class:MDPManager
 IsinDynamicMap	navi_mdp/src/MDPmanager.cpp	/^bool MDPManager::IsinDynamicMap(float global_x, float global_y)$/;"	f	class:MDPManager
-Keyboard	ros-keyboard/src/keyboard.cpp	/^keyboard::Keyboard::Keyboard( int repeat_delay, int repeat_interval )$/;"	f	class:keyboard::Keyboard
-Keyboard	ros-keyboard/src/keyboard.h	/^  class Keyboard {$/;"	c	namespace:keyboard
 LASER_ANGLE_MAX	villa_navi_service/include/navi_service_node.h	54;"	d
 LASER_ANGLE_MIN	villa_navi_service/include/navi_service_node.h	53;"	d
 LASER_ANGLE_RES	villa_navi_service/include/navi_service_node.h	48;"	d
@@ -604,7 +602,6 @@ _UTILS_H_	navi_mdp/include/utils.h	2;"	d
 __DETECTOR_PARTICLE__	human_filter/include/people_tracking_filter/detector_particle.h	38;"	d
 __PEOPLE_TRACKING_NODE__	human_filter/include/people_tracking_filter/people_tracking_node.h	38;"	d
 __RGB__	human_filter/include/people_tracking_filter/rgb.h	2;"	d
-__ROS_KEYBOARD_H__	ros-keyboard/src/keyboard.h	2;"	d
 __TRACKER_KALMAN__	human_filter/include/people_tracking_filter/tracker_kalman.h	38;"	d
 __TRACKER_PARTICLE__	human_filter/include/people_tracking_filter/tracker_particle.h	38;"	d
 __TRACKER__	human_filter/include/people_tracking_filter/tracker.h	38;"	d
@@ -975,7 +972,6 @@ getTf	navi_mdp/src/srBSpline.cpp	/^double srBSpline::getTf( void )$/;"	f	class:s
 getTime	human_filter/src/tracker_kalman.cpp	/^double TrackerKalman::getTime() const$/;"	f	class:estimation::TrackerKalman
 getTime	human_filter/src/tracker_particle.cpp	/^double TrackerParticle::getTime() const$/;"	f	class:estimation::TrackerParticle
 get_Distance_3d	human_filter/src/service_test.cpp	/^double Edgeleg_manager_srv::get_Distance_3d(std::vector<double> pose1,std::vector<double> pose2)$/;"	f	class:Edgeleg_manager_srv
-get_key	ros-keyboard/src/keyboard.cpp	/^bool keyboard::Keyboard::get_key(bool& new_event, bool& pressed, uint16_t& code, uint16_t& modifiers)$/;"	f	class:keyboard::Keyboard
 getactionvalue	navi_mdp/src/MDPmanager.cpp	/^double MDPManager::getactionvalue(int x_pos, int y_pos, int action_ix)$/;"	f	class:MDPManager
 getdistance	human_filter/src/op_tracker.cpp	/^    double getdistance(geometry_msgs::Pose pose1 , Stamped<Point> pose2)$/;"	f	class:PoseDetector
 getdistance	human_filter/src/srs_leg_detector.cpp	/^    double getdistance(geometry_msgs::Pose pose1 , Stamped<Point> pose2)$/;"	f	class:LegDetector
@@ -1110,7 +1106,6 @@ kal_q	human_filter/src/op_tracker.cpp	/^static double kal_p =4, kal_q = 0.002, k
 kal_q	human_filter/src/srs_leg_detector.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
 kal_r	human_filter/src/op_tracker.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
 kal_r	human_filter/src/srs_leg_detector.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
-keyboard	ros-keyboard/src/keyboard.h	/^namespace keyboard {$/;"	n
 keyboard_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 keyboard_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 keyboard_sub	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	/^  ros::Subscriber keyboard_sub;$/;"	m	class:Edgeleg_manager
@@ -1231,7 +1226,6 @@ main	navi_mdp/src/base_actionlib.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/base_conti_actionlib.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/dynamic_planner.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/global_planner.cpp	/^int main(int argc, char **argv)$/;"	f
-main	ros-keyboard/src/main.cpp	/^int main(int argc, char** argv)$/;"	f
 main	villa_navi_service/src/service_client.cpp	/^int main(int argc, char **argv)$/;"	f
 main	villa_navi_service/src/service_test.cpp	/^int main(int argc, char **argv)$/;"	f
 main	villa_navi_service/src/waypoint_client.cpp	/^int main(int argc, char **argv)$/;"	f
@@ -1801,7 +1795,6 @@ waypoint_int_callback	villa_navi_service/src/waypoint_client.cpp	/^  void waypoi
 waypoint_manager	villa_navi_service/src/waypoint_client.cpp	/^  explicit waypoint_manager(ros::NodeHandle n_){$/;"	f	class:waypoint_manager
 waypoint_manager	villa_navi_service/src/waypoint_client.cpp	/^class waypoint_manager{$/;"	c	file:
 waypoint_sub	villa_navi_service/src/waypoint_client.cpp	/^  ros::Subscriber waypoint_sub;$/;"	m	class:waypoint_manager	file:
-window	ros-keyboard/src/keyboard.h	/^      SDL_Surface* window;$/;"	m	class:keyboard::Keyboard
 wrist_manager	navi_mdp/scripts/wrist_mk	/^    wrist_manager=Wrist_Manager()$/;"	v	class:Wrist_Manager
 wrist_trigger	navi_mdp/scripts/wrist_mk_client	/^def wrist_trigger():$/;"	f
 wrist_trigger_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
@@ -1826,7 +1819,6 @@ y_size	navi_mdp/src/global_planner.cpp	/^int y_size=Grid_Num_Y;$/;"	v
 ~Edgeleg_manager_srv	human_filter/src/service_test.cpp	/^Edgeleg_manager_srv::~Edgeleg_manager_srv()$/;"	f	class:Edgeleg_manager_srv
 ~GaussianPosVel	human_filter/src/gaussian_pos_vel.cpp	/^GaussianPosVel::~GaussianPosVel() {}$/;"	f	class:BFL::GaussianPosVel
 ~GaussianVector	human_filter/src/gaussian_vector.cpp	/^GaussianVector::~GaussianVector() {}$/;"	f	class:BFL::GaussianVector
-~Keyboard	ros-keyboard/src/keyboard.cpp	/^keyboard::Keyboard::~Keyboard(void)$/;"	f	class:keyboard::Keyboard
 ~LegDetector	human_filter/src/backup_srs_leg_dector.cpp	/^	~LegDetector()$/;"	f	class:LegDetector
 ~LegDetector	human_filter/src/backup_srs_leg_detector.cpp	/^	~LegDetector()$/;"	f	class:LegDetector
 ~LegDetector	human_filter/src/srs_leg_detector.cpp	/^    ~LegDetector()$/;"	f	class:LegDetector
