@@ -30,6 +30,7 @@
 
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <villa_navi_service/GoTargetPos.h>
 
 // log files
 #include <fstream>
@@ -83,6 +84,7 @@ public:
   void publish_cameraregion();
   void publish_target();
   void Publish_nav_target();
+  void call_navi_srv();
   void publish_filtered_target();
 
   double getDistance_from_Vec(std::vector<double> origin, double _x, double _y);
@@ -94,7 +96,7 @@ public:
 private:
 
   ros::NodeHandle nh_;
-
+  ros::ServiceClient m_service_client;
   ros::Publisher people_measurement_pub_;
   ros::Publisher One_People_pos_pub;
   ros::Publisher static_belief_map_pub;
@@ -147,6 +149,7 @@ private:
   std::vector< std::vector< double > > pose_people;
   std::vector< std::vector< double > > cur_yolo_chair;
   
+  std::vector<double> last_nav_target;
   std::vector<double> leg_target;
   std::vector<double> filtered_leg_target;
   std::vector<double> NN_laser_target;

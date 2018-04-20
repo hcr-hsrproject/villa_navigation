@@ -201,7 +201,7 @@ FLANK_U	edge_leg_detector/src/edge_leg_detector/detector.cpp	27;"	d	file:
 FOVW	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	39;"	d
 FOVW	human_filter/include/people_tracking_filter/followme_action.h	44;"	d
 FOVW	human_filter/include/people_tracking_filter/leg_op_filter_node.h	38;"	d
-FOVW	human_filter/include/people_tracking_filter/op_filter_tracker.h	39;"	d
+FOVW	human_filter/include/people_tracking_filter/op_filter_tracker.h	40;"	d
 FOVW	human_filter/include/people_tracking_filter/service_test.h	40;"	d
 FOVW	human_tracking/include/human_scan.h	40;"	d
 FOVW	human_tracking/include/humantracking.h	39;"	d
@@ -329,8 +329,6 @@ IsTargetMoved	human_tracking/src/human_scan.cpp	/^bool Human_Belief_Scan::IsTarg
 IsTargetMoved	human_tracking/src/humantracking.cpp	/^bool Human_Belief::IsTargetMoved(const std::vector<double> possible_target_pos, float criterion)$/;"	f	class:Human_Belief
 IsTargetMoved	navi_mdp/src/MDPmanager.cpp	/^bool MDPManager::IsTargetMoved(float target_x, float target_y, float criterion)$/;"	f	class:MDPManager
 IsinDynamicMap	navi_mdp/src/MDPmanager.cpp	/^bool MDPManager::IsinDynamicMap(float global_x, float global_y)$/;"	f	class:MDPManager
-Keyboard	ros-keyboard/src/keyboard.cpp	/^keyboard::Keyboard::Keyboard( int repeat_delay, int repeat_interval )$/;"	f	class:keyboard::Keyboard
-Keyboard	ros-keyboard/src/keyboard.h	/^  class Keyboard {$/;"	c	namespace:keyboard
 LASER_ANGLE_MAX	human_tracking/include/human_scan.h	58;"	d
 LASER_ANGLE_MAX	human_tracking/include/humantracking.h	57;"	d
 LASER_ANGLE_MAX	villa_navi_service/include/navi_service_node.h	54;"	d
@@ -349,7 +347,7 @@ LASER_Data_Length	villa_navi_service/include/navi_service_node.h	49;"	d
 LASER_Dist_person	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	42;"	d
 LASER_Dist_person	human_filter/include/people_tracking_filter/followme_action.h	47;"	d
 LASER_Dist_person	human_filter/include/people_tracking_filter/leg_op_filter_node.h	41;"	d
-LASER_Dist_person	human_filter/include/people_tracking_filter/op_filter_tracker.h	42;"	d
+LASER_Dist_person	human_filter/include/people_tracking_filter/op_filter_tracker.h	43;"	d
 LASER_Dist_person	human_filter/include/people_tracking_filter/service_test.h	43;"	d
 LASER_Dist_person	human_tracking/include/human_scan.h	55;"	d
 LASER_Dist_person	visual_perception/include/human_belief.h	34;"	d
@@ -409,7 +407,7 @@ MARKERS_MAX	navi_mdp/scripts/human_marker.py	/^MARKERS_MAX = 100$/;"	v
 MATH_PI	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	40;"	d
 MATH_PI	human_filter/include/people_tracking_filter/followme_action.h	45;"	d
 MATH_PI	human_filter/include/people_tracking_filter/leg_op_filter_node.h	39;"	d
-MATH_PI	human_filter/include/people_tracking_filter/op_filter_tracker.h	40;"	d
+MATH_PI	human_filter/include/people_tracking_filter/op_filter_tracker.h	41;"	d
 MATH_PI	human_filter/include/people_tracking_filter/service_test.h	41;"	d
 MATH_PI	human_tracking/include/human_scan.h	41;"	d
 MATH_PI	human_tracking/include/humantracking.h	40;"	d
@@ -756,7 +754,7 @@ TYPE_SL	edge_leg_detector/src/edge_leg_detector/detector.cpp	41;"	d	file:
 Target_Dist_person	human_filter/include/people_tracking_filter/edge_leg_filter_node.h	41;"	d
 Target_Dist_person	human_filter/include/people_tracking_filter/followme_action.h	46;"	d
 Target_Dist_person	human_filter/include/people_tracking_filter/leg_op_filter_node.h	40;"	d
-Target_Dist_person	human_filter/include/people_tracking_filter/op_filter_tracker.h	41;"	d
+Target_Dist_person	human_filter/include/people_tracking_filter/op_filter_tracker.h	42;"	d
 Target_Dist_person	human_filter/include/people_tracking_filter/service_test.h	42;"	d
 Target_Dist_person	visual_perception/include/human_belief.h	33;"	d
 Target_Dist_person	visual_perception/include/visible_region.h	35;"	d
@@ -804,7 +802,6 @@ _UTILS_H_	navi_mdp/include/utils.h	2;"	d
 __DETECTOR_PARTICLE__	human_filter/include/people_tracking_filter/detector_particle.h	38;"	d
 __PEOPLE_TRACKING_NODE__	human_filter/include/people_tracking_filter/people_tracking_node.h	38;"	d
 __RGB__	human_filter/include/people_tracking_filter/rgb.h	2;"	d
-__ROS_KEYBOARD_H__	ros-keyboard/src/keyboard.h	2;"	d
 __TRACKER_KALMAN__	human_filter/include/people_tracking_filter/tracker_kalman.h	38;"	d
 __TRACKER_PARTICLE__	human_filter/include/people_tracking_filter/tracker_particle.h	38;"	d
 __TRACKER__	human_filter/include/people_tracking_filter/tracker.h	38;"	d
@@ -861,6 +858,7 @@ calcLegFeatures	human_filter/src/calc_leg_features.cpp	/^vector<float> calcLegFe
 calculateQuality	human_filter/src/tracker_kalman.cpp	/^double TrackerKalman::calculateQuality()$/;"	f	class:estimation::TrackerKalman
 calculate_robotEnvFeatures	human_tracking/src/grid_node.cpp	/^void GridMap::calculate_robotEnvFeatures(){$/;"	f	class:GridMap
 calculate_robotEnvFeatures	visual_perception/src/grid_node.cpp	/^void GridMap::calculate_robotEnvFeatures(){$/;"	f	class:GridMap
+call_navi_srv	human_filter/src/op_filter_tracker.cpp	/^void op_filter_manager::call_navi_srv()$/;"	f	class:op_filter_manager
 callbackDrop	human_filter/src/people_tracking_node.cpp	/^void PeopleTrackingNode::callbackDrop(const people_msgs::PositionMeasurement::ConstPtr& message)$/;"	f	class:estimation::PeopleTrackingNode
 callbackRcv	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 callbackRcv	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
@@ -1301,7 +1299,6 @@ getTf	navi_mdp/src/srBSpline.cpp	/^double srBSpline::getTf( void )$/;"	f	class:s
 getTime	human_filter/src/tracker_kalman.cpp	/^double TrackerKalman::getTime() const$/;"	f	class:estimation::TrackerKalman
 getTime	human_filter/src/tracker_particle.cpp	/^double TrackerParticle::getTime() const$/;"	f	class:estimation::TrackerParticle
 get_Distance_3d	human_filter/src/service_test.cpp	/^double Edgeleg_manager_srv::get_Distance_3d(std::vector<double> pose1,std::vector<double> pose2)$/;"	f	class:Edgeleg_manager_srv
-get_key	ros-keyboard/src/keyboard.cpp	/^bool keyboard::Keyboard::get_key(bool& new_event, bool& pressed, uint16_t& code, uint16_t& modifiers)$/;"	f	class:keyboard::Keyboard
 getactionvalue	navi_mdp/src/MDPmanager.cpp	/^double MDPManager::getactionvalue(int x_pos, int y_pos, int action_ix)$/;"	f	class:MDPManager
 getdistance	human_filter/src/op_tracker.cpp	/^    double getdistance(geometry_msgs::Pose pose1 , Stamped<Point> pose2)$/;"	f	class:PoseDetector
 getdistance	human_filter/src/srs_leg_detector.cpp	/^    double getdistance(geometry_msgs::Pose pose1 , Stamped<Point> pose2)$/;"	f	class:LegDetector
@@ -1516,7 +1513,6 @@ kal_q	human_filter/src/op_tracker.cpp	/^static double kal_p =4, kal_q = 0.002, k
 kal_q	human_filter/src/srs_leg_detector.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
 kal_r	human_filter/src/op_tracker.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
 kal_r	human_filter/src/srs_leg_detector.cpp	/^static double kal_p =4, kal_q = 0.002, kal_r = 10;$/;"	v	file:
-keyboard	ros-keyboard/src/keyboard.h	/^namespace keyboard {$/;"	n
 keyboard_callback	human_filter/src/edge_leg_filter_node.cpp	/^void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:Edgeleg_manager
 keyboard_callback	human_filter/src/followme_action.cpp	/^void Edgeleg_manager_action::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:Edgeleg_manager_action
 keyboard_callback	human_filter/src/op_filter_tracker.cpp	/^void op_filter_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)$/;"	f	class:op_filter_manager
@@ -1545,6 +1541,7 @@ laser_sub_	human_filter/src/backup_srs_leg_detector.cpp	/^	message_filters::Subs
 laser_sub_	human_filter/src/srs_leg_detector.cpp	/^	message_filters::Subscriber<sensor_msgs::LaserScan> laser_sub_;$/;"	m	class:LegDetector	file:
 last_global_pose	human_filter/include/people_tracking_filter/service_test.h	/^  std::vector<double> last_global_pose;$/;"	m	class:Edgeleg_manager_srv
 last_global_pose_t	human_filter/include/people_tracking_filter/service_test.h	/^  double last_global_pose_t;$/;"	m	class:Edgeleg_manager_srv
+last_nav_target	human_filter/include/people_tracking_filter/op_filter_tracker.h	/^  std::vector<double> last_nav_target;$/;"	m	class:op_filter_manager
 last_pose	human_filter/include/people_tracking_filter/followme_action.h	/^  geometry_msgs::PoseStamped last_pose;$/;"	m	class:Edgeleg_manager_action
 legCallback	human_filter/src/legListener.cpp	/^void legCallback(const sensor_msgs::PointCloud::ConstPtr& people_cloud)$/;"	f
 leg_cloud_pub_	human_filter/src/backup_srs_leg_dector.cpp	/^	ros::Publisher leg_cloud_pub_ , leg_detections_pub_ , human_distance_pub_ ;  \/\/ROS topic publishers$/;"	m	class:LegDetector	file:
@@ -1644,6 +1641,7 @@ m_receiveiter	human_tracking/include/human_scan.h	/^	int m_receiveiter;$/;"	m	cl
 m_receiveiter	human_tracking/include/humantracking.h	/^	int m_receiveiter;$/;"	m	class:Human_Belief
 m_receiveiter	villa_navi_service/include/navi_service_node.h	/^	int m_receiveiter;$/;"	m	class:villa_navi_srv
 m_service	human_filter/include/people_tracking_filter/service_test.h	/^  ros::ServiceServer m_service;$/;"	m	class:Edgeleg_manager_srv
+m_service_client	human_filter/include/people_tracking_filter/op_filter_tracker.h	/^  ros::ServiceClient m_service_client;$/;"	m	class:op_filter_manager
 m_static_obs	navi_mdp/include/MDPmanager.h	/^ 	vector<int>		  m_static_obs;$/;"	m	class:MDPManager
 m_updateiter	human_tracking/include/human_scan.h	/^	int m_updateiter;$/;"	m	class:Human_Belief_Scan
 m_updateiter	human_tracking/include/humantracking.h	/^	int m_updateiter;$/;"	m	class:Human_Belief
@@ -1678,7 +1676,6 @@ main	navi_mdp/src/base_actionlib.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/base_conti_actionlib.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/dynamic_planner.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_mdp/src/global_planner.cpp	/^int main(int argc, char **argv)$/;"	f
-main	ros-keyboard/src/main.cpp	/^int main(int argc, char** argv)$/;"	f
 main	villa_navi_service/src/service_client.cpp	/^int main(int argc, char **argv)$/;"	f
 main	villa_navi_service/src/service_test.cpp	/^int main(int argc, char **argv)$/;"	f
 main	villa_navi_service/src/waypoint_client.cpp	/^int main(int argc, char **argv)$/;"	f
@@ -2410,7 +2407,6 @@ waypoint_int_callback	villa_navi_service/src/waypoint_client.cpp	/^  void waypoi
 waypoint_manager	villa_navi_service/src/waypoint_client.cpp	/^  explicit waypoint_manager(ros::NodeHandle n_){$/;"	f	class:waypoint_manager
 waypoint_manager	villa_navi_service/src/waypoint_client.cpp	/^class waypoint_manager{$/;"	c	file:
 waypoint_sub	villa_navi_service/src/waypoint_client.cpp	/^  ros::Subscriber waypoint_sub;$/;"	m	class:waypoint_manager	file:
-window	ros-keyboard/src/keyboard.h	/^      SDL_Surface* window;$/;"	m	class:keyboard::Keyboard
 world_to_map_br	human_tracking/src/grid_node.cpp	/^	tf::TransformBroadcaster 		world_to_map_br;$/;"	m	class:GridMap	file:
 world_to_map_br	visual_perception/src/grid_node.cpp	/^	tf::TransformBroadcaster 		world_to_map_br;$/;"	m	class:GridMap	file:
 world_to_map_transform	human_tracking/src/grid_node.cpp	/^  	tf::Transform 					world_to_map_transform;	$/;"	m	class:GridMap	file:
@@ -2457,7 +2453,6 @@ y_size	navi_mdp/src/global_planner.cpp	/^int y_size=Grid_Num_Y;$/;"	v
 ~GridMap	visual_perception/src/grid_node.cpp	/^GridMap::~GridMap(){$/;"	f	class:GridMap
 ~Human_Belief	human_tracking/src/humantracking.cpp	/^Human_Belief::~Human_Belief(){}$/;"	f	class:Human_Belief
 ~Human_Belief_Scan	human_tracking/src/human_scan.cpp	/^Human_Belief_Scan::~Human_Belief_Scan(){}$/;"	f	class:Human_Belief_Scan
-~Keyboard	ros-keyboard/src/keyboard.cpp	/^keyboard::Keyboard::~Keyboard(void)$/;"	f	class:keyboard::Keyboard
 ~LegDetector	human_filter/src/backup_srs_leg_dector.cpp	/^	~LegDetector()$/;"	f	class:LegDetector
 ~LegDetector	human_filter/src/backup_srs_leg_detector.cpp	/^	~LegDetector()$/;"	f	class:LegDetector
 ~LegDetector	human_filter/src/srs_leg_detector.cpp	/^    ~LegDetector()$/;"	f	class:LegDetector

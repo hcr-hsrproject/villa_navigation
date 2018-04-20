@@ -85,6 +85,7 @@ op_filter_manager::op_filter_manager(ros::NodeHandle nh)
   wrist_trigger_sub=nh_.subscribe<std_msgs::Int8>("/cmd_trackhuman", 10,&op_filter_manager::wrist_trigger_callback,this);
 
     
+  m_service_client = nh_.serviceClient<villa_navi_service::GoTargetPos>("/navi_go_base");
   // One_People_pos_pub=nh_.advertise<people_msgs::PositionMeasurement>("/people_tracker_measurements", 0 );
  
   global_pose.resize(3,0.0);
@@ -92,6 +93,7 @@ op_filter_manager::op_filter_manager(ros::NodeHandle nh)
   Head_Pos.resize(2,0.0);
   filtered_leg_target.resize(2,0.0);
   NN_laser_target.resize(2,0.0);
+  last_nav_target.resize(2,0.0);
 
   //camera region
   static_belief_map.info.width=30;
@@ -373,7 +375,6 @@ void op_filter_manager::scaled_static_map_callback(const nav_msgs::OccupancyGrid
 
 void op_filter_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg)
 {
-
   int ReceivedNum= (int) msg->data;
   if(ReceivedNum==1)    //if wrist is triggered
   {
@@ -499,17 +500,46 @@ bool op_filter_manager::check_cameraregion(float x_pos,float y_pos)
   return true;
 }
 
+void op_filter_manager::call_navi_srv()
+{
+
+  //m_service_client = n.serviceClient<villa_navi_service::GoTargetPos>("/navi_go_base");
+  if(!Comparetwopoistions(last_nav_target, filtered_leg_target, 0.5))
+  {
+      villa_navi_service::GoTargetPos navi_srv;
+      navi_srv.request.x_from_map=filtered_leg_target[0]-0.3;
+      navi_srv.request.y_from_map=filtered_leg_target[1];
+      navi_srv.request.theta_from_map=0.2;
+
+      m_service_client.call(navi_srv);
+
+      last_nav_target[0]=filtered_leg_target[0]-0.3;
+      last_nav_target[1]=filtered_leg_target[1];
+  }
+
+  //villa_navi_service::GoTargetPos navi_srv;
+  //navi_srv.request.x_from_map=filtered_leg_target[0]-0.3;
+  //navi_srv.request.y_from_map=filtered_leg_target[1];
+  //navi_srv.request.theta_from_map=0.2;
+
+  //m_service_client.call(navi_srv);
+
+  //last_nav_target[0]=filtered_leg_target[0]-0.3;
+  //last_nav_target[1]=filtered_leg_target[1];
+
+}
+
 
 void op_filter_manager::Publish_nav_target()
 {
   
-  if(pub_iters>1500){
+  if(pub_iters>4000){
 
-// filtered_leg_target[0]=leg_target[0];
-// filtered_leg_target[1]=leg_target[1];
-      //message_filter<BS>
-    
     if(OnceTarget){
+
+      if(Comparetwopoistions(global_pose, filtered_leg_target, 0.4))
+            return;
+
       move_base_msgs::MoveBaseActionGoal Navmsgs;
       Navmsgs.header.stamp =  ros::Time::now();
      
@@ -518,9 +548,9 @@ void op_filter_manager::Publish_nav_target()
      //Navmsgs.header.frame_id = "map"; 
       Navmsgs.goal.target_pose.header.frame_id = "map";
 
-       Navmsgs.goal.target_pose.pose.position.x=filtered_leg_target[0]-0.3;
-       Navmsgs.goal.target_pose.pose.position.y=filtered_leg_target[1];
-       Navmsgs.goal.target_pose.pose.position.z=0.5;
+      Navmsgs.goal.target_pose.pose.position.x=filtered_leg_target[0]-0.3;
+      Navmsgs.goal.target_pose.pose.position.y=filtered_leg_target[1];
+      Navmsgs.goal.target_pose.pose.position.z=0.5;
 
       std::vector<double> GoalVector;
       GoalVector.resize(2,0.0);
@@ -531,12 +561,11 @@ void op_filter_manager::Publish_nav_target()
       GoalVector[0]=GoalVector[0]-global_pose[0];
       GoalVector[1]=GoalVector[1]-global_pose[1];
 
-
       double temp_yaw =atan(GoalVector[1]/GoalVector[0]);
       temp_yaw=temp_yaw-global_pose[2];
       double temp_roll=0.0;
       double temp_pitch=0.0;
-            // poses.orientation = tf::transformations.quaternion_from_euler(0.0, 0.0, temp_yaw);
+      // poses.orientation = tf::transformations.quaternion_from_euler(0.0, 0.0, temp_yaw);
       
       geometry_msgs::Quaternion q;
 
@@ -561,7 +590,7 @@ void op_filter_manager::Publish_nav_target()
        Navmsgs.goal.target_pose.pose.orientation.w=q.w;
 
        setNavTarget_pub.publish(Navmsgs);
-        ROS_INFO("navgation published");
+       ROS_INFO("navgation published");
 
       pub_iters=0;
      }
@@ -654,7 +683,6 @@ void op_filter_manager::publish_target()
 
 void op_filter_manager::publish_filtered_target()
 {
-
     visualization_msgs::Marker marker_human;
     marker_human.header.frame_id = "/map"; 
     marker_human.header.stamp = ros::Time::now();
@@ -845,27 +873,30 @@ void op_filter_manager::openpose_pose_callback(const geometry_msgs::PoseArray::C
             temp_target[0]=pose_people[NearestPoseIdx][0];
             temp_target[1]=pose_people[NearestPoseIdx][1];
 
-            people_msgs::PositionMeasurement pos;
-            pos.header.stamp = ros::Time();
-            pos.header.frame_id = "/map";
-            pos.name = "leg_laser";
-            pos.object_id ="person 0";
-            pos.pos.x = temp_target[0];
-            pos.pos.y = temp_target[1];
-            pos.pos.z = 1.0;
-            pos.reliability = 0.85;
-            pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
-            pos.covariance[1] = 0.0;
-            pos.covariance[2] = 0.0;
-            pos.covariance[3] = 0.0;
-            pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
-            pos.covariance[5] = 0.0;
-            pos.covariance[6] = 0.0;
-            pos.covariance[7] = 0.0;
-            pos.covariance[8] = 10000.0;
-            pos.initialization = 0;
+            if(OnceTarget){
 
-            people_measurement_pub_.publish(pos);
+                people_msgs::PositionMeasurement pos;
+                pos.header.stamp = ros::Time();
+                pos.header.frame_id = "/map";
+                pos.name = "leg_laser";
+                pos.object_id ="person 0";
+                pos.pos.x = temp_target[0];
+                pos.pos.y = temp_target[1];
+                pos.pos.z = 1.0;
+                pos.reliability = 0.85;
+                pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
+                pos.covariance[1] = 0.0;
+                pos.covariance[2] = 0.0;
+                pos.covariance[3] = 0.0;
+                pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
+                pos.covariance[5] = 0.0;
+                pos.covariance[6] = 0.0;
+                pos.covariance[7] = 0.0;
+                pos.covariance[8] = 10000.0;
+                pos.initialization = 0;
+
+                people_measurement_pub_.publish(pos);
+            }
 
             leg_target[0]=temp_target[0];
             leg_target[1]=temp_target[1];
@@ -1148,6 +1179,7 @@ void op_filter_manager::spin()
     publish_cameraregion();
     publish_target();
     publish_filtered_target();
+    //call_navi_srv();
     Publish_nav_target();
     // ------ LOCKED ------
     boost::mutex::scoped_lock lock(filter_mutex_);
