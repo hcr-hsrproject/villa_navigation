@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+
+    <param name="kalman_tracker/fixed_frame" type="string" value="map"/>
+    <param name="kalman_tracker/freq" value="10.0"/>
+    <param name="kalman_tracker/start_distance_min" value="0.25"/>
+    <param name="kalman_tracker/reliability_threshold" value="0.65"/>
+    <param name="kalman_tracker/follow_one_person" type="bool" value="true"/>
+
+<!-- Kalman with velocity model covariances -->
+    <param name="kalman_tracker/sys_sigma_pos_x" value="1.5"/>
+    <param name="kalman_tracker/sys_sigma_pos_y" value="1.5"/>
+    <param name="kalman_tracker/sys_sigma_pos_z" value="1.0"/>
+    <param name="kalman_tracker/sys_sigma_vel_x" value="2.3"/>
+    <param name="kalman_tracker/sys_sigma_vel_y" value="2.3"/>
+    <param name="kalman_tracker/sys_sigma_vel_z" value="2.3"/>
+
+    <node pkg="human_filter" type="kalman_tracker" name="people_tracking_filter_node" output="screen"/>
+
+
+    <!--<node pkg="human_filter" type="follow_service_test" name="following_action_node" output="screen"/>-->
+    <node pkg="human_filter" type="op_filter_tracker" name="op_filter_node" /> 
+    <!--<node pkg="navi_mdp" type="mdpplanner" name="mdp_node" output="screen"/>-->
+    <node pkg="navi_mdp" type="mdpplanner" name="mdp_node" />
+    <node pkg="navi_mdp" type="wrist_mk" name="wrist_trigger_server" />
+    <node pkg="navi_mdp" type="wrist_mk_client" name="wrist_trigger_client" />
+
+    <!--<arg name="laser_scan" default="hsrb/base_scan" />-->
+    <!--<node pkg="edge_leg_detector" type="detector" name="edge_leg_detector" output="screen">-->
+    <!--<param name="laser_scan" value="$(arg laser_scan)" type="string"/>-->
+    <!--</node>-->
+
+</launch>
+

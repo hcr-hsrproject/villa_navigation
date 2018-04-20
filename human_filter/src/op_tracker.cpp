@@ -48,8 +48,8 @@ using namespace BFL;
 using namespace MatrixWrapper;
 
 static const string scan_topic = "hsrb/base_scan";
-//static const string pose_scan_topic = "openpose_pose_array";
-static const string pose_scan_topic = "openpose_filter_pose_array";
+static const string pose_scan_topic = "openpose_pose_array";
+//static const string pose_scan_topic = "openpose_filter_pose_array";
 //static const string pose_scan_topic = "edge_leg_detector";
 
 static const double no_observation_timeout_s = 0.5;
@@ -700,7 +700,7 @@ public:
 //mk
 	void peopleCallback(const people_msgs::PositionMeasurementArray::ConstPtr& people_meas)
 	{
-		//ROS_INFO("start people callback");
+        ROS_INFO("start people callback");
 		if (people_meas->people.empty())
 			return;
 
@@ -1002,7 +1002,8 @@ public:
         }
 
 
-        ROS_INFO("find match");
+        ROS_INFO("find match size : %d", matches.size());
+
         while(matches.size() > 0){
             multiset<MatchedFeature>::iterator matched_iter = matches.begin();
             bool found = false;
@@ -1083,7 +1084,7 @@ public:
         vector<people_msgs::PositionMeasurement> people;
         vector<people_msgs::PositionMeasurement> legs;
 
-        //printf("size of savedFeature:%d", saved_features_.size());
+        printf("size of savedFeature:%d", saved_features_.size());
         for (list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
                 sf_iter != saved_features_.end(); sf_iter++,i++){
             // reliability

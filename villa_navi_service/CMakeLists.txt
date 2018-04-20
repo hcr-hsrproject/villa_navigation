@@ -77,3 +77,8 @@ target_link_libraries(waypoint_test ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 add_dependencies(waypoint_test  ${catkin_EXPORTED_TARGETS})
 
 
+install(DIRECTORY scripts/
+    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+    USE_SOURCE_PERMISSIONS
+)
+

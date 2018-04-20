@@ -39,16 +39,16 @@
 #define FOVW 60       //field of view width
 #define MATH_PI 3.14159265359
 #define Target_Dist_person 1.0
-#define LASER_Dist_person  3.0
+#define LASER_Dist_person  2.5
 
-class Edgeleg_manager
+class op_filter_manager
 {
 public:
   /// constructor
-  Edgeleg_manager(ros::NodeHandle nh);
+  op_filter_manager(ros::NodeHandle nh);
 
   /// destructor
-  virtual ~Edgeleg_manager();
+  virtual ~op_filter_manager();
 
   /// callback for messages
   void callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& message);
@@ -77,6 +77,7 @@ public:
   bool check_chair(float x_pos,float y_pos);
   bool check_cameraregion(float x_pos,float y_pos);
   int FindNearesetLegIdx();
+  int FindNearestPoseIdx();
   void publish_leg_boxes();
   void getCameraregion();
   void publish_cameraregion();
@@ -143,9 +144,12 @@ private:
   std::vector<double> global_pose;
   std::vector< std::vector< double > > Cur_leg_human;
   std::vector< std::vector< double > > cur_yolo_people;
+  std::vector< std::vector< double > > pose_people;
   std::vector< std::vector< double > > cur_yolo_chair;
+  
   std::vector<double> leg_target;
   std::vector<double> filtered_leg_target;
+  std::vector<double> NN_laser_target;
   std::vector<double> Head_Pos; 
 
   int num_of_detected_human;

@@ -34,7 +34,7 @@
 
 /* Author: Wim Meeussen */
 
-#include "people_tracking_filter/edge_leg_filter_node.h"
+#include "people_tracking_filter/op_filter_tracker.h"
 #include "people_tracking_filter/tracker_particle.h"
 #include "people_tracking_filter/tracker_kalman.h"
 #include "people_tracking_filter/state_pos_vel.h"
@@ -55,7 +55,7 @@ static const double       tracker_init_dist          = 4.0;
 bool IsNotInitilized = true;
 
 // constructor
-Edgeleg_manager::Edgeleg_manager(ros::NodeHandle nh)
+op_filter_manager::op_filter_manager(ros::NodeHandle nh)
   : nh_(nh),
     robot_state_(),
     filter_counter_(0),
@@ -73,17 +73,16 @@ Edgeleg_manager::Edgeleg_manager(ros::NodeHandle nh)
   static_belief_map_pub=nh_.advertise<nav_msgs::OccupancyGrid>("/camera_region_map", 10, true);
   setNavTarget_pub=nh_.advertise<move_base_msgs::MoveBaseActionGoal>("/move_base/move/goal",50,true);
 
-
-  openpose_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_pose_array", 10, &Edgeleg_manager::openpose_pose_callback,this);
-  chair_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/chair_boxes", 10, &Edgeleg_manager::chair_yolo_callback,this);
-  //people_yolo_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &Edgeleg_manager::human_yolo_callback,this);
-  edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &Edgeleg_manager::edge_leg_callback,this);
-  filter_act_sub=nh_.subscribe<std_msgs::Int8>("/filter_act_cmd", 10, &Edgeleg_manager::filter_act_callback,this);
-  globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&Edgeleg_manager::global_pose_callback,this);
-  keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &Edgeleg_manager::keyboard_callback,this);
-  Scaled_static_map_sub=nh_.subscribe<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, &Edgeleg_manager::scaled_static_map_callback,this);
-  filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&Edgeleg_manager::filter_result_callback,this);
-  wrist_trigger_sub=nh_.subscribe<std_msgs::Int8>("/cmd_trackhuman", 10,&Edgeleg_manager::wrist_trigger_callback,this);
+  openpose_sub=nh_.subscribe<geometry_msgs::PoseArray>("/openpose_pose_array", 10, &op_filter_manager::openpose_pose_callback,this);
+  chair_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/chair_boxes", 10, &op_filter_manager::chair_yolo_callback,this);
+  //people_yolo_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &op_filter_manager::human_yolo_callback,this);
+  //edge_leg_sub=nh_.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &op_filter_manager::edge_leg_callback,this);
+  filter_act_sub=nh_.subscribe<std_msgs::Int8>("/filter_act_cmd", 10, &op_filter_manager::filter_act_callback,this);
+  globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&op_filter_manager::global_pose_callback,this);
+  keyboard_sub=nh_.subscribe<keyboard::Key>("/keyboard/keydown",10, &op_filter_manager::keyboard_callback,this);
+  Scaled_static_map_sub=nh_.subscribe<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, &op_filter_manager::scaled_static_map_callback,this);
+  filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&op_filter_manager::filter_result_callback,this);
+  wrist_trigger_sub=nh_.subscribe<std_msgs::Int8>("/cmd_trackhuman", 10,&op_filter_manager::wrist_trigger_callback,this);
 
     
   // One_People_pos_pub=nh_.advertise<people_msgs::PositionMeasurement>("/people_tracker_measurements", 0 );
@@ -92,6 +91,7 @@ Edgeleg_manager::Edgeleg_manager(ros::NodeHandle nh)
   leg_target.resize(2,0.0);
   Head_Pos.resize(2,0.0);
   filtered_leg_target.resize(2,0.0);
+  NN_laser_target.resize(2,0.0);
 
   //camera region
   static_belief_map.info.width=30;
@@ -108,7 +108,7 @@ Edgeleg_manager::Edgeleg_manager(ros::NodeHandle nh)
 }
 
 // destructor
-Edgeleg_manager::~Edgeleg_manager()
+op_filter_manager::~op_filter_manager()
 {
   // delete sequencer
 
@@ -117,7 +117,7 @@ Edgeleg_manager::~Edgeleg_manager()
 
 
 
-void Edgeleg_manager::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)
+void op_filter_manager::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)
 {
 
   Head_Pos[0]=msg->position[9];     //pan
@@ -126,16 +126,16 @@ void Edgeleg_manager::joint_states_callback(const sensor_msgs::JointState::Const
 
 }
 
-void Edgeleg_manager::filter_result_callback(const people_msgs::PositionMeasurement::ConstPtr& msg)
+void op_filter_manager::filter_result_callback(const people_msgs::PositionMeasurement::ConstPtr& msg)
 {
 
-      filtered_leg_target[0]=msg->pos.x;
-      filtered_leg_target[1]=msg->pos.y;
+    ROS_INFO("filter_results callback");
+    filtered_leg_target[0]=msg->pos.x;
+    filtered_leg_target[1]=msg->pos.y;
 }
 
-void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
+void op_filter_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
 {
-   // if(edge_leg_iter>){ 
   int num_leg_detected = msg->poses.size(); 
   std::vector<double> tempVec(2,0.0);
   
@@ -156,29 +156,24 @@ void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr
           tempVec[0]=tV.vector.x+global_pose[0];
           tempVec[1]=tV.vector.y+global_pose[1];
 
-          //if(check_chair(tempVec[0],tempVec[1]))
-              //continue;
-          //if(check_staticObs(tempVec[0],tempVec[1]))
-            //continue;
+          //distance check between two candidates!
+          bool IsFarEnough = true;
+          bool IsNearfromRobot= false;
+          for(int j(0);j<Cur_leg_human.size();j++)
+          {
+              if(Comparetwopoistions(tempVec,Cur_leg_human[j],0.4))
+                  IsFarEnough=false;
+          }
 
-           //distance check between two candidates!
-              bool IsFarEnough = true;
-              bool IsNearfromRobot= false;
-              for(int j(0);j<Cur_leg_human.size();j++)
-                {
-                  if(Comparetwopoistions(tempVec,Cur_leg_human[j],0.4))
-                    IsFarEnough=false;
-                }
-              
-                if(Comparetwopoistions(global_pose,tempVec,LASER_Dist_person))
-                   IsNearfromRobot=true;
+          if(Comparetwopoistions(global_pose,tempVec,LASER_Dist_person))
+              IsNearfromRobot=true;
 
-             //std::cout<<"here 2"<<std::endl;
-              //add only if candidate pose ins far from 0.75 from previous candidates
-              if(IsFarEnough && IsNearfromRobot)
-              { 
-               Cur_leg_human.push_back(tempVec);
-              }
+          //std::cout<<"here 2"<<std::endl;
+          //add only if candidate pose ins far from 0.75 from previous candidates
+          if(IsFarEnough && IsNearfromRobot)
+          { 
+              Cur_leg_human.push_back(tempVec);
+          }
          
       }
 
@@ -191,58 +186,28 @@ void Edgeleg_manager::edge_leg_callback(const geometry_msgs::PoseArray::ConstPtr
         temp_leg_target[0]=Cur_leg_human[NearestLegIdx][0];
         temp_leg_target[1]=Cur_leg_human[NearestLegIdx][1];
 
-        if(Comparetwopoistions(temp_leg_target,leg_target,1.2))
+        if(Comparetwopoistions(temp_leg_target,filtered_leg_target,1.2))
         {
              std::cout<<"update target - person is in a range"<<std::endl;
-            leg_target[0]=temp_leg_target[0];
-            leg_target[1]=temp_leg_target[1];
+            NN_laser_target[0]=temp_leg_target[0];
+            NN_laser_target[1]=temp_leg_target[1];
         }
 
-        people_msgs::PositionMeasurement pos;
-        pos.header.stamp = ros::Time();
-        pos.header.frame_id = "/map";
-        pos.name = "leg_laser";
-        pos.object_id ="person 0";
-        pos.pos.x = leg_target[0];
-        pos.pos.y = leg_target[1];
-        pos.pos.z = 1.0;
-        pos.reliability = 0.85;
-        pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
-        pos.covariance[1] = 0.0;
-        pos.covariance[2] = 0.0;
-        pos.covariance[3] = 0.0;
-        pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
-        pos.covariance[5] = 0.0;
-        pos.covariance[6] = 0.0;
-        pos.covariance[7] = 0.0;
-        pos.covariance[8] = 10000.0;
-        pos.initialization = 0;
-      
-        people_measurement_pub_.publish(pos);
-        //ROS_INFO("publish_target");
-
-    }
-    // edge_leg_iter=0;
-    // }
-
-    // edge_leg_iter++;
+      }
 
 }
 
-void Edgeleg_manager::publish_cameraregion()
+void op_filter_manager::publish_cameraregion()
 {
-
-
    getCameraregion();
    static_belief_map.header.stamp =  ros::Time::now();
    static_belief_map.header.frame_id = "map"; 
    static_belief_map_pub.publish(static_belief_map);
 
-
 }
 
 
-void Edgeleg_manager::getCameraregion()
+void op_filter_manager::getCameraregion()
 {
 
   double global_robot_x= global_pose[0];
@@ -293,7 +258,7 @@ void Edgeleg_manager::getCameraregion()
 }
 
 
-bool Edgeleg_manager::getlinevalue(int line_type,double input_x, double input_y)
+bool op_filter_manager::getlinevalue(int line_type,double input_x, double input_y)
 {
 
   double global_robot_theta = global_pose[2]+Head_Pos[0];
@@ -386,7 +351,7 @@ bool Edgeleg_manager::getlinevalue(int line_type,double input_x, double input_y)
 
 
 
-void Edgeleg_manager::scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
+void op_filter_manager::scaled_static_map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
 {
     ROS_INFO("map Received");
     std::cout <<"static_Width: " << msg->info.width << std::endl;
@@ -406,18 +371,17 @@ void Edgeleg_manager::scaled_static_map_callback(const nav_msgs::OccupancyGrid::
 }
 
 
-void Edgeleg_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg)
+void op_filter_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg)
 {
 
-  ROS_INFO("Received Keyboard");
   int ReceivedNum= (int) msg->data;
-  if(ReceivedNum==1)    //if keyboard input is "t"
+  if(ReceivedNum==1)    //if wrist is triggered
   {
-    if(cur_yolo_people.size()>0)
+    if(pose_people.size()>0)
      {
           leg_target.resize(2,0.0);
-          leg_target[0]=cur_yolo_people[0][0];
-          leg_target[1]=cur_yolo_people[0][1];
+          leg_target[0]=pose_people[0][0];
+          leg_target[1]=pose_people[0][1];
           OnceTarget=true;
           ROS_INFO("set Target");
           std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
@@ -425,7 +389,7 @@ void Edgeleg_manager::wrist_trigger_callback(const std_msgs::Int8::ConstPtr& msg
   }
 }
 
-void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
+void op_filter_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
 {
 
   ROS_INFO("Received Keyboard");
@@ -434,11 +398,11 @@ void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
   std::cout<<msg->code<<std::endl;
   if(ReceivedNum==116)    //if keyboard input is "t"
   {
-    if(cur_yolo_people.size()>0)
+    if(pose_people.size()>0)
      {
           leg_target.resize(2,0.0);
-          leg_target[0]=cur_yolo_people[0][0];
-          leg_target[1]=cur_yolo_people[0][1];
+          leg_target[0]=pose_people[0][0];
+          leg_target[1]=pose_people[0][1];
           OnceTarget=true;
           ROS_INFO("set Target");
           std::cout<<"set target : "<<leg_target[0]<<" , "<<leg_target[1]<<std::endl;
@@ -449,7 +413,7 @@ void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
 }
 
 
-// void Edgeleg_manager::trigger_callback(const keyboard::Key::ConstPtr& msg)
+// void op_filter_manager::trigger_callback(const keyboard::Key::ConstPtr& msg)
 // {
 
 //   ROS_INFO("Received Keyboard");
@@ -471,7 +435,7 @@ void Edgeleg_manager::keyboard_callback(const keyboard::Key::ConstPtr& msg)
 
 //   }
 // }
-bool Edgeleg_manager::check_chair(float x_pos,float y_pos)
+bool op_filter_manager::check_chair(float x_pos,float y_pos)
 {
     //return true if input positions(x_pos,ypos) are close to the chair positions
    vector<double> tempVec(2,0.0);
@@ -495,7 +459,7 @@ bool Edgeleg_manager::check_chair(float x_pos,float y_pos)
   return false;
 }
 
-bool Edgeleg_manager::check_staticObs(float x_pos,float y_pos)
+bool op_filter_manager::check_staticObs(float x_pos,float y_pos)
 {
   
   //return true if it is occupied with obstacles
@@ -512,7 +476,7 @@ bool Edgeleg_manager::check_staticObs(float x_pos,float y_pos)
 }
 
 
-bool Edgeleg_manager::check_cameraregion(float x_pos,float y_pos)
+bool op_filter_manager::check_cameraregion(float x_pos,float y_pos)
 {
 
   if(abs(x_pos)<7.0 && abs(y_pos)<7.0)
@@ -536,13 +500,13 @@ bool Edgeleg_manager::check_cameraregion(float x_pos,float y_pos)
 }
 
 
-void Edgeleg_manager::Publish_nav_target()
+void op_filter_manager::Publish_nav_target()
 {
   
-  if(pub_iters>2000){
+  if(pub_iters>1500){
 
-filtered_leg_target[0]=leg_target[0];
-filtered_leg_target[1]=leg_target[1];
+// filtered_leg_target[0]=leg_target[0];
+// filtered_leg_target[1]=leg_target[1];
       //message_filter<BS>
     
     if(OnceTarget){
@@ -560,7 +524,7 @@ filtered_leg_target[1]=leg_target[1];
 
       std::vector<double> GoalVector;
       GoalVector.resize(2,0.0);
-      GoalVector[0]=filtered_leg_target[0]-0.3;
+      GoalVector[0]=filtered_leg_target[0]-0.2;
       GoalVector[1]=filtered_leg_target[1];
 
 
@@ -587,12 +551,8 @@ filtered_leg_target[1]=leg_target[1];
       q.y = t0 * t2 * t5 + t1 * t3 * t4;
       q.z = t1 * t2 * t4 - t0 * t3 * t5;
 
-
       // tf::StampedTransform tfs;
       // tf::Quaternion head_orientation =tf::createQuaternionFromRPY(0.0, 0.0, temp_yaw);
-
-
-
       // Navmsgs.goal.target_pose.pose.orientation = head_orientation;
 
        Navmsgs.goal.target_pose.pose.orientation.x=q.x;
@@ -618,7 +578,7 @@ filtered_leg_target[1]=leg_target[1];
 
 
 
-int Edgeleg_manager::globalcoord_To_SScaled_map_index(float x_pos,float y_pos)
+int op_filter_manager::globalcoord_To_SScaled_map_index(float x_pos,float y_pos)
 {
    std::vector<float> cur_coord(2,0.0);
   
@@ -646,7 +606,7 @@ int Edgeleg_manager::globalcoord_To_SScaled_map_index(float x_pos,float y_pos)
 }
 
 
-void Edgeleg_manager::publish_target()
+void op_filter_manager::publish_target()
 {
 
     visualization_msgs::Marker marker_human;
@@ -656,16 +616,18 @@ void Edgeleg_manager::publish_target()
     uint32_t shape = visualization_msgs::Marker::SPHERE;
     marker_human.type = shape;
 
-
+//filtered_leg_target
   //publish marker
     marker_human.pose.position.x = leg_target[0];
-      marker_human.pose.position.y = leg_target[1];
-      marker_human.pose.position.z = 1;
+    marker_human.pose.position.y = leg_target[1];
+    //marker_human.pose.position.x = NN_laser_target[0];
+    //marker_human.pose.position.y = NN_laser_target[1];
+    marker_human.pose.position.z = 1;
 
-      marker_human.pose.orientation.x = 0.0;
-      marker_human.pose.orientation.y = 0.0;
-      marker_human.pose.orientation.z = 0.0;
-      marker_human.pose.orientation.w = 1.0;
+    marker_human.pose.orientation.x = 0.0;
+    marker_human.pose.orientation.y = 0.0;
+    marker_human.pose.orientation.z = 0.0;
+    marker_human.pose.orientation.w = 1.0;
 
       double temp_dist,temp_dist2,temp_dist3;
       temp_dist  =0.5;
@@ -690,7 +652,7 @@ void Edgeleg_manager::publish_target()
 }
 
 
-void Edgeleg_manager::publish_filtered_target()
+void op_filter_manager::publish_filtered_target()
 {
 
     visualization_msgs::Marker marker_human;
@@ -728,25 +690,23 @@ void Edgeleg_manager::publish_filtered_target()
 
     filtered_human_target_pub.publish(marker_human);
     // human_target_Intcmd_pub.publish(track_cmd);  
-
-
-
 }
 
-int Edgeleg_manager::FindNearesetLegIdx()
+
+int op_filter_manager::FindNearestPoseIdx()
 {
     //target should be already set
     std::vector<double> Distanceset;
     // Distanceset.resize(Cur_detected_human.size(),0.0);
-    Distanceset.resize(Cur_leg_human.size(),0.0);
+    Distanceset.resize(pose_people.size(),0.0);
     
     double minDistance=200.0;
     int    minDistance_Idx=0;
 
-      for(int i(0);i<Cur_leg_human.size();i++)
+      for(int i(0);i<pose_people.size();i++)
       {
         // Distanceset[i]=getDistance(Cur_detected_human[i][0],Cur_detected_human[i][1]);
-        Distanceset[i]=getDistance_from_Vec(leg_target,Cur_leg_human[i][0],Cur_leg_human[i][1]);
+        Distanceset[i]=getDistance_from_Vec(global_pose,pose_people[i][0],pose_people[i][1]);
         
         if(minDistance>Distanceset[i])
           {
@@ -759,7 +719,32 @@ int Edgeleg_manager::FindNearesetLegIdx()
 
 }
 
-double Edgeleg_manager::getDistance_from_Vec(std::vector<double> origin, double _x, double _y)
+
+int op_filter_manager::FindNearesetLegIdx()
+{
+    //target should be already set
+    std::vector<double> Distanceset;
+    Distanceset.resize(Cur_leg_human.size(),0.0);
+    
+    double minDistance=200.0;
+    int    minDistance_Idx=0;
+
+      for(int i(0);i<Cur_leg_human.size();i++)
+      {
+        Distanceset[i]=getDistance_from_Vec(filtered_leg_target,Cur_leg_human[i][0],Cur_leg_human[i][1]);
+        
+        if(minDistance>Distanceset[i])
+          {
+            minDistance=Distanceset[i];
+            minDistance_Idx=i;
+          }
+      }
+  
+    return minDistance_Idx;
+
+}
+
+double op_filter_manager::getDistance_from_Vec(std::vector<double> origin, double _x, double _y)
 {
   double temp=0.0;
 
@@ -772,7 +757,7 @@ double Edgeleg_manager::getDistance_from_Vec(std::vector<double> origin, double 
 }
 
 
-void Edgeleg_manager::filter_act_callback(const std_msgs::Int8::ConstPtr& msg)
+void op_filter_manager::filter_act_callback(const std_msgs::Int8::ConstPtr& msg)
 {
 
     if(msg->data==1)
@@ -790,9 +775,8 @@ void Edgeleg_manager::filter_act_callback(const std_msgs::Int8::ConstPtr& msg)
 
 }
 
-void Edgeleg_manager::global_pose_callback(const geometry_msgs::PoseStamped::ConstPtr& msg)
+void op_filter_manager::global_pose_callback(const geometry_msgs::PoseStamped::ConstPtr& msg)
 {
-
    global_pose[0]=msg->pose.position.x;
    global_pose[1]=msg->pose.position.y;
 
@@ -804,7 +788,7 @@ void Edgeleg_manager::global_pose_callback(const geometry_msgs::PoseStamped::Con
     global_pose[2]=yaw_tf;
 }
 
-void Edgeleg_manager::chair_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)
+void op_filter_manager::chair_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)
 {
     std::cout<<"chair recieved"<<std::endl;
     num_of_detected_chair=msg->markers.size();
@@ -838,44 +822,141 @@ void Edgeleg_manager::chair_yolo_callback(const visualization_msgs::MarkerArray:
    }
 }
 
-void Edgeleg_manager::openpose_pose_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
+void op_filter_manager::openpose_pose_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
 {
         //openpose comes w.r.t map frame
-        ROS_INFO("openposes callback: poses size : %d ", msg->poses.size());
+        //ROS_INFO("openposes callback: poses size : %d ", msg->poses.size());
         //human_op_poses_array = *msg;
+        std::vector<double> temp_target(2,0.0); 
         int num_of_detected_human= msg->poses.size(); 
         if(num_of_detected_human>0)
         {
-        
-        cur_yolo_people.resize(num_of_detected_human);
-        for(int i(0);i<num_of_detected_human;i++)
-        {
-            cur_yolo_people[i].resize(2,0.0);
-            cur_yolo_people[i][0]=msg->poses[i].position.x;
-            cur_yolo_people[i][1]=msg->poses[i].position.y;
+            pose_people.resize(num_of_detected_human);
+            for(int i(0);i<num_of_detected_human;i++)
+            {
+                pose_people[i].resize(2,0.0);
+                pose_people[i][0]=msg->poses[i].position.x;
+                pose_people[i][1]=msg->poses[i].position.y;
+            }
+
+            int NearestPoseIdx=FindNearestPoseIdx();
+
+            std::vector<double> temp_target(2,0.0); 
+            temp_target[0]=pose_people[NearestPoseIdx][0];
+            temp_target[1]=pose_people[NearestPoseIdx][1];
+
+            people_msgs::PositionMeasurement pos;
+            pos.header.stamp = ros::Time();
+            pos.header.frame_id = "/map";
+            pos.name = "leg_laser";
+            pos.object_id ="person 0";
+            pos.pos.x = temp_target[0];
+            pos.pos.y = temp_target[1];
+            pos.pos.z = 1.0;
+            pos.reliability = 0.85;
+            pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
+            pos.covariance[1] = 0.0;
+            pos.covariance[2] = 0.0;
+            pos.covariance[3] = 0.0;
+            pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
+            pos.covariance[5] = 0.0;
+            pos.covariance[6] = 0.0;
+            pos.covariance[7] = 0.0;
+            pos.covariance[8] = 10000.0;
+            pos.initialization = 0;
+
+            people_measurement_pub_.publish(pos);
+
+            leg_target[0]=temp_target[0];
+            leg_target[1]=temp_target[1];
+
+
+        }  
+        else if(Cur_leg_human.size()>0){
+
+         //std::vector<double> temp_target(2,0.0); 
+         //temp_target[0]=NN_laser_target[0];
+         //temp_target[1]=NN_laser_target[1];
+
+         //people_msgs::PositionMeasurement pos;
+            //pos.header.stamp = ros::Time();
+            //pos.header.frame_id = "/map";
+            //pos.name = "leg_laser";
+            //pos.object_id ="person 0";
+            //pos.pos.x = temp_target[0];
+            //pos.pos.y = temp_target[1];
+            //pos.pos.z = 1.0;
+            //pos.reliability = 0.85;
+            //pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
+            //pos.covariance[1] = 0.0;
+            //pos.covariance[2] = 0.0;
+            //pos.covariance[3] = 0.0;
+            //pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
+            //pos.covariance[5] = 0.0;
+            //pos.covariance[6] = 0.0;
+            //pos.covariance[7] = 0.0;
+            //pos.covariance[8] = 10000.0;
+            //pos.initialization = 0;
+
+            //people_measurement_pub_.publish(pos);
+
+            //leg_target[0]=temp_target[0];
+            //leg_target[1]=temp_target[1];
+
 
         }
-        
-        }  
         else
         {
             return;
         }
 
-        //for(int i(0);i<num_of_detected_human;i++)
-        //{
-            //cur_yolo_people[i].resize(2,0.0);
-            //cur_yolo_people[i][0]=msg->poses[i].position.x;
-            //cur_yolo_people[i][1]=msg->poses[i].position.y;
 
-        //}
+      //if(pose_people.size()>0)
+      //{ 
+
+         //if(Comparetwopoistions(temp_target,leg_target,1.2))
+         //{
+              //std::cout<<"update target - person is in a range"<<std::endl;
+             //leg_target[0]=temp_target[0];
+             //leg_target[1]=temp_target[1];
+         //}
+
+        //if(OnceTarget){
+        
+            //people_msgs::PositionMeasurement pos;
+            //pos.header.stamp = ros::Time();
+            //pos.header.frame_id = "/map";
+            //pos.name = "leg_laser";
+            //pos.object_id ="person 0";
+            //pos.pos.x = temp_target[0];
+            //pos.pos.y = temp_target[1];
+            //pos.pos.z = 1.0;
+            //pos.reliability = 0.85;
+            //pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
+            //pos.covariance[1] = 0.0;
+            //pos.covariance[2] = 0.0;
+            //pos.covariance[3] = 0.0;
+            //pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
+            //pos.covariance[5] = 0.0;
+            //pos.covariance[6] = 0.0;
+            //pos.covariance[7] = 0.0;
+            //pos.covariance[8] = 10000.0;
+            //pos.initialization = 0;
+
+            //people_measurement_pub_.publish(pos);
+
+            //leg_target[0]=temp_target[0];
+            //leg_target[1]=temp_target[1];
+
+      //}
+
 
 
 }
 
 
 
-void Edgeleg_manager::human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)
+void op_filter_manager::human_yolo_callback(const visualization_msgs::MarkerArray::ConstPtr& msg)
 {
 
     num_of_detected_human=msg->markers.size();
@@ -938,7 +1019,7 @@ void Edgeleg_manager::human_yolo_callback(const visualization_msgs::MarkerArray:
 }
 
 // callback for messages
-void Edgeleg_manager::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& msg)
+void op_filter_manager::callbackRcv(const people_msgs::PositionMeasurement::ConstPtr& msg)
 {
   
 
@@ -946,7 +1027,7 @@ void Edgeleg_manager::callbackRcv(const people_msgs::PositionMeasurement::ConstP
 }
 
 
-void Edgeleg_manager::publish_leg_boxes()
+void op_filter_manager::publish_leg_boxes()
 {
 
 
@@ -1015,7 +1096,7 @@ void Edgeleg_manager::publish_leg_boxes()
   }
 }
 
-int Edgeleg_manager::CoordinateTransform_Global2_staticMap(float global_x, float global_y)
+int op_filter_manager::CoordinateTransform_Global2_staticMap(float global_x, float global_y)
 {
   double reference_origin_x=static_belief_map.info.origin.position.x;
   double reference_origin_y=static_belief_map.info.origin.position.y;
@@ -1037,7 +1118,7 @@ int Edgeleg_manager::CoordinateTransform_Global2_staticMap(float global_x, float
    
 }
 
-bool Edgeleg_manager::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)
+bool op_filter_manager::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)
 {
   //return true if there are in criterion distance 
   double temp_dist=0.0;
@@ -1057,7 +1138,7 @@ bool Edgeleg_manager::Comparetwopoistions(std::vector<double> pos,std::vector<do
 }
 
 // filter loop
-void Edgeleg_manager::spin()
+void op_filter_manager::spin()
 {
   ROS_INFO("People tracking manager started.");
 
@@ -1067,7 +1148,7 @@ void Edgeleg_manager::spin()
     publish_cameraregion();
     publish_target();
     publish_filtered_target();
-    //Publish_nav_target();
+    Publish_nav_target();
     // ------ LOCKED ------
     boost::mutex::scoped_lock lock(filter_mutex_);
     lock.unlock();
@@ -1087,14 +1168,14 @@ void Edgeleg_manager::spin()
 int main(int argc, char **argv)
 {
   // Initialize ROS
-  ros::init(argc, argv, "edge_lef_filter");
+  ros::init(argc, argv, "op_filter_tracker");
   ros::NodeHandle(nh);
 
   // create tracker node
-  Edgeleg_manager edge_filter_node(nh);
+  op_filter_manager op_filter_node(nh);
 
   // wait for filter to finish
-  edge_filter_node.spin();
+  op_filter_node.spin();
   // Clean up
 
   return 0;

@@ -82,7 +82,7 @@ PeopleTrackingNode::PeopleTrackingNode(ros::NodeHandle nh)
   local_nh.param("sys_sigma_vel_x", sys_sigma_.vel_[0], 2.0);
   local_nh.param("sys_sigma_vel_y", sys_sigma_.vel_[1], 2.0);
   local_nh.param("sys_sigma_vel_z", sys_sigma_.vel_[2], 2.0);
-  local_nh.param("follow_one_person", follow_one_person_, false);
+  local_nh.param("follow_one_person", follow_one_person_, true);
 
   // advertise filter output
   people_filter_pub_ = nh_.advertise<people_msgs::PositionMeasurement>("people_tracker_filter", 10);
@@ -90,7 +90,6 @@ PeopleTrackingNode::PeopleTrackingNode(ros::NodeHandle nh)
   // advertise visualization
   people_filter_vis_pub_ = nh_.advertise<sensor_msgs::PointCloud>("people_tracker_filter_visualization", 10);
   people_tracker_vis_pub_ = nh_.advertise<sensor_msgs::PointCloud>("people_tracker_measurements_visualization", 10);
-
 
   // register message sequencer
   people_meas_sub_ = nh_.subscribe("people_tracker_measurements", 1, &PeopleTrackingNode::callbackRcv, this);
@@ -132,22 +131,22 @@ void PeopleTrackingNode::callbackRcv(const people_msgs::PositionMeasurement::Con
       cov(i + 1, j + 1) = message->covariance[3 * i + j];
 
 //mkmkmkmk
-    //if(IsNotInitilized)
-    //{
+    if(IsNotInitilized)
+    {
 
-      //cout << "starting new tracker" << endl;
-      //stringstream tracker_name;
-      //StatePosVel prior_sigma(tf::Vector3(sqrt(cov(1, 1)), sqrt(cov(
-                                            //2, 2)), sqrt(cov(3, 3))), tf::Vector3(0.0001, 00.0001, 0.0001));
-      //tracker_name << "person 0";
-      //Tracker* new_tracker = new TrackerKalman(tracker_name.str(),sys_sigma_);
-      //new_tracker->initialize(meas, prior_sigma,message->header.stamp.toSec()) ;
-      //trackers_.push_back(new_tracker);
-      //ROS_INFO("Initialized new tracker %s", tracker_name.str().c_str());
+      cout << "starting new tracker" << endl;
+      stringstream tracker_name;
+      StatePosVel prior_sigma(tf::Vector3(sqrt(cov(1, 1)), sqrt(cov(
+                                            2, 2)), sqrt(cov(3, 3))), tf::Vector3(0.0001, 00.0001, 0.0001));
+      tracker_name << "person 0";
+      Tracker* new_tracker = new TrackerKalman(tracker_name.str(),sys_sigma_);
+      new_tracker->initialize(meas, prior_sigma,message->header.stamp.toSec()) ;
+      trackers_.push_back(new_tracker);
+      ROS_INFO("Initialized new tracker %s", tracker_name.str().c_str());
 
-      //IsNotInitilized=false;
+      IsNotInitilized=false;
 
-    //}
+    }
 //mkmk
 
   // ----- LOCKED ------
@@ -240,9 +239,6 @@ void PeopleTrackingNode::callbackDrop(const people_msgs::PositionMeasurement::Co
            message->object_id.c_str(), message->name.c_str(), (ros::Time::now() - message->header.stamp).toSec());
 
 }
-
-
-
 
 // filter loop
 void PeopleTrackingNode::spin()

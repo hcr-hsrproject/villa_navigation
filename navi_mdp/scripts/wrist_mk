@@ -37,11 +37,6 @@ class Wrist_Manager(object):
               break
        return TriggerResponse(success=True)
 
-# def wrist_trigger_server():
-    # rospy.init_node('wrist_trigger_node', anonymous=True)
-    # rospy.Service('wrist_trigger', Trigger, trigger) 
-    # rospy.spin()
-
 if __name__ == '__main__':
     # wrist_trigger_server()
     wrist_manager=Wrist_Manager()

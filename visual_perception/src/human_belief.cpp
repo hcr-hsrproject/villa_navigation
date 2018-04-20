@@ -23,7 +23,7 @@ belief_manager::belief_manager(ros::NodeHandle nh)
 
   joint_state_sub =nh_.subscribe<sensor_msgs::JointState>("/hsrb/joint_states", 10, &belief_manager::joint_states_callback,this);
   people_yolo_sub=nh_.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &belief_manager::human_yolo_callback,this);
-  people_poses_sub =nh_.subscribe<geometry_msgs::PoseArray>("/human_poses", 10, &belief_manager::human_poses_callback,this);
+  people_poses_sub =nh_.subscribe<geometry_msgs::PoseArray>("/openpose_pose_array", 10, &belief_manager::human_poses_callback,this);
   globalpose_sub=nh_.subscribe<geometry_msgs::PoseStamped>("/global_pose",10,&belief_manager::global_pose_callback,this);
     
   global_pose.resize(3,0.0);
@@ -385,8 +385,55 @@ void belief_manager::global_pose_callback(const geometry_msgs::PoseStamped::Cons
 void belief_manager::human_poses_callback(const geometry_msgs::PoseArray::ConstPtr& msg)
 {
 
-
     ROS_INFO("human poses callback");
+    index_of_human_occ_cells_updated_recently.clear();
+
+    //check number of detected_humans
+    num_of_detected_human=msg->poses.size();
+
+    if(num_of_detected_human>0)
+       cur_yolo_people.resize(num_of_detected_human);
+    else
+    {
+        update_human_occ_belief(NO_HUMANS_DETECTED);
+      return;
+    }
+
+    for(int i(0);i<num_of_detected_human;i++)
+    {
+      double cur_people_x=msg->poses[i].position.x;
+      double cur_people_y=msg->poses[i].position.y;
+
+      cur_yolo_people[i].resize(2,0.0);
+      cur_yolo_people[i][0]=cur_people_x;
+      cur_yolo_people[i][1]=cur_people_y;
+
+      int human_mapidx=CoordinateTransform_Global2_beliefMap(cur_people_x,cur_people_y);
+      index_of_human_occ_cells_updated_recently.push_back(human_mapidx);
+      Human_Belief_Scan_map.data[human_mapidx] = 80;
+
+      if (map_index_of_human_cells_to_prob.count(human_mapidx) >0 ){
+          // Encountered the same cells. Update probability:
+          // P(H|S) = P(S|H)P(H) / P(S)
+          std::cout<<"human map idx: " <<human_mapidx <<std::endl;
+          float prior = map_index_of_human_cells_to_prob[human_mapidx]; // P(H)
+          std::cout<<"prior : " <<prior <<std::endl;
+          float P_S = P_S_given_H*prior + P_S_given_Hc*(1-prior);
+          std::cout<<"P_S : " <<P_S <<std::endl;
+          float posterior = (P_S_given_H)*prior / P_S;
+          std::cout<<"posterior : " <<posterior <<std::endl;
+          map_index_of_human_cells_to_prob[human_mapidx] = posterior;
+
+      }else{
+          map_index_of_human_cells_to_prob[human_mapidx] = 0.1;
+      }		
+      //human_occupied_idx.push_back(human_mapidx);
+
+   }
+
+    update_human_occ_belief(HUMANS_DETECTED);
+
+   // printf("size yolo : %d \n",cur_yolo_people.size());
 
 
 }
@@ -456,6 +503,7 @@ void belief_manager::human_yolo_callback(const visualization_msgs::MarkerArray::
 
    // printf("size yolo : %d \n",cur_yolo_people.size());
 }
+
 void belief_manager::update_human_occ_belief(int update_type){
 
     std::map<int, int> map_index_recently_updated;
@@ -463,6 +511,7 @@ void belief_manager::update_human_occ_belief(int update_type){
         for(int i = 0; i < index_of_human_occ_cells_updated_recently.size(); i++){
             int index = index_of_human_occ_cells_updated_recently[i];
             map_index_recently_updated[index] = index;
+            std::cout<<"map_index_recently updated set :" <<index <<std::endl;
         }
     }
 
@@ -472,22 +521,25 @@ void belief_manager::update_human_occ_belief(int update_type){
     // If labeled as human, update probability of cell regions
     std::vector<int> indices_to_assign_as_free;
 
+    std::cout<<"camera visiblie_idx_set size : "<<visiblie_idx_set.size()<<std::endl;
     for(int i(0);i< visiblie_idx_set.size();i++)
     {
         int cell_idx= visiblie_idx_set[i];
         if (map_index_recently_updated.count(cell_idx) == 1){
             continue;
+            std::cout<<"continue "<<cell_idx<<std::endl;
         }
         if (Human_Belief_Scan_map.data[cell_idx]>0){
             // Update probability			
             float prior = map_index_of_human_cells_to_prob[cell_idx]; // P(H)
             float P_S = P_Sc_given_H*(prior) + P_Sc_given_Hc*(1-prior);
-            float posterior = prior*0.4;
+            float posterior = prior*0.6;
             map_index_of_human_cells_to_prob[cell_idx] =posterior;
             //map_index_of_human_cells_to_prob[cell_idx] =0.05;
-            std::cout << "index : "<<cell_idx<< ", Prob: " << posterior << std::endl;
+            //std::cout << "index : "<<cell_idx<< ", Prob: " << posterior << std::endl;
             if (posterior < PROB_THRESH){
                 indices_to_assign_as_free.push_back(cell_idx);
+                std::cout << "free index : "<<cell_idx<< ", Prob: " << posterior << std::endl;
             }
 
         }
@@ -496,14 +548,15 @@ void belief_manager::update_human_occ_belief(int update_type){
             //map_index_of_human_cells_to_prob[cell_idx] =0.05;
         
         //}
+    }
 
         for(size_t i = 0; i < indices_to_assign_as_free.size(); i++){
             int index_to_erase =  indices_to_assign_as_free[i];
             map_index_of_human_cells_to_prob.erase(index_to_erase);
-            //Human_Belief_Scan_map.data[index_to_erase]=0.00;
+            Human_Belief_Scan_map.data[index_to_erase]=0.00;
         }
     
-    }
+    //}
 
     //if(num_of_detected_human==0)
     //{

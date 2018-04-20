@@ -5,8 +5,8 @@ villa_navi_service:
         y: 0.8
         t: 0.0 
     door:
-        x: 4.295
-        y: 0.395
+        x: 4.54
+        y: 0.375
         t: 0.0
     living_room:
         x: 10.0

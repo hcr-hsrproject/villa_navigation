@@ -13,7 +13,6 @@
 <param name="people_tracker/sys_sigma_vel_y" value="0.00000001"/>
 <param name="people_tracker/sys_sigma_vel_z" value="0.00000001"/-->
 
-
 <!-- Kalman with velocity model covariances -->
 <param name="kalman_tracker/sys_sigma_pos_x" value="1.5"/>
 <param name="kalman_tracker/sys_sigma_pos_y" value="1.5"/>

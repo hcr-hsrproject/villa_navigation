@@ -28,7 +28,7 @@
 #include <fstream>
 #include <vector>
 
-#define FOVW 60       //field of view width
+#define FOVW 50       //field of view width
 #define MATH_PI 3.14159265359
 #define Target_Dist_person 1.0
 #define LASER_Dist_person  2.5
